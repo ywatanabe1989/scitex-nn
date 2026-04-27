@@ -6,7 +6,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.signal import firwin, freqz
-
 from scitex_decorators import numpy_fn
 from scitex_gen._to_even import to_even
 
@@ -102,9 +101,7 @@ def design_filter(sig_len, fs, low_hz=None, high_hz=None, cycle=3, is_bandstop=F
         )
     except Exception as e:
         print(e)
-        import ipdb
-
-        ipdb.set_trace()
+        raise
 
     return h
 

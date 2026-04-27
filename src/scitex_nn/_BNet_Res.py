@@ -2,11 +2,9 @@
 # -*- coding: utf-8 -*-
 # Time-stamp: "2023-05-15 17:09:58 (ywatanabe)"
 
-import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torchsummary import summary
 
 import scitex_nn
 
@@ -109,10 +107,6 @@ class BNet(nn.Module):
         x = F.avg_pool1d(x, kernel_size=2)
         x = self.blk7(x)
         x = F.avg_pool1d(x, kernel_size=2)
-
-        import ipdb
-
-        ipdb.set_trace()
 
         # x = self.cgc(x)
         x = self.MNet.forward_bb(x)

@@ -2,11 +2,8 @@
 # -*- coding: utf-8 -*-
 # Time-stamp: "2023-05-15 16:44:27 (ywatanabe)"
 
-import numpy as np
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-from torchsummary import summary
 
 from ._ChannelGainChanger import ChannelGainChanger
 from ._DropoutChannels import DropoutChannels
@@ -80,9 +77,6 @@ class BNet(nn.Module):
         x = self.fgc(x)
         x = self.cgcs[i_head](x)
         x = self.heads[i_head](x)
-        import ipdb
-
-        ipdb.set_trace()
         # x = self.cgc(x)
         x = self.MNet.forward_bb(x)
         x = self.fcs[i_head](x)
