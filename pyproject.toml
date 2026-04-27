@@ -26,6 +26,7 @@ dependencies = [
     "torchsummary",
     "julius",
     "scipy",
+    "xarray",
     "scitex-decorators>=0.1.1",
     "scitex-gen>=0.1.3",
 ]
