@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "scitex-nn"
-version = "0.1.1"
+version = "0.1.2"
 description = "Neural network building blocks (BNet, Hilbert, PAC, Wavelet, Filters, …) — standalone module from the SciTeX ecosystem"
 readme = "README.md"
 license = "AGPL-3.0-only"
@@ -22,9 +22,12 @@ dependencies = [
     "matplotlib",
     "numpy",
     "torch",
+    "torchaudio",
+    "torchsummary",
+    "julius",
     "scipy",
-    "scitex-decorators>=0.1.0",
-    "scitex-gen>=0.1.0",
+    "scitex-decorators>=0.1.1",
+    "scitex-gen>=0.1.3",
 ]
 
 [project.optional-dependencies]
