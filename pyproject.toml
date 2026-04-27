@@ -31,13 +31,19 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest", "pytest-cov", "ruff"]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "ruff",
+]
 docs = [
     "sphinx>=7.0",
     "sphinx-rtd-theme>=2.0",
     "myst-parser>=2.0",
 ]
-all = ["scitex-nn[dev]", "scitex-nn[docs]"]
+all = [
+    "scitex-nn[dev,docs]",
+]
 
 [project.urls]
 Homepage = "https://github.com/ywatanabe1989/scitex-nn"
