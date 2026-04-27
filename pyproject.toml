@@ -36,6 +36,7 @@ dev = [
     "joblib",
     "scitex",
     "flask",
+    "ipdb",
     "pytest",
     "pytest-cov",
     "ruff",
