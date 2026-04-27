@@ -32,6 +32,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
+    "joblib",
     "scitex",
     "pytest",
     "pytest-cov",
