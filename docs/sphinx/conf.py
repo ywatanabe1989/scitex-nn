@@ -35,7 +35,16 @@ autodoc_default_options = {
 }
 
 # Heavy/optional deps mocked so RTD can build without installing them.
-autodoc_mock_imports = [""]
+# scitex-* peer packages are not yet on PyPI, so RTD's `pip install .` cannot
+# resolve them — mock them at autodoc time.
+autodoc_mock_imports = [
+    "torch",
+    "scipy",
+    "matplotlib",
+    "scitex",
+    "scitex_decorators",
+    "scitex_gen",
+]
 
 autosummary_generate = True
 
