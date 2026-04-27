@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scitex-nn"
+version = "0.1.0"
+description = "Neural network building blocks (BNet, Hilbert, PAC, Wavelet, Filters, …) — standalone module from the SciTeX ecosystem"
+readme = "README.md"
+license = "AGPL-3.0-only"
+requires-python = ">=3.9"
+authors = [{name = "Yusuke Watanabe", email = "ywatanabe@scitex.ai"}]
+keywords = ["scitex", "neural-network", "pytorch", "signal-processing"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = [
+    "numpy",
+    "torch",
+    "scipy",
+    "scitex-decorators>=0.1.0",
+    "scitex-gen>=0.1.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov", "ruff"]
+docs = [
+    "sphinx>=7.0",
+    "sphinx-rtd-theme>=2.0",
+    "myst-parser>=2.0",
+]
+all = ["scitex-nn[dev]", "scitex-nn[docs]"]
+
+[project.urls]
+Homepage = "https://github.com/ywatanabe1989/scitex-nn"
+Repository = "https://github.com/ywatanabe1989/scitex-nn"
+Documentation = "https://scitex-nn.readthedocs.io"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["--disable-warnings"]
+
+[tool.ruff]
+target-version = "py39"
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I"]
+ignore = ["E501"]
