@@ -12,10 +12,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
-import scitex_nn
 from scitex_gen._to_even import to_even
-from scitex_gen._to_odd import to_odd
 
 
 class Wavelet(nn.Module):
@@ -30,7 +27,9 @@ class Wavelet(nn.Module):
 
     def forward(self, x):
         """Apply the 2D filter (n_filts, kernel_size) to input signal x with shape: (batch_size, n_chs, seq_len)"""
-        x = scitex.dsp.ensure_3d(x).to(self.dummy.device)
+        from scitex_dsp._ensure_3d import ensure_3d as _ensure_3d
+
+        x = _ensure_3d(x).to(self.dummy.device)
         seq_len = x.shape[-1]
 
         # Ensure the kernel is initialized
@@ -168,7 +167,6 @@ class Wavelet(nn.Module):
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
-
     import scitex
 
     xx, tt, fs = scitex.dsp.demo_sig(sig_type="chirp")

@@ -7,7 +7,6 @@ THIS_FILE = "/home/ywatanabe/proj/scitex_repo/src/scitex/nn/_PAC.py"
 
 # Imports
 import sys
-import warnings
 
 import matplotlib.pyplot as plt
 import torch
@@ -71,8 +70,10 @@ class PAC(nn.Module):
         )
 
         # Data Handlers
-        self.dh_pha = scitex.gen.DimHandler()
-        self.dh_amp = scitex.gen.DimHandler()
+        from scitex_gen import DimHandler as _DimHandler
+
+        self.dh_pha = _DimHandler()
+        self.dh_amp = _DimHandler()
 
     def forward(self, x):
         """x.shape: (batch_size, n_chs, seq_len) or (batch_size, n_chs, n_segments, seq_len)"""
