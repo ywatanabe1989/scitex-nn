@@ -42,7 +42,11 @@ class Hilbert(nn.Module):
         # )
 
         orig_dtype = x.dtype
-        x = x.float()
+        # Preserve float32/float64 dtype (float64 stays float64).
+        # FFT does not support torch.float16/bfloat16 or integer dtypes,
+        # so only those are upcast to float32; float32/float64 pass through.
+        if x.dtype not in (torch.float32, torch.float64):
+            x = x.float()
         xf = fft(x, n=self.n, dim=self.dim)
         x = x.to(orig_dtype)
 
