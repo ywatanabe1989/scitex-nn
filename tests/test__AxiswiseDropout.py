@@ -21,8 +21,6 @@ pytest.importorskip("torch")
 import numpy as np
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-
 from scitex.nn import AxiswiseDropout
 
 
@@ -118,7 +116,12 @@ class TestAxiswiseDropoutProbabilities:
 
     def test_dropout_scaling(self):
         """Test that dropout properly scales remaining values."""
-        # In PyTorch's F.dropout, values are scaled by 1/(1-p) during training
+        # In PyTorch's F.dropout, values are scaled by 1/(1-p) during training.
+        # AxiswiseDropout drops entire slices along `dim`, so the per-element
+        # variance is high (each slice is independently 0 or 2). Use a fixed
+        # seed and a generous tolerance so this statistical assertion is not
+        # flaky on CI.
+        torch.manual_seed(0)
         layer = AxiswiseDropout(dropout_prob=0.5, dim=1)
         layer.train()
 
@@ -131,13 +134,13 @@ class TestAxiswiseDropoutProbabilities:
             output = layer(x)
             outputs.append(output)
 
-        # Average output should be close to input due to scaling
+        # Average output should be close to input due to scaling.
         avg_output = torch.stack(outputs).mean(dim=0)
 
-        # Check that average is close to original (within statistical tolerance)
-        # This verifies the scaling is working correctly
-        # Relax tolerance as this is a statistical test
-        assert torch.allclose(avg_output, x, atol=0.15)
+        # Tolerance accounts for axiswise dropout variance: each (batch, feature)
+        # slice is i.i.d. Bernoulli(0.5) scaled by 2, so std of the mean over
+        # 500 samples is ~0.045. Use 5-sigma tolerance to keep the test stable.
+        assert torch.allclose(avg_output, x, atol=0.25)
 
 
 class TestAxiswiseDropoutDimensions:

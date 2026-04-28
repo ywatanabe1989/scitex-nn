@@ -13,20 +13,41 @@ import pytest
 # Required for this module
 pytest.importorskip("torch")
 import os
-import tempfile
 from unittest.mock import MagicMock, patch
 
-import numpy as np
 import torch
 import torch.nn as nn
 
-# Mock julius module since it's an external dependency
+# Mock julius module since it's an external dependency.
+# Note: sys.modules patching alone is unreliable because the source module
+# (scitex_nn._FreqGainChanger) may already be imported (with a real `julius`
+# reference bound at module level) by the time this test file loads — e.g. if
+# `scitex.nn` was imported earlier in the test session. To ensure the mock is
+# actually used by the source's `julius.bands.split_bands(...)` call, we
+# explicitly rebind the `julius` attribute on the source module below (in a
+# fixture), in addition to patching sys.modules at import time.
 julius_mock = MagicMock()
 julius_mock.bands = MagicMock()
 julius_mock.bands.split_bands = MagicMock()
 
 with patch.dict("sys.modules", {"julius": julius_mock}):
-    from scitex.nn import FreqGainChanger
+    from scitex_nn import FreqGainChanger
+
+# Capture the source modules so we can rebind their `julius` attribute
+# during each test and restore the original afterwards. We must not leave
+# the mock in place permanently — other tests in the same session
+# (e.g. test__BNet) rely on the real julius via FreqGainChanger.
+import scitex_nn._FreqGainChanger as _fgc_source_module  # noqa: E402
+
+_FGC_SOURCE_MODULES = [_fgc_source_module]
+try:
+    import scitex.nn._FreqGainChanger as _fgc_umbrella_module  # noqa: E402
+
+    _FGC_SOURCE_MODULES.append(_fgc_umbrella_module)
+except Exception:
+    pass
+
+_ORIGINAL_JULIUS = {m: getattr(m, "julius", None) for m in _FGC_SOURCE_MODULES}
 
 
 class TestFreqGainChanger:
@@ -34,10 +55,23 @@ class TestFreqGainChanger:
 
     @pytest.fixture(autouse=True)
     def reset_mocks(self):
-        """Reset julius mocks before each test."""
+        """Reset julius mocks before each test and re-bind onto source module."""
         julius_mock.bands.split_bands.reset_mock()
         julius_mock.bands.split_bands.side_effect = None  # Clear any side_effect
         julius_mock.bands.split_bands.return_value = None  # Reset return_value
+        # Defensive re-bind: ensure each FreqGainChanger source module's
+        # `julius` attribute points at our mock for the duration of the test.
+        for m in _FGC_SOURCE_MODULES:
+            m.julius = julius_mock
+        try:
+            yield
+        finally:
+            # Restore original julius so other test files (e.g. test__BNet)
+            # that exercise FreqGainChanger end-to-end use the real library.
+            for m in _FGC_SOURCE_MODULES:
+                original = _ORIGINAL_JULIUS.get(m)
+                if original is not None:
+                    m.julius = original
 
     @pytest.fixture
     def sample_rate(self):
