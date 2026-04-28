@@ -56,6 +56,12 @@ class Hilbert(nn.Module):
             steepness * self.f.type_as(x)
         )  # Soft step function for differentiability
 
+        # Reshape u to broadcast along self.dim (was implicit -1 only).
+        if x.ndim > 1:
+            shape = [1] * x.ndim
+            shape[self.dim] = self.n
+            u = u.view(*shape)
+
         transformed = ifft(xf * 2 * u, dim=self.dim)
 
         return transformed
