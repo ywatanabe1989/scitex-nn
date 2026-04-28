@@ -33,20 +33,13 @@ julius_mock.bands.split_bands = MagicMock()
 with patch.dict("sys.modules", {"julius": julius_mock}):
     from scitex_nn import FreqGainChanger
 
-# Capture the source modules so we can rebind their `julius` attribute
+# Capture the source module so we can rebind its `julius` attribute
 # during each test and restore the original afterwards. We must not leave
 # the mock in place permanently — other tests in the same session
 # (e.g. test__BNet) rely on the real julius via FreqGainChanger.
 import scitex_nn._FreqGainChanger as _fgc_source_module  # noqa: E402
 
 _FGC_SOURCE_MODULES = [_fgc_source_module]
-try:
-    import scitex.nn._FreqGainChanger as _fgc_umbrella_module  # noqa: E402
-
-    _FGC_SOURCE_MODULES.append(_fgc_umbrella_module)
-except Exception:
-    pass
-
 _ORIGINAL_JULIUS = {m: getattr(m, "julius", None) for m in _FGC_SOURCE_MODULES}
 
 
