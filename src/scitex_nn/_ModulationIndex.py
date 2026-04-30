@@ -57,6 +57,11 @@ class ModulationIndex(nn.Module):
         Returns:
         - MI (torch.Tensor): The Modulation Index for each batch and channel.
         """
+        # Coerce numpy arrays to torch tensors for callers that pass plain ndarrays
+        if not isinstance(pha, torch.Tensor):
+            pha = torch.as_tensor(pha)
+        if not isinstance(amp, torch.Tensor):
+            amp = torch.as_tensor(amp)
         assert pha.ndim == amp.ndim == 5
 
         if self.fp16:
@@ -167,7 +172,6 @@ def _reshape(x, batch_size=2, n_chs=4):
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
-
     import scitex
 
     # Start
