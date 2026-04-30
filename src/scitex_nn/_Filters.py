@@ -31,17 +31,19 @@ import sys
 from abc import abstractmethod
 
 import matplotlib.pyplot as plt
-import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
-from ._vendor_dsp_utils import build_bandpass_filters, init_bandpass_filters
-from ._vendor_dsp_utils import ensure_3d
-from ._vendor_dsp_utils import ensure_even_len
-from ._vendor_dsp_utils import zero_pad
-from ._vendor_dsp_utils import design_filter
 from scitex_gen._to_even import to_even
+
+from ._vendor_dsp_utils import (
+    build_bandpass_filters,
+    design_filter,
+    ensure_3d,
+    ensure_even_len,
+    init_bandpass_filters,
+    zero_pad,
+)
 
 
 class BaseFilter1D(nn.Module):
@@ -68,6 +70,10 @@ class BaseFilter1D(nn.Module):
         if self.fp16:
             x = x.half()
 
+        # Capture caller's ndim so we can squeeze leading pad-dims off the
+        # 4D output (batch, n_chs, n_kernels, seq_len) when input was lower-dim.
+        original_ndim = x.ndim if hasattr(x, "ndim") else None
+
         x = ensure_3d(x)
         batch_size, n_chs, seq_len = x.shape
 
@@ -85,10 +91,23 @@ class BaseFilter1D(nn.Module):
             n_chs,
             len(self.kernels),
             seq_len,
-        ), f"The shape of the filtered signal ({x.shape}) does not match the expected shape: ({batch_size}, {n_chs}, {len(self.kernels)}, {seq_len})."
+        ), (
+            f"The shape of the filtered signal ({x.shape}) does not match the expected shape: ({batch_size}, {n_chs}, {len(self.kernels)}, {seq_len})."
+        )
 
         # Edge remove
         x = self.remove_edges(x, edge_len)
+
+        # If caller passed a lower-dim signal (e.g. 1D (T,)), squeeze the
+        # leading pad-dims and the n_kernels dim (when it equals 1) so the
+        # output ndim matches the input. This restores the conventional
+        # contract: filter(1D) -> 1D, filter(2D) -> 2D, etc., while
+        # preserving the 4D output for callers that already passed 3D+.
+        if original_ndim is not None and original_ndim < 4 and len(self.kernels) == 1:
+            # 4D shape is (batch=1, n_chs=1, n_kernels=1, seq_len) when
+            # input was 1D; squeeze to match original_ndim.
+            while x.ndim > original_ndim and x.shape[0] == 1:
+                x = x.squeeze(0)
 
         if t is None:
             return x
