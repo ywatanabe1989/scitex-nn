@@ -3,6 +3,16 @@
 
 from __future__ import annotations
 
+try:
+    from importlib.metadata import version as _v, PackageNotFoundError
+    try:
+        __version__ = _v("scitex-nn")
+    except PackageNotFoundError:
+        __version__ = "0.0.0+local"
+    del _v, PackageNotFoundError
+except ImportError:  # pragma: no cover — only on ancient Pythons
+    __version__ = "0.0.0+local"
+
 from ._AxiswiseDropout import AxiswiseDropout
 from ._BNet import BHead as BHead_v1
 from ._BNet import BNet as BNet_v1
@@ -37,6 +47,7 @@ from ._TransposeLayer import TransposeLayer
 from ._Wavelet import Wavelet
 
 __all__ = [
+    "__version__",
     "AxiswiseDropout",
     "BHead_v1",
     "BHead_Res",
