@@ -81,6 +81,9 @@ def design_filter(sig_len, fs, low_hz=None, high_hz=None, cycle=3, is_bandstop=F
         order = to_even(order)
         return order
 
+    # Coerce tensor/0-d arrays to Python scalar before int() (numpy 2.x stricter)
+    if hasattr(fs, "item"):
+        fs = fs.item()
     fs = int(fs)
     low_hz = float(low_hz) if low_hz is not None else low_hz
     high_hz = float(high_hz) if high_hz is not None else high_hz
