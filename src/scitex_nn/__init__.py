@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Scitex nn module."""
 
+from __future__ import annotations
+
 from ._AxiswiseDropout import AxiswiseDropout
 from ._BNet import BHead as BHead_v1
 from ._BNet import BNet as BNet_v1
