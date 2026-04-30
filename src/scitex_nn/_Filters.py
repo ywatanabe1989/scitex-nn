@@ -261,7 +261,8 @@ class LowPassFilter(BaseFilter1D):
     def __init__(self, cutoffs_hz, fs, seq_len):
         super().__init__()
 
-        # Ensures bands shape
+        # Coerce scalar / list / tuple to a 1D ndarray
+        cutoffs_hz = np.atleast_1d(np.asarray(cutoffs_hz))
         assert cutoffs_hz.ndim == 1
 
         # Check bands definitions
@@ -299,7 +300,8 @@ class HighPassFilter(BaseFilter1D):
     def __init__(self, cutoffs_hz, fs, seq_len):
         super().__init__()
 
-        # Ensures bands shape
+        # Coerce scalar / list / tuple to a 1D ndarray
+        cutoffs_hz = np.atleast_1d(np.asarray(cutoffs_hz))
         assert cutoffs_hz.ndim == 1
 
         # Check bands definitions
