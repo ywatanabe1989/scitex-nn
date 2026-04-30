@@ -74,5 +74,3 @@ These compose as plain `nn.Module`s — drop into a `nn.Sequential`.
 - `scitex-dsp` — non-trainable counterparts (numpy/scipy-backed)
 - General skill `01_arch_06_local-state-directories.md` if model
   checkpoints / cache directories need a canonical location
-
-<!-- EOF -->
