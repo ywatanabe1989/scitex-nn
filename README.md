@@ -1,52 +1,134 @@
-# scitex-nn
+# SciTeX NN (<code>scitex-nn</code>)
+
+<p align="center">
+  <a href="https://scitex.ai">
+    <img src="docs/assets/images/scitex-logo-blue-cropped.png" alt="SciTeX NN" width="400">
+  </a>
+</p>
+
+<p align="center"><b>PyTorch neural-network building blocks for signal processing — BNet, Hilbert, PAC, Wavelet, Filters, AxiswiseDropout, and more.</b></p>
+
+<p align="center">
+  <a href="https://scitex-nn.readthedocs.io/">Full Documentation</a> · <code>pip install scitex-nn</code>
+</p>
 
 <!-- scitex-badges:start -->
-[![PyPI](https://img.shields.io/pypi/v/scitex-nn.svg)](https://pypi.org/project/scitex-nn/)
-[![Python](https://img.shields.io/pypi/pyversions/scitex-nn.svg)](https://pypi.org/project/scitex-nn/)
-[![Tests](https://github.com/ywatanabe1989/scitex-nn/actions/workflows/test.yml/badge.svg)](https://github.com/ywatanabe1989/scitex-nn/actions/workflows/test.yml)
-[![Install Test](https://github.com/ywatanabe1989/scitex-nn/actions/workflows/install-test.yml/badge.svg)](https://github.com/ywatanabe1989/scitex-nn/actions/workflows/install-test.yml)
-[![Coverage](https://codecov.io/gh/ywatanabe1989/scitex-nn/graph/badge.svg)](https://codecov.io/gh/ywatanabe1989/scitex-nn)
-[![Docs](https://readthedocs.org/projects/scitex-nn/badge/?version=latest)](https://scitex-nn.readthedocs.io/en/latest/)
-[![License: AGPL v3](https://img.shields.io/badge/license-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+<p align="center">
+  <a href="https://pypi.org/project/scitex-nn/"><img src="https://img.shields.io/pypi/v/scitex-nn.svg" alt="PyPI"></a>
+  <a href="https://pypi.org/project/scitex-nn/"><img src="https://img.shields.io/pypi/pyversions/scitex-nn.svg" alt="Python"></a>
+  <a href="https://github.com/ywatanabe1989/scitex-nn/actions/workflows/test.yml"><img src="https://github.com/ywatanabe1989/scitex-nn/actions/workflows/test.yml/badge.svg" alt="Tests"></a>
+  <a href="https://github.com/ywatanabe1989/scitex-nn/actions/workflows/install-test.yml"><img src="https://github.com/ywatanabe1989/scitex-nn/actions/workflows/install-test.yml/badge.svg" alt="Install Test"></a>
+  <a href="https://codecov.io/gh/ywatanabe1989/scitex-nn"><img src="https://codecov.io/gh/ywatanabe1989/scitex-nn/graph/badge.svg" alt="Coverage"></a>
+  <a href="https://scitex-nn.readthedocs.io/en/latest/"><img src="https://readthedocs.org/projects/scitex-nn/badge/?version=latest" alt="Docs"></a>
+  <a href="https://www.gnu.org/licenses/agpl-3.0"><img src="https://img.shields.io/badge/license-AGPL_v3-blue.svg" alt="License: AGPL v3"></a>
+</p>
 <!-- scitex-badges:end -->
 
-PyTorch neural-network building blocks (BNet, Hilbert, PAC, Wavelet, Filters, AxiswiseDropout, …) extracted from the [SciTeX](https://github.com/ywatanabe1989/scitex-python) ecosystem as a standalone package.
+---
 
-## Install
+## Problem and Solution
+
+| # | Problem | Solution |
+|---|---------|----------|
+| 1 | **Signal-processing layers are scattered** across research codebases — Hilbert, PAC, Wavelet, bandpass filters | **Drop-in PyTorch modules** — differentiable, batched, and composable into any `nn.Module` |
+| 2 | **Standard `nn.Dropout` operates element-wise** — no axis-wise option for channel/feature drop | **`AxiswiseDropout`, `DropoutChannels`** — zero out entire features along a chosen axis |
+| 3 | **Custom blocks (BNet, MNet, ResNet1D)** must be re-implemented for every project | **Vetted reference implementations** with consistent APIs and shape conventions |
+
+## Installation
+
+Requires Python >= 3.9.
 
 ```bash
 pip install scitex-nn
 ```
 
-## API
+## 2 Interfaces
+
+<details open>
+<summary><strong>Python API</strong></summary>
+
+<br>
 
 ```python
 import scitex_nn as nn
 
-m = nn.BNet(...)
-m = nn.Filters(...)
-m = nn.Hilbert(...)
-m = nn.Wavelet(...)
-m = nn.PAC(...)
+# Differentiable Hilbert transform
+hilbert = nn.Hilbert(seq_len=512, dim=-1)
+
+# Bandpass filter bank
+filt = nn.Filters(...)
+
+# Axis-wise dropout (drop entire channels/features)
+drop = nn.AxiswiseDropout(dropout_prob=0.5, dim=1)
+
+# Phase-amplitude coupling
+pac = nn.PAC(...)
+
+# Reference architectures
+model = nn.BNet(...)
 ```
 
-## Status
+> **[Full API reference](https://scitex-nn.readthedocs.io/en/latest/api/scitex_nn.html)**
 
-Standalone fork of `scitex.nn`. The umbrella package's `scitex.nn` import path
-is preserved via a `sys.modules`-alias bridge.
+</details>
 
-Decoupling notes:
-- `scitex.{decorators,gen}` → `scitex_decorators` / `scitex_gen` direct imports.
-- `scitex.dsp.utils` (build_bandpass_filters, init_bandpass_filters,
-  ensure_3d, ensure_even_len, zero_pad, design_filter) → vendored under
-  `_vendor_dsp_utils/`. Vendor prefers the real `scitex.dsp.utils` when
-  the umbrella is installed (lockstep behaviour) and falls back to the
-  vendored copy when scitex_nn runs standalone.
-- `scitex.nn.X` self-references rewritten to `scitex_nn.X`.
-- Example `if __name__ == "__main__":` blocks still reference
-  `scitex.{io,plt,session,dsp,ai}` — only run when the umbrella is
-  installed; module-level imports do not depend on those.
+<details>
+<summary><strong>Skills — for AI Agent Discovery</strong></summary>
 
-## License
+<br>
 
-AGPL-3.0-only.
+Skills provide workflow-oriented guides that AI agents query to discover capabilities and usage patterns.
+
+```bash
+scitex-dev skills export --package scitex-nn  # Export to Claude Code
+```
+
+</details>
+
+## Available Modules
+
+| Category | Modules |
+|----------|---------|
+| **Signal transforms** | `Hilbert`, `Wavelet`, `Spectrogram`, `PSD`, `Filters`, `GaussianFilter` |
+| **Coupling / features** | `PAC`, `ModulationIndex` |
+| **Dropout variants** | `AxiswiseDropout`, `DropoutChannels` |
+| **Augmentation** | `ChannelGainChanger`, `FreqGainChanger`, `SwapChannels` |
+| **Architectures** | `BNet`, `BNet_Res`, `MNet_1000`, `ResNet1D` |
+| **Utilities** | `SpatialAttention`, `TransposeLayer` |
+
+## Part of SciTeX
+
+`scitex-nn` is part of [**SciTeX**](https://scitex.ai). Install via the
+umbrella with `pip install scitex[nn]` to use as `scitex.nn` (Python).
+
+```python
+import scitex
+import scitex_nn as nn
+
+@scitex.session
+def main(CONFIG=scitex.INJECTED):
+    signal = scitex.io.load("signal.npy")
+    hilbert = nn.Hilbert(seq_len=signal.shape[-1], dim=-1)
+    out = hilbert(signal)
+    scitex.io.save(out, "analytic.npy")
+    return 0
+```
+
+The SciTeX system follows the Four Freedoms for Research below, inspired by [the Free Software Definition](https://www.gnu.org/philosophy/free-sw.en.html):
+
+>Four Freedoms for Research
+>
+>0. The freedom to **run** your research anywhere — your machine, your terms.
+>1. The freedom to **study** how every step works — from raw data to final manuscript.
+>2. The freedom to **redistribute** your workflows, not just your papers.
+>3. The freedom to **modify** any module and share improvements with the community.
+>
+>AGPL-3.0 — because we believe research infrastructure deserves the same freedoms as the software it runs on.
+
+---
+
+<p align="center">
+  <a href="https://scitex.ai" target="_blank"><img src="docs/assets/images/scitex-icon-navy-inverted.png" alt="SciTeX" width="40"/></a>
+</p>
+
+<!-- EOF -->
