@@ -74,3 +74,10 @@ These compose as plain `nn.Module`s — drop into a `nn.Sequential`.
 - `scitex-dsp` — non-trainable counterparts (numpy/scipy-backed)
 - General skill `01_arch_06_local-state-directories.md` if model
   checkpoints / cache directories need a canonical location
+
+## Sub-skills
+
+### Core (01–09)
+- [01_installation.md](01_installation.md) — install + import sanity check
+- [02_quick-start.md](02_quick-start.md) — 30-second tour
+- [03_python-api.md](03_python-api.md) — Python API surface
