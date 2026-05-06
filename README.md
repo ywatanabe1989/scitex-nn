@@ -77,6 +77,10 @@ model = nn.BNet(...)
 | Example | Output |
 |---|---|
 | [`examples/01_hilbert.py`](examples/01_hilbert.py) — `Hilbert` vs `scipy.signal.hilbert` on a Gaussian-windowed chirp (10→40 Hz) | ![Hilbert vs scipy](examples/_assets/01_hilbert.png) |
+| [`examples/02_axiswise_dropout.py`](examples/02_axiswise_dropout.py) — `AxiswiseDropout` along `dim=1` (channels) and `dim=2` (time) vs element-wise | ![AxiswiseDropout](examples/_assets/02_axiswise_dropout.png) |
+| [`examples/03_channel_aug.py`](examples/03_channel_aug.py) — `DropoutChannels` / `SwapChannels` / `ChannelGainChanger` side by side | ![Channel augmentations](examples/_assets/03_channel_aug.png) |
+| [`examples/04_gaussian_filter.py`](examples/04_gaussian_filter.py) — `GaussianFilter` smoothing at three sigmas vs the clean reference | ![GaussianFilter](examples/_assets/04_gaussian_filter.png) |
+| [`examples/05_filter_bank.py`](examples/05_filter_bank.py) — Low/High/Band/BandStop frequency responses on one panel | ![Filter bank](examples/_assets/05_filter_bank.png) |
 
 <details>
 <summary><strong>Skills — for AI Agent Discovery</strong></summary>

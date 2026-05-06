@@ -1,10 +1,10 @@
-"""Smoke test: examples/02_mnet_classifier.py runs to completion."""
+"""Smoke test: examples/04_gaussian_filter.py runs to completion."""
 
 import subprocess
 import sys
 from pathlib import Path
 
-EXAMPLE = Path(__file__).parent.parent.parent / "examples" / "02_mnet_classifier.py"
+EXAMPLE = Path(__file__).parent.parent.parent / "examples" / "04_gaussian_filter.py"
 
 
 def test_runs(tmp_path):
@@ -13,8 +13,8 @@ def test_runs(tmp_path):
         cwd=tmp_path,
         capture_output=True,
         text=True,
-        timeout=180,
+        timeout=60,
     )
     assert r.returncode == 0, (
-        f"02_mnet_classifier.py failed:\nSTDOUT:\n{r.stdout}\nSTDERR:\n{r.stderr}"
+        f"04_gaussian_filter.py failed:\nSTDOUT:\n{r.stdout}\nSTDERR:\n{r.stderr}"
     )
