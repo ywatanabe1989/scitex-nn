@@ -72,6 +72,12 @@ model = nn.BNet(...)
 
 </details>
 
+## Gallery
+
+| Example | Output |
+|---|---|
+| [`examples/01_hilbert.py`](examples/01_hilbert.py) — `Hilbert` vs `scipy.signal.hilbert` on a Gaussian-windowed chirp (10→40 Hz) | ![Hilbert vs scipy](examples/_assets/01_hilbert.png) |
+
 <details>
 <summary><strong>Skills — for AI Agent Discovery</strong></summary>
 

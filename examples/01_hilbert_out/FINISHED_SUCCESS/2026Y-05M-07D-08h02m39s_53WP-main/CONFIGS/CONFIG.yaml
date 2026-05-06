@@ -1,0 +1,14 @@
+ID: 2026Y-05M-07D-08h02m39s_53WP
+PID: 1508986
+START_DATETIME: 2026-05-07 08:02:39.141233
+FILE: /home/ywatanabe/proj/scitex-nn/examples/01_hilbert.py
+SDIR_OUT: /home/ywatanabe/proj/scitex-nn/examples/01_hilbert_out
+SDIR_RUN: 
+    /home/ywatanabe/proj/scitex-nn/examples/01_hilbert_out/RUNNING/2026Y-05M-07D-08h02m39s_53WP-main
+ARGS:
+    freq: 10.0
+    fs: 512
+    t_sec: 1.0
+EXIT_STATUS: 0
+END_DATETIME: 2026-05-07 08:02:50.338780
+RUN_DURATION: 00:00:11
