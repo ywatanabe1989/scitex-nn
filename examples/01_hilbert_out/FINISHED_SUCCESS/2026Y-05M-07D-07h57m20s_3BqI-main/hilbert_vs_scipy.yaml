@@ -1,6 +1,6 @@
 figrecipe: '1.0'
-id: fig_368bfd95
-created: '2026-05-07T07:52:42.426539'
+id: fig_f545d213
+created: '2026-05-07T07:57:20.102462'
 matplotlib_version: 3.10.8
 figure:
   figsize:
@@ -166,7 +166,7 @@ axes:
             - 0
             - 0
           clip_on: false
-        timestamp: '2026-05-07T07:52:42.574322'
+        timestamp: '2026-05-07T07:57:20.187532'
     decorations:
       - id: set_ylabel_000
         function: set_ylabel
@@ -174,19 +174,19 @@ axes:
           - name: ylabel
             data: signal
         kwargs: {}
-        timestamp: '2026-05-07T07:52:42.591508'
+        timestamp: '2026-05-07T07:57:20.196026'
       - id: set_title_000
         function: set_title
         args:
           - name: label
             data: 10.0 Hz sine, fs=512
         kwargs: {}
-        timestamp: '2026-05-07T07:52:42.612211'
+        timestamp: '2026-05-07T07:57:20.204642'
     bbox:
       - 0.10166656436798098
       - 0.04109020231846019
       - 0.894166435632019
-      - 0.28174383206428627
+      - 0.2806130533160407
   ax_1_0:
     calls:
       - id: plot_001
@@ -206,7 +206,7 @@ axes:
             - 0.0
             - 0.5019607843137255
             - 0.7529411764705882
-        timestamp: '2026-05-07T07:52:42.613991'
+        timestamp: '2026-05-07T07:57:20.205439'
       - id: plot_002
         function: plot
         args:
@@ -226,7 +226,7 @@ axes:
             - 1.0
             - 0.27450980392156865
             - 0.19607843137254902
-        timestamp: '2026-05-07T07:52:42.616292'
+        timestamp: '2026-05-07T07:57:20.206713'
     decorations:
       - id: axhline_000
         function: axhline
@@ -239,28 +239,38 @@ axes:
             - 0.5019607843137255
             - 0.5019607843137255
           ls: ':'
-          label: expected envelope
+          label: expected (=1.0)
           clip_on: false
-        timestamp: '2026-05-07T07:52:42.640203'
+        timestamp: '2026-05-07T07:57:20.218770'
+      - id: set_ylim_000
+        function: set_ylim
+        args:
+          - name: bottom
+            data: 0.0
+          - name: top
+            data: 1.5
+        kwargs: {}
+        timestamp: '2026-05-07T07:57:20.226910'
       - id: legend_000
         function: legend
         args: []
-        kwargs: {}
-        timestamp: '2026-05-07T07:52:42.660248'
+        kwargs:
+          loc: lower right
+        timestamp: '2026-05-07T07:57:20.237546'
       - id: set_ylabel_001
         function: set_ylabel
         args:
           - name: ylabel
             data: envelope
         kwargs: {}
-        timestamp: '2026-05-07T07:52:42.660542'
+        timestamp: '2026-05-07T07:57:20.237730'
       - id: set_title_001
         function: set_title
         args:
           - name: label
-            data: Amplitude envelope
+            data: Amplitude envelope (both lines flat at 1.0)
         kwargs: {}
-        timestamp: '2026-05-07T07:52:42.660847'
+        timestamp: '2026-05-07T07:57:20.237906'
   ax_2_0:
     calls:
       - id: plot_003
@@ -280,7 +290,7 @@ axes:
             - 0.0
             - 0.5019607843137255
             - 0.7529411764705882
-        timestamp: '2026-05-07T07:52:42.662169'
+        timestamp: '2026-05-07T07:57:20.238737'
       - id: plot_004
         function: plot
         args:
@@ -300,7 +310,7 @@ axes:
             - 1.0
             - 0.27450980392156865
             - 0.19607843137254902
-        timestamp: '2026-05-07T07:52:42.663440'
+        timestamp: '2026-05-07T07:57:20.239477'
     decorations:
       - id: set_xlabel_000
         function: set_xlabel
@@ -308,23 +318,24 @@ axes:
           - name: xlabel
             data: time [s]
         kwargs: {}
-        timestamp: '2026-05-07T07:52:42.681052'
+        timestamp: '2026-05-07T07:57:20.248223'
       - id: set_ylabel_002
         function: set_ylabel
         args:
           - name: ylabel
             data: phase [rad]
         kwargs: {}
-        timestamp: '2026-05-07T07:52:42.681300'
+        timestamp: '2026-05-07T07:57:20.248442'
       - id: set_title_002
         function: set_title
         args:
           - name: label
-            data: Phase
+            data: Phase (overlapping)
         kwargs: {}
-        timestamp: '2026-05-07T07:52:42.681595'
+        timestamp: '2026-05-07T07:57:20.248619'
       - id: legend_001
         function: legend
         args: []
-        kwargs: {}
-        timestamp: '2026-05-07T07:52:42.685539'
+        kwargs:
+          loc: lower right
+        timestamp: '2026-05-07T07:57:20.250462'

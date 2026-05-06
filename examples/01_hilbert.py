@@ -58,15 +58,18 @@ def main(
     fig, axes = plt.subplots(nrows=3, ncols=1, sharex=True, figsize=(10, 8))
     axes[0].plot(t, sig_np, color="black")
     axes[0].set_xyt(None, "signal", f"{freq} Hz sine, fs={fs}")
+
     axes[1].plot(t, amp_scipy, label="scipy.signal.hilbert", lw=2)
     axes[1].plot(t, amp_stx, "--", label="scitex_nn.Hilbert", lw=2)
-    axes[1].axhline(1.0, color="grey", ls=":", label="expected envelope")
-    axes[1].legend()
-    axes[1].set_xyt(None, "envelope", "Amplitude envelope")
+    axes[1].axhline(1.0, color="grey", ls=":", label="expected (=1.0)")
+    axes[1].set_ylim(0.0, 1.5)
+    axes[1].legend(loc="lower right")
+    axes[1].set_xyt(None, "envelope", "Amplitude envelope (both lines flat at 1.0)")
+
     axes[2].plot(t, pha_scipy, label="scipy phase", lw=1)
     axes[2].plot(t, pha_stx, "--", label="scitex_nn phase", lw=1)
-    axes[2].set_xyt("time [s]", "phase [rad]", "Phase")
-    axes[2].legend()
+    axes[2].set_xyt("time [s]", "phase [rad]", "Phase (overlapping)")
+    axes[2].legend(loc="lower right")
 
     stx.io.save(fig, OUT / "hilbert_vs_scipy.png")
     return 0
