@@ -7,9 +7,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
-import scitex_nn
-from scitex_decorators import numpy_fn, torch_fn
+from scitex_decorators import torch_fn
 
 
 class Spectrogram(nn.Module):
@@ -44,7 +42,9 @@ class Spectrogram(nn.Module):
         - spectrograms (torch.Tensor): The computed spectrograms for each channel.
         """
 
-        x = scitex.dsp.ensure_3d(x)
+        from ._vendor_dsp_utils._ensure_3d import ensure_3d as _ensure_3d
+
+        x = _ensure_3d(x)
 
         batch_size, n_chs, seq_len = x.shape
         spectrograms = []
@@ -137,10 +137,9 @@ def spectrograms(x, fs, dj=0.125, cuda=False):
 
 
 if __name__ == "__main__":
+    import scitex
     import seaborn as sns
     import torchaudio
-
-    import scitex
 
     fs = 1024  # 128
     t_sec = 10
