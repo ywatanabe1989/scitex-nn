@@ -1,11 +1,11 @@
 figrecipe: '1.0'
-id: fig_1bb6924c
-created: '2026-05-07T08:02:42.170526'
+id: fig_3e1e2df5
+created: '2026-05-07T08:06:29.606319'
 matplotlib_version: 3.10.8
 figure:
   figsize:
-    - 10
-    - 8
+    - 7.480314960629921
+    - 6.968503937007874
   dpi: 300
   style:
     axes_width_mm: 40
@@ -148,6 +148,19 @@ figure:
     fontweight: bold
     color: "black"
     kwargs: {}
+  mm_layout:
+    axes_width_mm: 160
+    axes_height_mm: 40
+    margin_left_mm: 20
+    margin_right_mm: 10
+    margin_bottom_mm: 15
+    margin_top_mm: 12
+    space_w_mm: 10
+    space_h_mm: 15
+    crop_margin_left_mm: 1
+    crop_margin_right_mm: 1
+    crop_margin_bottom_mm: 1
+    crop_margin_top_mm: 1
 axes:
   ax_0_0:
     calls:
@@ -167,7 +180,7 @@ axes:
             - 0
           label: signal
           clip_on: false
-        timestamp: '2026-05-07T08:02:42.264806'
+        timestamp: '2026-05-07T08:06:29.695225'
       - id: plot_001
         function: plot
         args:
@@ -176,42 +189,51 @@ axes:
             dtype: float64
           - name: y
             data: hilbert_vs_scipy_data/plot_001_y.csv
-            dtype: float64
+            dtype: float32
         kwargs:
           color:
             - 0.5019607843137255
             - 0.5019607843137255
             - 0.5019607843137255
           ls: ':'
-          label: input envelope (Gaussian)
+          label: 'input envelope: 1 + 0.5·sin(2π·3·t)'
           clip_on: false
-        timestamp: '2026-05-07T08:02:42.265977'
+        timestamp: '2026-05-07T08:06:29.696133'
     decorations:
+      - id: set_ylim_000
+        function: set_ylim
+        args:
+          - name: bottom
+            data: -1.6500000000000001
+          - name: top
+            data: 1.6500000000000001
+        kwargs: {}
+        timestamp: '2026-05-07T08:06:29.706729'
       - id: legend_000
         function: legend
         args: []
         kwargs:
           loc: upper right
-        timestamp: '2026-05-07T08:02:42.278952'
+        timestamp: '2026-05-07T08:06:29.720805'
       - id: set_ylabel_000
         function: set_ylabel
         args:
           - name: ylabel
             data: signal
         kwargs: {}
-        timestamp: '2026-05-07T08:02:42.289836'
+        timestamp: '2026-05-07T08:06:29.729839'
       - id: set_title_000
         function: set_title
         args:
           - name: label
-            data: 'Gaussian-windowed chirp: 10→40 Hz over 1.0s, fs=512'
+            data: Chirp 20→100 Hz over 1.0s, fs=400 (scipy-docs example)
         kwargs: {}
-        timestamp: '2026-05-07T08:02:42.298890'
+        timestamp: '2026-05-07T08:06:29.740410'
     bbox:
-      - 0.10166656436798098
-      - 0.04109020231846019
-      - 0.894166435632019
-      - 0.28174383206428627
+      - 0.10529013437066934
+      - 0.04717248085373509
+      - 0.889139244576699
+      - 0.2764569850734626
   ax_1_0:
     calls:
       - id: plot_002
@@ -231,7 +253,7 @@ axes:
             - 0.0
             - 0.5019607843137255
             - 0.7529411764705882
-        timestamp: '2026-05-07T08:02:42.299713'
+        timestamp: '2026-05-07T08:06:29.741458'
       - id: plot_003
         function: plot
         args:
@@ -251,30 +273,7 @@ axes:
             - 1.0
             - 0.27450980392156865
             - 0.19607843137254902
-        timestamp: '2026-05-07T08:02:42.301477'
-    decorations:
-      - id: legend_001
-        function: legend
-        args: []
-        kwargs:
-          loc: lower right
-        timestamp: '2026-05-07T08:02:42.303726'
-      - id: set_ylabel_001
-        function: set_ylabel
-        args:
-          - name: ylabel
-            data: envelope
-        kwargs: {}
-        timestamp: '2026-05-07T08:02:42.303881'
-      - id: set_title_001
-        function: set_title
-        args:
-          - name: label
-            data: Amplitude envelope (max|diff| = 4.77e-07)
-        kwargs: {}
-        timestamp: '2026-05-07T08:02:42.304067'
-  ax_2_0:
-    calls:
+        timestamp: '2026-05-07T08:06:29.742881'
       - id: plot_004
         function: plot
         args:
@@ -285,14 +284,46 @@ axes:
             data: hilbert_vs_scipy_data/plot_004_y.csv
             dtype: float32
         kwargs:
-          label: scipy phase
-          lw: 1
-          clip_on: false
           color:
-            - 0.0
             - 0.5019607843137255
-            - 0.7529411764705882
-        timestamp: '2026-05-07T08:02:42.304833'
+            - 0.5019607843137255
+            - 0.5019607843137255
+          ls: ':'
+          label: input envelope
+          clip_on: false
+        timestamp: '2026-05-07T08:06:29.743773'
+    decorations:
+      - id: set_ylim_001
+        function: set_ylim
+        args:
+          - name: bottom
+            data: -1.6500000000000001
+          - name: top
+            data: 1.6500000000000001
+        kwargs: {}
+        timestamp: '2026-05-07T08:06:29.745440'
+      - id: legend_001
+        function: legend
+        args: []
+        kwargs:
+          loc: lower right
+        timestamp: '2026-05-07T08:06:29.748675'
+      - id: set_ylabel_001
+        function: set_ylabel
+        args:
+          - name: ylabel
+            data: envelope
+        kwargs: {}
+        timestamp: '2026-05-07T08:06:29.748915'
+      - id: set_title_001
+        function: set_title
+        args:
+          - name: label
+            data: Recovered envelope (max|diff vs scipy| = 5.96e-07)
+        kwargs: {}
+        timestamp: '2026-05-07T08:06:29.749138'
+  ax_2_0:
+    calls:
       - id: plot_005
         function: plot
         args:
@@ -301,6 +332,24 @@ axes:
             dtype: float64
           - name: y
             data: hilbert_vs_scipy_data/plot_005_y.csv
+            dtype: float32
+        kwargs:
+          label: scipy phase
+          lw: 1
+          clip_on: false
+          color:
+            - 0.0
+            - 0.5019607843137255
+            - 0.7529411764705882
+        timestamp: '2026-05-07T08:06:29.750107'
+      - id: plot_006
+        function: plot
+        args:
+          - name: x
+            data: hilbert_vs_scipy_data/plot_006_x.csv
+            dtype: float64
+          - name: y
+            data: hilbert_vs_scipy_data/plot_006_y.csv
             dtype: float32
           - name: fmt
             data: --
@@ -312,7 +361,7 @@ axes:
             - 1.0
             - 0.27450980392156865
             - 0.19607843137254902
-        timestamp: '2026-05-07T08:02:42.305522'
+        timestamp: '2026-05-07T08:06:29.751073'
     decorations:
       - id: set_xlabel_000
         function: set_xlabel
@@ -320,24 +369,24 @@ axes:
           - name: xlabel
             data: time [s]
         kwargs: {}
-        timestamp: '2026-05-07T08:02:42.316496'
+        timestamp: '2026-05-07T08:06:29.763955'
       - id: set_ylabel_002
         function: set_ylabel
         args:
           - name: ylabel
             data: phase [rad]
         kwargs: {}
-        timestamp: '2026-05-07T08:02:42.316699'
+        timestamp: '2026-05-07T08:06:29.764244'
       - id: set_title_002
         function: set_title
         args:
           - name: label
             data: Phase (overlapping)
         kwargs: {}
-        timestamp: '2026-05-07T08:02:42.316890'
+        timestamp: '2026-05-07T08:06:29.764488'
       - id: legend_002
         function: legend
         args: []
         kwargs:
           loc: lower right
-        timestamp: '2026-05-07T08:02:42.320137'
+        timestamp: '2026-05-07T08:06:29.767566'

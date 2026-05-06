@@ -1,0 +1,17 @@
+ID: 2026Y-05M-07D-08h06m29s_Xhu0
+PID: 1524278
+START_DATETIME: 2026-05-07 08:06:29.086142
+FILE: /home/ywatanabe/proj/scitex-nn/examples/01_hilbert.py
+SDIR_OUT: /home/ywatanabe/proj/scitex-nn/examples/01_hilbert_out
+SDIR_RUN: 
+    /home/ywatanabe/proj/scitex-nn/examples/01_hilbert_out/RUNNING/2026Y-05M-07D-08h06m29s_Xhu0-main
+ARGS:
+    duration: 1.0
+    fs: 400
+    f0: 20.0
+    f1: 100.0
+    am_freq: 3.0
+    am_depth: 0.5
+EXIT_STATUS: 0
+END_DATETIME: 2026-05-07 08:06:39.619054
+RUN_DURATION: 00:00:10
