@@ -29,7 +29,37 @@ try:
     TORCHAUDIO_AVAILABLE = True
 except ImportError:
     TORCHAUDIO_AVAILABLE = False
-    sinc_impulse_response = None
+
+    def sinc_impulse_response(cutoff, window_size):
+        """Hann-windowed sinc lowpass impulse response.
+
+        Drop-in replacement for ``torchaudio.prototype.functional.
+        sinc_impulse_response`` (removed in torchaudio 2.x). ``cutoff``
+        is a tensor of normalised cutoff frequencies (each in ``[0, 1]``,
+        i.e. fraction of Nyquist); the returned tensor has shape
+        ``(*cutoff.shape, window_size)``.
+        """
+        if not TORCH_AVAILABLE:
+            raise ImportError(
+                "PyTorch is not installed. Please install with: pip install torch"
+            )
+        n = (
+            torch.arange(window_size, device=cutoff.device, dtype=cutoff.dtype)
+            - window_size // 2
+        )
+        cutoff_b = cutoff.unsqueeze(-1)
+        ir = 2 * cutoff_b * torch.sinc(2 * cutoff_b * n)
+        denom = max(window_size - 1, 1)
+        window = 0.5 * (
+            1
+            - torch.cos(
+                2
+                * torch.pi
+                * torch.arange(window_size, device=cutoff.device, dtype=cutoff.dtype)
+                / denom
+            )
+        )
+        return ir * window
 
 
 def _check_torch():
@@ -40,11 +70,9 @@ def _check_torch():
 
 
 def _check_sinc_available():
-    if sinc_impulse_response is None:
-        raise ImportError(
-            "sinc_impulse_response requires torchaudio.prototype.functional. "
-            "Install torchaudio with: pip install torchaudio"
-        )
+    # Now always available: real torchaudio.prototype on legacy installs,
+    # or the local Hann-windowed sinc fallback above on torchaudio 2.x.
+    return None
 
 
 # Functions

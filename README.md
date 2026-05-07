@@ -82,6 +82,7 @@ model = nn.BNet(...)
 | [`examples/04_gaussian_filter.py`](examples/04_gaussian_filter.py) — `GaussianFilter` smoothing at three sigmas vs the clean reference | ![GaussianFilter](examples/_assets/04_gaussian_filter.png) |
 | [`examples/05_filter_bank.py`](examples/05_filter_bank.py) — Low/High/Band/BandStop frequency responses on one panel | ![Filter bank](examples/_assets/05_filter_bank.png) |
 | [`examples/06_psd.py`](examples/06_psd.py) — `PSD` vs `scipy.signal.welch` on sine, two-tone, and 1/f noise | ![PSD](examples/_assets/06_psd.png) |
+| [`examples/06b_differentiable_bandpass.py`](examples/06b_differentiable_bandpass.py) — `DifferentiableBandPassFilter` with learnable band centres | ![DifferentiableBandPassFilter](examples/_assets/06b_differentiable_bandpass.png) |
 | [`examples/07_spectrogram.py`](examples/07_spectrogram.py) — STFT magnitude of a 5→60 Hz chirp, instantaneous-frequency overlay | ![Spectrogram](examples/_assets/07_spectrogram.png) |
 | [`examples/08_wavelet.py`](examples/08_wavelet.py) — Morlet CWT of the same chirp; adaptive time-frequency resolution | ![Wavelet](examples/_assets/08_wavelet.png) |
 | [`examples/09_modulation_index.py`](examples/09_modulation_index.py) — Tort 2010 KL-MI on coupled vs uncoupled theta-gamma | ![ModulationIndex](examples/_assets/09_modulation_index.png) |
