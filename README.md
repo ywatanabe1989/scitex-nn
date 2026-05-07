@@ -104,6 +104,61 @@ scitex-dev skills export --package scitex-nn  # Export to Claude Code
 
 </details>
 
+## Demo
+
+The shortest end-to-end demo: differentiable Hilbert envelope on a
+multi-channel signal, axis-wise dropout for SSL pre-training.
+
+```python
+import torch
+import scitex_nn
+
+x = torch.randn(8, 19, 1024)              # (batch, channels, samples)
+
+env = scitex_nn.Hilbert(seq_len=1024)(x)  # analytic signal: (..., 2)
+phase, amplitude = env[..., 0], env[..., 1]
+
+drop = scitex_nn.AxiswiseDropout(dropout_prob=0.5, dim=1).train()
+y = drop(x)                               # whole channels zeroed
+```
+
+![Hilbert vs scipy demo](examples/_assets/01_hilbert.png)
+
+For runnable examples covering every public class, see the [Gallery](#gallery)
+above (each tile links to a self-contained `examples/<NN>_*.py`) and
+`examples/00_run_all.sh` to dispatch the full set.
+
+## Architecture
+
+`scitex-nn` is a flat collection of `nn.Module`s grouped by what they do
+to a `(batch, channels, samples)` tensor:
+
+```
+scitex_nn/
+├── _Filters.py            # FIR-init bandpass / lowpass / highpass / bandstop
+├── _GaussianFilter.py     # Gaussian smoothing (kernel = 6·sigma)
+├── _Hilbert.py            # analytic-signal extraction (FFT-based)
+├── _PSD.py                # power spectral density
+├── _Spectrogram.py        # STFT magnitude per channel
+├── _Wavelet.py            # Morlet CWT
+├── _ModulationIndex.py    # Tort 2010 KL-MI
+├── _PAC.py                # phase-amplitude coupling pipeline
+├── _AxiswiseDropout.py    # axis-wise dropout (channel / time / feature)
+├── _DropoutChannels.py    # whole-channel dropout
+├── _ChannelGainChanger.py # softmax-weighted per-channel gain
+├── _FreqGainChanger.py    # softmax-weighted per-band gain (julius)
+├── _SwapChannels.py       # random channel permutation
+├── _SpatialAttention.py   # 1×1 conv channel attention
+├── _ResNet1D.py           # 1D ResNet backbone
+├── _MNet_1000.py          # 4-stage Conv2d EEG/MEG classifier
+├── _BNet.py / _BNet_Res.py# B-shaped multi-modality wrapper
+└── _vendor_dsp_utils/     # vendored helpers (no scitex-dsp dep)
+```
+
+Modules compose as ordinary `nn.Sequential`. The signal-processing
+layers operate on the last (time) axis; channel-aware augmentations
+operate on `dim=1`.
+
 ## Available Modules
 
 | Category | Modules |
