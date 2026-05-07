@@ -8,3 +8,8 @@ for f in 0[1-9]_*.py 1[0-9]_*.py; do
     echo "==> $f"
     python "$f"
 done
+for nb in 0[1-9]_*.ipynb 1[0-9]_*.ipynb; do
+    [ -f "$nb" ] || continue
+    echo "==> $nb"
+    jupyter nbconvert --to notebook --execute --inplace "$nb"
+done

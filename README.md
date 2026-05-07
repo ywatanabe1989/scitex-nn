@@ -89,6 +89,7 @@ model = nn.BNet(...)
 | [`examples/11_spatial_attention.py`](examples/11_spatial_attention.py) — channel-wise gain learned by `SpatialAttention` | ![SpatialAttention](examples/_assets/11_spatial_attention.png) |
 | [`examples/12_resnet1d.py`](examples/12_resnet1d.py) — `ResNet1D` training-loss curve on a 3-class synthetic problem | ![ResNet1D](examples/_assets/12_resnet1d.png) |
 | [`examples/13_freq_gain_changer.py`](examples/13_freq_gain_changer.py) — random per-band frequency-domain gain on white noise | ![FreqGainChanger](examples/_assets/13_freq_gain_changer.png) |
+| [`examples/14_tour.ipynb`](examples/14_tour.ipynb) — end-to-end notebook tour (Hilbert → filters → Spectrogram/Wavelet → AxiswiseDropout); cell outputs render inline on GitHub | _open the notebook_ |
 | [`examples/15_mnet_classifier.py`](examples/15_mnet_classifier.py) — `MNet1000` forward + backward + per-parameter gradient norms | ![MNet1000](examples/_assets/15_mnet_classifier.png) |
 
 <details>
