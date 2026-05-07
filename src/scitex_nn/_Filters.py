@@ -349,7 +349,7 @@ class GaussianFilter(BaseFilter1D):
         kernel /= kernel.sum()
         kernels = kernel.unsqueeze(0)  # n_filters = 1
         kernels = ensure_even_len(kernels)
-        return torch.tensor(kernels)
+        return kernels.detach().clone()
 
 
 class DifferentiableBandPassFilter(BaseFilter1D):
