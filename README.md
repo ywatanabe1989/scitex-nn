@@ -84,6 +84,10 @@ model = nn.BNet(...)
 | [`examples/06_psd.py`](examples/06_psd.py) — `PSD` vs `scipy.signal.welch` on sine, two-tone, and 1/f noise | ![PSD](examples/_assets/06_psd.png) |
 | [`examples/07_spectrogram.py`](examples/07_spectrogram.py) — STFT magnitude of a 5→60 Hz chirp, instantaneous-frequency overlay | ![Spectrogram](examples/_assets/07_spectrogram.png) |
 | [`examples/08_wavelet.py`](examples/08_wavelet.py) — Morlet CWT of the same chirp; adaptive time-frequency resolution | ![Wavelet](examples/_assets/08_wavelet.png) |
+| [`examples/09_modulation_index.py`](examples/09_modulation_index.py) — Tort 2010 KL-MI on coupled vs uncoupled theta-gamma | ![ModulationIndex](examples/_assets/09_modulation_index.png) |
+| [`examples/10_pac.py`](examples/10_pac.py) — `PAC` end-to-end comodulogram on synthetic theta-gamma | ![PAC](examples/_assets/10_pac.png) |
+| [`examples/11_spatial_attention.py`](examples/11_spatial_attention.py) — channel-wise gain learned by `SpatialAttention` | ![SpatialAttention](examples/_assets/11_spatial_attention.png) |
+| [`examples/12_resnet1d.py`](examples/12_resnet1d.py) — `ResNet1D` training-loss curve on a 3-class synthetic problem | ![ResNet1D](examples/_assets/12_resnet1d.png) |
 
 <details>
 <summary><strong>Skills — for AI Agent Discovery</strong></summary>

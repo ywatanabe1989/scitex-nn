@@ -27,7 +27,7 @@ class Wavelet(nn.Module):
 
     def forward(self, x):
         """Apply the 2D filter (n_filts, kernel_size) to input signal x with shape: (batch_size, n_chs, seq_len)"""
-        from scitex_dsp._ensure_3d import ensure_3d as _ensure_3d
+        from ._vendor_dsp_utils._ensure_3d import ensure_3d as _ensure_3d
 
         x = _ensure_3d(x).to(self.dummy.device)
         seq_len = x.shape[-1]
