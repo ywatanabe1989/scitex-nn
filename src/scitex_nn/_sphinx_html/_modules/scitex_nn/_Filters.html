@@ -472,7 +472,7 @@
         <span class="n">kernel</span> <span class="o">/=</span> <span class="n">kernel</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
         <span class="n">kernels</span> <span class="o">=</span> <span class="n">kernel</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># n_filters = 1</span>
         <span class="n">kernels</span> <span class="o">=</span> <span class="n">ensure_even_len</span><span class="p">(</span><span class="n">kernels</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">kernels</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">kernels</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span></div>
 </div>
 
 
