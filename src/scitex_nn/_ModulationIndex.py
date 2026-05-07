@@ -126,6 +126,14 @@ class ModulationIndex(nn.Module):
             + (amp_probs * (amp_probs + epsilon).log()).sum(dim=-1)
         ) / torch.log(torch.tensor(self.n_bins, device=device))
 
+        # Degenerate case: all amplitudes are 0, so amp_probs sums to
+        # 0 instead of the usual 1. The formula above then collapses
+        # to log(N)/log(N) = 1 (max coupling), which is the *opposite*
+        # of what zero amplitude should mean. Force MI = 0 there.
+        amp_prob_total = amp_probs.sum(dim=-1)
+        degenerate = amp_prob_total < 0.5
+        MI = torch.where(degenerate, torch.zeros_like(MI), MI)
+
         # Squeeze the n_bin dimension
         MI = MI.squeeze(-1)
 
