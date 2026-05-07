@@ -108,7 +108,7 @@
 <a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.Wavelet.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the 2D filter (n_filts, kernel_size) to input signal x with shape: (batch_size, n_chs, seq_len)&quot;&quot;&quot;</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">scitex_dsp._ensure_3d</span><span class="w"> </span><span class="kn">import</span> <span class="n">ensure_3d</span> <span class="k">as</span> <span class="n">_ensure_3d</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">._vendor_dsp_utils._ensure_3d</span><span class="w"> </span><span class="kn">import</span> <span class="n">ensure_3d</span> <span class="k">as</span> <span class="n">_ensure_3d</span>
 
         <span class="n">x</span> <span class="o">=</span> <span class="n">_ensure_3d</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dummy</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
         <span class="n">seq_len</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
