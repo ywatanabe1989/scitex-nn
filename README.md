@@ -128,6 +128,19 @@ drop = scitex_nn.AxiswiseDropout(dropout_prob=0.5, dim=1).train()
 y = drop(x)                               # whole channels zeroed
 ```
 
+```mermaid
+flowchart LR
+    raw["raw signal<br/>(B, C, T)"]
+    aug["aug<br/>(DropoutChannels,<br/>FreqGainChanger,<br/>...)"]
+    filt["filter<br/>(BandPassFilter,<br/>GaussianFilter,<br/>...)"]
+    spec["spectral<br/>(Hilbert,<br/>Spectrogram,<br/>Wavelet, PSD)"]
+    coup["coupling<br/>(ModulationIndex,<br/>PAC)"]
+    arch["architecture<br/>(ResNet1D,<br/>MNet1000, BNet)"]
+    raw --> aug --> filt --> spec --> coup
+    raw --> arch
+    spec --> arch
+```
+
 For tutorial-style runnable examples covering every public class,
 see the [Gallery](#gallery) below — each is a self-contained
 `examples/<NN>_*.ipynb` whose cell outputs render inline on GitHub.
