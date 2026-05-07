@@ -1,4 +1,4 @@
-"""Smoke test for examples/16_bnet.ipynb — runs jupyter nbconvert --execute."""
+"""Smoke test for examples/09_wavelet.ipynb — runs jupyter nbconvert --execute."""
 
 from __future__ import annotations
 
@@ -10,11 +10,11 @@ import pytest
 
 NOTEBOOK = (
     Path(__file__).resolve().parent.parent.parent
-    / "examples" / "16_bnet.ipynb"
+    / "examples" / "09_wavelet.ipynb"
 )
 
 
-def test_16_bnet(tmp_path: Path) -> None:
+def test_09_wavelet(tmp_path: Path) -> None:
     assert NOTEBOOK.exists(), f"missing example: {NOTEBOOK}"
     if shutil.which("jupyter") is None:
         pytest.skip("jupyter not installed")
@@ -27,5 +27,5 @@ def test_16_bnet(tmp_path: Path) -> None:
         cwd=tmp_path, capture_output=True, text=True, timeout=300,
     )
     assert r.returncode == 0, (
-        f"16_bnet.ipynb failed:\nSTDOUT:\n{r.stdout}\nSTDERR:\n{r.stderr}"
+        f"09_wavelet.ipynb failed:\nSTDOUT:\n{r.stdout}\nSTDERR:\n{r.stderr}"
     )

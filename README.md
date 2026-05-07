@@ -74,26 +74,28 @@ model = nn.BNet(...)
 
 ## Gallery
 
-| Example | Output |
-|---|---|
-| [`examples/01_hilbert.py`](examples/01_hilbert.py) — `Hilbert` vs `scipy.signal.hilbert` on a Gaussian-windowed chirp (10→40 Hz) | ![Hilbert vs scipy](examples/_assets/01_hilbert.png) |
-| [`examples/02_axiswise_dropout.py`](examples/02_axiswise_dropout.py) — `AxiswiseDropout` along `dim=1` (channels) and `dim=2` (time) vs element-wise | ![AxiswiseDropout](examples/_assets/02_axiswise_dropout.png) |
-| [`examples/03_channel_aug.py`](examples/03_channel_aug.py) — `DropoutChannels` / `SwapChannels` / `ChannelGainChanger` side by side | ![Channel augmentations](examples/_assets/03_channel_aug.png) |
-| [`examples/04_gaussian_filter.py`](examples/04_gaussian_filter.py) — `GaussianFilter` smoothing at three sigmas vs the clean reference | ![GaussianFilter](examples/_assets/04_gaussian_filter.png) |
-| [`examples/05_filter_bank.py`](examples/05_filter_bank.py) — Low/High/Band/BandStop frequency responses on one panel | ![Filter bank](examples/_assets/05_filter_bank.png) |
-| [`examples/06_psd.py`](examples/06_psd.py) — `PSD` vs `scipy.signal.welch` on sine, two-tone, and 1/f noise | ![PSD](examples/_assets/06_psd.png) |
-| [`examples/06b_differentiable_bandpass.py`](examples/06b_differentiable_bandpass.py) — `DifferentiableBandPassFilter` with learnable band centres | ![DifferentiableBandPassFilter](examples/_assets/06b_differentiable_bandpass.png) |
-| [`examples/07_spectrogram.py`](examples/07_spectrogram.py) — STFT magnitude of a 5→60 Hz chirp, instantaneous-frequency overlay | ![Spectrogram](examples/_assets/07_spectrogram.png) |
-| [`examples/08_wavelet.py`](examples/08_wavelet.py) — Morlet CWT of the same chirp; adaptive time-frequency resolution | ![Wavelet](examples/_assets/08_wavelet.png) |
-| [`examples/09_modulation_index.py`](examples/09_modulation_index.py) — Tort 2010 KL-MI on coupled vs uncoupled theta-gamma | ![ModulationIndex](examples/_assets/09_modulation_index.png) |
-| [`examples/10_pac.py`](examples/10_pac.py) — `PAC` end-to-end comodulogram on synthetic theta-gamma | ![PAC](examples/_assets/10_pac.png) |
-| [`examples/10b_pac_tour.ipynb`](examples/10b_pac_tour.ipynb) — narrative PAC walk-through (signal → pipeline → comodulogram); inline cell outputs render on GitHub | _open the notebook_ |
-| [`examples/11_spatial_attention.py`](examples/11_spatial_attention.py) — channel-wise gain learned by `SpatialAttention` | ![SpatialAttention](examples/_assets/11_spatial_attention.png) |
-| [`examples/12_resnet1d.py`](examples/12_resnet1d.py) — `ResNet1D` training-loss curve on a 3-class synthetic problem | ![ResNet1D](examples/_assets/12_resnet1d.png) |
-| [`examples/13_freq_gain_changer.py`](examples/13_freq_gain_changer.py) — random per-band frequency-domain gain on white noise | ![FreqGainChanger](examples/_assets/13_freq_gain_changer.png) |
-| [`examples/14_tour.ipynb`](examples/14_tour.ipynb) — end-to-end notebook tour (Hilbert → filters → Spectrogram/Wavelet → AxiswiseDropout); cell outputs render inline on GitHub | _open the notebook_ |
-| [`examples/15_mnet_classifier.py`](examples/15_mnet_classifier.py) — `MNet1000` forward + backward + per-parameter gradient norms | ![MNet1000](examples/_assets/15_mnet_classifier.png) |
-| [`examples/16_bnet.py`](examples/16_bnet.py) — `BNet_v1` 2-modality forward + per-submodule parameter distribution | ![BNet](examples/_assets/16_bnet.png) |
+Each notebook is self-contained — clone, open, run cell-by-cell. Cell
+outputs are baked in (`jupyter nbconvert --execute --inplace`) so
+every figure renders inline on GitHub. Ordered simple → complex.
+
+| # | Notebook | Topic |
+|---|---|---|
+| 01 | [`examples/01_axiswise_dropout.ipynb`](examples/01_axiswise_dropout.ipynb) | `AxiswiseDropout` — drop entire slices along an axis |
+| 02 | [`examples/02_channel_aug.ipynb`](examples/02_channel_aug.ipynb) | `DropoutChannels` / `SwapChannels` / `ChannelGainChanger` |
+| 03 | [`examples/03_gaussian_filter.ipynb`](examples/03_gaussian_filter.ipynb) | `GaussianFilter` — temporal smoothing at three sigmas |
+| 04 | [`examples/04_filter_bank.ipynb`](examples/04_filter_bank.ipynb) | `LowPass` / `HighPass` / `BandPass` / `BandStop` frequency response |
+| 05 | [`examples/05_psd.ipynb`](examples/05_psd.ipynb) | `PSD` vs `scipy.signal.welch` on sine, two-tone, 1/f noise |
+| 06 | [`examples/06_freq_gain_changer.ipynb`](examples/06_freq_gain_changer.ipynb) | `FreqGainChanger` — softmax-weighted random per-band gain |
+| 07 | [`examples/07_hilbert.ipynb`](examples/07_hilbert.ipynb) | `Hilbert` vs `scipy.signal.hilbert` on a chirp + AM signal |
+| 08 | [`examples/08_spectrogram.ipynb`](examples/08_spectrogram.ipynb) | `Spectrogram` STFT magnitude on a 5→60 Hz chirp |
+| 09 | [`examples/09_wavelet.ipynb`](examples/09_wavelet.ipynb) | `Wavelet` Morlet CWT — adaptive time-frequency resolution |
+| 10 | [`examples/10_modulation_index.ipynb`](examples/10_modulation_index.ipynb) | `ModulationIndex` (Tort 2010) on coupled vs uncoupled theta-gamma |
+| 11 | [`examples/11_pac.ipynb`](examples/11_pac.ipynb) | `PAC` end-to-end comodulogram on synthetic theta-gamma |
+| 12 | [`examples/12_differentiable_bandpass.ipynb`](examples/12_differentiable_bandpass.ipynb) | `DifferentiableBandPassFilter` — learnable band centres |
+| 13 | [`examples/13_spatial_attention.ipynb`](examples/13_spatial_attention.ipynb) | `SpatialAttention` — per-channel gain from a 1×1 conv |
+| 14 | [`examples/14_resnet1d.ipynb`](examples/14_resnet1d.ipynb) | `ResNet1D` — tiny train loop on synthetic 1D data |
+| 15 | [`examples/15_mnet1000.ipynb`](examples/15_mnet1000.ipynb) | `MNet1000` forward + backward + per-parameter gradient norms |
+| 16 | [`examples/16_bnet.ipynb`](examples/16_bnet.ipynb) | `BNet_v1` 2-modality forward + per-submodule parameter distribution |
 
 <details>
 <summary><strong>Skills — for AI Agent Discovery</strong></summary>
@@ -126,11 +128,10 @@ drop = scitex_nn.AxiswiseDropout(dropout_prob=0.5, dim=1).train()
 y = drop(x)                               # whole channels zeroed
 ```
 
-![Hilbert vs scipy demo](examples/_assets/01_hilbert.png)
-
-For runnable examples covering every public class, see the [Gallery](#gallery)
-above (each tile links to a self-contained `examples/<NN>_*.py`) and
-`examples/00_run_all.sh` to dispatch the full set.
+For tutorial-style runnable examples covering every public class,
+see the [Gallery](#gallery) below — each is a self-contained
+`examples/<NN>_*.ipynb` whose cell outputs render inline on GitHub.
+`examples/00_run_all.sh` re-executes every notebook in place.
 
 ## Architecture
 
