@@ -5,14 +5,14 @@
 import torch
 import torch.nn as nn
 
-from ._ChannelGainChanger import ChannelGainChanger
-from ._DropoutChannels import DropoutChannels
-from ._FreqGainChanger import FreqGainChanger
+from ._aug import (
+    ChannelGainChanger,
+    DropoutChannels,
+    FreqGainChanger,
+    SwapChannels,
+)
 from ._MNet_1000 import MNet_1000
-
-# Import specific nn modules to avoid circular imports
 from ._SpatialAttention import SpatialAttention
-from ._SwapChannels import SwapChannels
 
 
 class BHead(nn.Module):

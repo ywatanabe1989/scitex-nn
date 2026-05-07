@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 try:
-    from importlib.metadata import version as _v, PackageNotFoundError
+    from importlib.metadata import PackageNotFoundError
+    from importlib.metadata import version as _v
+
     try:
         __version__ = _v("scitex-nn")
     except PackageNotFoundError:
@@ -13,15 +15,19 @@ try:
 except ImportError:  # pragma: no cover — only on ancient Pythons
     __version__ = "0.0.0+local"
 
-from ._AxiswiseDropout import AxiswiseDropout
+from ._aug import (
+    AxiswiseDropout,
+    ChannelGainChanger,
+    DropoutChannels,
+    FreqGainChanger,
+    SwapChannels,
+)
 from ._BNet import BHead as BHead_v1
 from ._BNet import BNet as BNet_v1
 from ._BNet import BNet_config as BNet_config_v1
 from ._BNet_Res import BHead as BHead_Res
 from ._BNet_Res import BNet as BNet_Res
 from ._BNet_Res import BNet_config as BNet_config_Res
-from ._ChannelGainChanger import ChannelGainChanger
-from ._DropoutChannels import DropoutChannels
 from ._Filters import (
     BandPassFilter,
     BandStopFilter,
@@ -31,9 +37,6 @@ from ._Filters import (
     HighPassFilter,
     LowPassFilter,
 )
-from ._FreqGainChanger import FreqGainChanger
-
-# Removed duplicate GaussianFilter import - already imported from _Filters
 from ._Hilbert import Hilbert
 from ._MNet_1000 import MNet1000, MNet_1000, MNet_config, ReshapeLayer, SwapLayer
 from ._ModulationIndex import ModulationIndex
@@ -42,7 +45,6 @@ from ._PSD import PSD
 from ._ResNet1D import ResNet1D, ResNetBasicBlock
 from ._SpatialAttention import SpatialAttention
 from ._Spectrogram import Spectrogram, my_softmax, normalize, spectrograms, unbias
-from ._SwapChannels import SwapChannels
 from ._TransposeLayer import TransposeLayer
 from ._Wavelet import Wavelet
 

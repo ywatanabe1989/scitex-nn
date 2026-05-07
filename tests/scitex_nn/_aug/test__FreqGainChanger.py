@@ -37,7 +37,7 @@ with patch.dict("sys.modules", {"julius": julius_mock}):
 # during each test and restore the original afterwards. We must not leave
 # the mock in place permanently — other tests in the same session
 # (e.g. test__BNet) rely on the real julius via FreqGainChanger.
-import scitex_nn._FreqGainChanger as _fgc_source_module  # noqa: E402
+import scitex_nn._aug._FreqGainChanger as _fgc_source_module  # noqa: E402
 
 _FGC_SOURCE_MODULES = [_fgc_source_module]
 _ORIGINAL_JULIUS = {m: getattr(m, "julius", None) for m in _FGC_SOURCE_MODULES}
