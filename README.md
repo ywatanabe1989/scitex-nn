@@ -88,6 +88,8 @@ model = nn.BNet(...)
 | [`examples/10_pac.py`](examples/10_pac.py) — `PAC` end-to-end comodulogram on synthetic theta-gamma | ![PAC](examples/_assets/10_pac.png) |
 | [`examples/11_spatial_attention.py`](examples/11_spatial_attention.py) — channel-wise gain learned by `SpatialAttention` | ![SpatialAttention](examples/_assets/11_spatial_attention.png) |
 | [`examples/12_resnet1d.py`](examples/12_resnet1d.py) — `ResNet1D` training-loss curve on a 3-class synthetic problem | ![ResNet1D](examples/_assets/12_resnet1d.png) |
+| [`examples/13_freq_gain_changer.py`](examples/13_freq_gain_changer.py) — random per-band frequency-domain gain on white noise | ![FreqGainChanger](examples/_assets/13_freq_gain_changer.png) |
+| [`examples/15_mnet_classifier.py`](examples/15_mnet_classifier.py) — `MNet1000` forward + backward + per-parameter gradient norms | ![MNet1000](examples/_assets/15_mnet_classifier.png) |
 
 <details>
 <summary><strong>Skills — for AI Agent Discovery</strong></summary>

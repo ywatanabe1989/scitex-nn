@@ -1,15 +1,22 @@
 #!/usr/bin/env python3
-"""MNet1000 classifier — forward pass + gradient sanity check.
+"""MNet1000 — forward + backward + per-parameter gradient norms.
 
-Demonstrates the canonical classification-pipeline shape for
-`scitex_nn.MNet1000`: configure → instantiate → forward → loss →
-backward. Uses random EEG-shape data (B, C, T) so the demo is
-self-contained.
+``scitex_nn.MNet1000`` is a 4-stage Conv2d backbone for multi-channel
+1-second EEG/MEG (≈ 19-270 channels at 1 kHz). The forward path
+unfolds time, applies depth-wise then point-wise 2D conv stacks with
+Mish activations, and projects through two fully-connected layers to
+``len(classes)`` logits.
+
+This example builds a small MNet1000 (capped batch ≤ 8 to fit in
+typical CPU/GPU memory — see HANDOFF "Known traps"), runs one forward
+pass through synthetic EEG-shape data, computes a cross-entropy loss
+with random labels, and plots the resulting per-parameter gradient
+norm so it is visible at a glance which layers receive the most
+gradient signal.
 
 Run:
-    python 02_mnet_classifier.py
-    python 02_mnet_classifier.py --batch 16 --n-chs 19 --seq-len 1000
-    python 02_mnet_classifier.py --help
+    python 15_mnet_classifier.py
+    python 15_mnet_classifier.py --batch 4 --n-chs 19 --seq-len 1000
 """
 
 from pathlib import Path
@@ -23,7 +30,7 @@ import scitex_nn
 
 @stx.session
 def main(
-    batch: int = 8,
+    batch: int = 4,
     n_chs: int = 19,
     seq_len: int = 1000,
     n_fc1: int = 256,
@@ -31,6 +38,8 @@ def main(
     n_classes: int = 4,
     seed: int = 42,
     CONFIG=stx.session.INJECTED,
+    COLORS=stx.session.INJECTED,
+    rngg=stx.session.INJECTED,
     plt=stx.session.INJECTED,
     logger=stx.session.INJECTED,
 ):
@@ -68,14 +77,18 @@ def main(
     logger.info(f"params with grad: {len(grad_norms)} / {n_params}")
     assert all(g > 0 for _, g in grad_norms), "dead gradient detected"
 
-    fig, ax = plt.subplots(figsize=(10, 4))
+    fig, ax = plt.subplots(axes_width_mm=160, axes_height_mm=110)
     names = [n.split(".")[-2:] for n, _ in grad_norms]
     labels = [".".join(n) for n in names]
     values = [g for _, g in grad_norms]
     ax.barh(range(len(values)), values)
     ax.set_yticks(range(len(values)))
     ax.set_yticklabels(labels, fontsize=7)
-    ax.set_xyt("‖grad‖", "parameter", "MNet1000 per-param gradient norms")
+    ax.set_xyt(
+        "‖grad‖",
+        "parameter",
+        f"MNet1000 per-parameter gradient norms ({n_params:,} params)",
+    )
     stx.io.save(fig, OUT / "mnet_gradient_norms.png")
     return 0
 
