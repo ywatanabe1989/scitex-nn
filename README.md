@@ -93,6 +93,7 @@ model = nn.BNet(...)
 | [`examples/13_freq_gain_changer.py`](examples/13_freq_gain_changer.py) — random per-band frequency-domain gain on white noise | ![FreqGainChanger](examples/_assets/13_freq_gain_changer.png) |
 | [`examples/14_tour.ipynb`](examples/14_tour.ipynb) — end-to-end notebook tour (Hilbert → filters → Spectrogram/Wavelet → AxiswiseDropout); cell outputs render inline on GitHub | _open the notebook_ |
 | [`examples/15_mnet_classifier.py`](examples/15_mnet_classifier.py) — `MNet1000` forward + backward + per-parameter gradient norms | ![MNet1000](examples/_assets/15_mnet_classifier.png) |
+| [`examples/16_bnet.py`](examples/16_bnet.py) — `BNet_v1` 2-modality forward + per-submodule parameter distribution | ![BNet](examples/_assets/16_bnet.png) |
 
 <details>
 <summary><strong>Skills — for AI Agent Discovery</strong></summary>
