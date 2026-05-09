@@ -94,7 +94,7 @@ class TestBNet:
 
     def test_bnet_instantiation_basic(self, base_bnet_config, mock_mnet_config):
         """Test basic BNet instantiation."""
-        with patch("scitex.nn._BNet.MNet_1000"):
+        with patch("scitex_nn._BNet.MNet_1000"):
             model = BNet(base_bnet_config, mock_mnet_config)
             assert isinstance(model, nn.Module)
             assert hasattr(model, "heads")
@@ -115,7 +115,7 @@ class TestBNet:
             "n_classes": [10],
         }
 
-        with patch("scitex.nn._BNet.MNet_1000"):
+        with patch("scitex_nn._BNet.MNet_1000"):
             model = BNet(config, mock_mnet_config)
             assert len(model.heads) == 1
             assert len(model.fcs) == 1
@@ -133,7 +133,7 @@ class TestBNet:
             "n_classes": [2, 4, 3, 5, 2],
         }
 
-        with patch("scitex.nn._BNet.MNet_1000"):
+        with patch("scitex_nn._BNet.MNet_1000"):
             model = BNet(config, mock_mnet_config)
             assert len(model.heads) == 5
             assert len(model.fcs) == 5
@@ -142,7 +142,7 @@ class TestBNet:
         """Test forward pass with MEG data (first modality)."""
         batch_size, n_chs, seq_len = 16, 160, 1000
 
-        with patch("scitex.nn._BNet.MNet_1000") as mock_mnet:
+        with patch("scitex_nn._BNet.MNet_1000") as mock_mnet:
             # Mock MNet's forward_bb method
             mock_instance = Mock()
             mock_instance.forward_bb.return_value = torch.randn(batch_size, 1024)
@@ -161,7 +161,7 @@ class TestBNet:
         """Test forward pass with EEG data (second modality)."""
         batch_size, n_chs, seq_len = 16, 19, 1000
 
-        with patch("scitex.nn._BNet.MNet_1000") as mock_mnet:
+        with patch("scitex_nn._BNet.MNet_1000") as mock_mnet:
             mock_instance = Mock()
             mock_instance.forward_bb.return_value = torch.randn(batch_size, 1024)
             mock_mnet.return_value = mock_instance
@@ -181,7 +181,7 @@ class TestBNet:
         batch_size = 8
         seq_lengths = [100, 500, 1000, 2000, 5000]
 
-        with patch("scitex.nn._BNet.MNet_1000") as mock_mnet:
+        with patch("scitex_nn._BNet.MNet_1000") as mock_mnet:
             mock_instance = Mock()
             mock_instance.forward_bb.return_value = torch.randn(batch_size, 1024)
             mock_mnet.return_value = mock_instance
@@ -201,7 +201,7 @@ class TestBNet:
         batch_sizes = [1, 4, 16, 32, 64]
         seq_len = 1000
 
-        with patch("scitex.nn._BNet.MNet_1000") as mock_mnet:
+        with patch("scitex_nn._BNet.MNet_1000") as mock_mnet:
             model = BNet(base_bnet_config, mock_mnet_config)
 
             for bs in batch_sizes:
@@ -232,7 +232,7 @@ class TestBNet:
         self, base_bnet_config, mock_mnet_config
     ):
         """Test dropout channels are applied during training."""
-        with patch("scitex.nn._BNet.MNet_1000"):
+        with patch("scitex_nn._BNet.MNet_1000"):
             model = BNet(base_bnet_config, mock_mnet_config)
             model.train()  # Set to training mode
 
@@ -242,7 +242,7 @@ class TestBNet:
 
     def test_bnet_frequency_gain_changer(self, base_bnet_config, mock_mnet_config):
         """Test frequency gain changer configuration."""
-        with patch("scitex.nn._BNet.MNet_1000"):
+        with patch("scitex_nn._BNet.MNet_1000"):
             model = BNet(base_bnet_config, mock_mnet_config)
 
             assert hasattr(model, "fgc")
@@ -250,7 +250,7 @@ class TestBNet:
 
     def test_bnet_channel_gain_changers(self, base_bnet_config, mock_mnet_config):
         """Test channel gain changers for each modality."""
-        with patch("scitex.nn._BNet.MNet_1000"):
+        with patch("scitex_nn._BNet.MNet_1000"):
             model = BNet(base_bnet_config, mock_mnet_config)
 
             assert hasattr(model, "cgcs")
@@ -264,7 +264,7 @@ class TestBNet:
         """Test complete gradient flow through BNet."""
         batch_size = 4
 
-        with patch("scitex.nn._BNet.MNet_1000") as mock_mnet:
+        with patch("scitex_nn._BNet.MNet_1000") as mock_mnet:
             mock_instance = Mock()
             mock_instance.forward_bb.return_value = torch.randn(
                 batch_size, 1024, requires_grad=True
@@ -286,7 +286,7 @@ class TestBNet:
 
     def test_bnet_invalid_head_index(self, base_bnet_config, mock_mnet_config):
         """Test BNet behavior with invalid head index."""
-        with patch("scitex.nn._BNet.MNet_1000"):
+        with patch("scitex_nn._BNet.MNet_1000"):
             model = BNet(base_bnet_config, mock_mnet_config)
             x = torch.randn(16, 160, 1000)
 
@@ -296,7 +296,7 @@ class TestBNet:
 
     def test_bnet_device_compatibility_cpu(self, base_bnet_config, mock_mnet_config):
         """Test BNet on CPU."""
-        with patch("scitex.nn._BNet.MNet_1000") as mock_mnet:
+        with patch("scitex_nn._BNet.MNet_1000") as mock_mnet:
             mock_instance = Mock()
             mock_instance.forward_bb.return_value = torch.randn(16, 1024)
             mock_mnet.return_value = mock_instance
@@ -312,7 +312,7 @@ class TestBNet:
     @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA not available")
     def test_bnet_device_compatibility_gpu(self, base_bnet_config, mock_mnet_config):
         """Test BNet on GPU if available."""
-        with patch("scitex.nn._BNet.MNet_1000") as mock_mnet:
+        with patch("scitex_nn._BNet.MNet_1000") as mock_mnet:
             mock_instance = Mock()
             mock_instance.forward_bb.return_value = torch.randn(16, 1024).cuda()
             mock_instance.cuda.return_value = mock_instance
@@ -328,7 +328,7 @@ class TestBNet:
 
     def test_bnet_fc_layer_architecture(self, base_bnet_config, mock_mnet_config):
         """Test fully connected layer architecture for each head."""
-        with patch("scitex.nn._BNet.MNet_1000"):
+        with patch("scitex_nn._BNet.MNet_1000"):
             model = BNet(base_bnet_config, mock_mnet_config)
 
             for i, fc_block in enumerate(model.fcs):
@@ -348,7 +348,7 @@ class TestBNet:
         self, base_bnet_config, mock_mnet_config
     ):
         """Test that virtual channels are consistently set to 32."""
-        with patch("scitex.nn._BNet.MNet_1000") as mock_mnet:
+        with patch("scitex_nn._BNet.MNet_1000") as mock_mnet:
             model = BNet(base_bnet_config, mock_mnet_config)
 
             # Check all heads output 32 channels
@@ -360,7 +360,7 @@ class TestBNet:
 
     def test_bnet_multi_modal_integration(self, base_bnet_config, mock_mnet_config):
         """Test integration of multiple modalities in single model."""
-        with patch("scitex.nn._BNet.MNet_1000") as mock_mnet:
+        with patch("scitex_nn._BNet.MNet_1000") as mock_mnet:
             mock_instance = Mock()
             mock_instance.forward_bb.return_value = torch.randn(8, 1024)
             mock_mnet.return_value = mock_instance
@@ -380,7 +380,7 @@ class TestBNet:
 
     def test_bnet_parameter_count(self, base_bnet_config, mock_mnet_config):
         """Test total parameter count is reasonable."""
-        with patch("scitex.nn._BNet.MNet_1000"):
+        with patch("scitex_nn._BNet.MNet_1000"):
             model = BNet(base_bnet_config, mock_mnet_config)
 
             total_params = sum(p.numel() for p in model.parameters())

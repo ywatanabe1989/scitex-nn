@@ -105,7 +105,7 @@ class TestBandPassFilter:
         fs = 256
         seq_len = 1024
 
-        with patch("scitex.nn._Filters.design_filter") as mock_design:
+        with patch("scitex_nn._Filters.design_filter") as mock_design:
             mock_design.return_value = np.random.randn(64)
 
             bp_filter = BandPassFilter(bands, fs, seq_len)
@@ -122,7 +122,7 @@ class TestBandPassFilter:
         fs = 256
         seq_len = 512
 
-        with patch("scitex.nn._Filters.design_filter") as mock_design:
+        with patch("scitex_nn._Filters.design_filter") as mock_design:
             mock_design.return_value = np.random.randn(32)
 
             bp_filter = BandPassFilter(bands, fs, seq_len)
@@ -137,7 +137,7 @@ class TestBandPassFilter:
         bands = torch.tensor([[10, 60], [30, 70]])  # Above Nyquist
         seq_len = 256
 
-        with patch("scitex.nn._Filters.design_filter") as mock_design:
+        with patch("scitex_nn._Filters.design_filter") as mock_design:
             mock_design.return_value = np.random.randn(32)
 
             bp_filter = BandPassFilter(bands, fs, seq_len)
@@ -156,7 +156,7 @@ class TestBandPassFilter:
         fs = 128
         seq_len = 512
 
-        with patch("scitex.nn._Filters.design_filter") as mock_design:
+        with patch("scitex_nn._Filters.design_filter") as mock_design:
             # Return different sized filters to simulate real behavior
             mock_design.return_value = np.random.randn(64)
 
@@ -177,7 +177,7 @@ class TestBandPassFilter:
         fs = 256
         seq_len = 256
 
-        with patch("scitex.nn._Filters.design_filter") as mock_design:
+        with patch("scitex_nn._Filters.design_filter") as mock_design:
             mock_design.return_value = np.random.randn(32)
 
             bp_filter = BandPassFilter(bands, fs, seq_len, fp16=True)
@@ -197,7 +197,7 @@ class TestBandStopFilter:
         fs = 500
         seq_len = 1000
 
-        with patch("scitex.nn._Filters.design_filter") as mock_design:
+        with patch("scitex_nn._Filters.design_filter") as mock_design:
             mock_design.return_value = np.random.randn(64)
 
             bs_filter = BandStopFilter(bands, fs, seq_len)
@@ -215,7 +215,7 @@ class TestBandStopFilter:
         fs = 256
         seq_len = 512
 
-        with patch("scitex.nn._Filters.design_filter") as mock_design:
+        with patch("scitex_nn._Filters.design_filter") as mock_design:
             mock_design.return_value = np.random.randn(32)
 
             bs_filter = BandStopFilter(bands, fs, seq_len)
@@ -238,7 +238,7 @@ class TestLowPassFilter:
         fs = 100
         seq_len = 256
 
-        with patch("scitex.nn._Filters.design_filter") as mock_design:
+        with patch("scitex_nn._Filters.design_filter") as mock_design:
             mock_design.return_value = np.random.randn(32)
 
             lp_filter = LowPassFilter(cutoffs, fs, seq_len)
@@ -273,7 +273,7 @@ class TestLowPassFilter:
         fs = 100
         seq_len = 200
 
-        with patch("scitex.nn._Filters.design_filter") as mock_design:
+        with patch("scitex_nn._Filters.design_filter") as mock_design:
             mock_design.return_value = np.random.randn(16)
 
             lp_filter = LowPassFilter(cutoffs, fs, seq_len)
@@ -296,7 +296,7 @@ class TestHighPassFilter:
         fs = 100
         seq_len = 256
 
-        with patch("scitex.nn._Filters.design_filter") as mock_design:
+        with patch("scitex_nn._Filters.design_filter") as mock_design:
             mock_design.return_value = np.random.randn(32)
 
             hp_filter = HighPassFilter(cutoffs, fs, seq_len)
@@ -316,7 +316,7 @@ class TestHighPassFilter:
         fs = 50
         seq_len = 400
 
-        with patch("scitex.nn._Filters.design_filter") as mock_design:
+        with patch("scitex_nn._Filters.design_filter") as mock_design:
             mock_design.return_value = np.random.randn(32)
 
             hp_filter = HighPassFilter(cutoffs, fs, seq_len)
@@ -406,7 +406,7 @@ class TestDifferentiableBandPassFilter:
         sig_len = 512
         fs = 256
 
-        with patch("scitex.nn._Filters.init_bandpass_filters") as mock_init:
+        with patch("scitex_nn._Filters.init_bandpass_filters") as mock_init:
             mock_kernels = torch.randn(80, 64)
             mock_pha_mids = torch.linspace(2, 20, 30)
             mock_amp_mids = torch.linspace(80, 160, 50)
@@ -430,7 +430,7 @@ class TestDifferentiableBandPassFilter:
         sig_len = 1024
         fs = 200  # Nyquist = 100 Hz
 
-        with patch("scitex.nn._Filters.init_bandpass_filters") as mock_init:
+        with patch("scitex_nn._Filters.init_bandpass_filters") as mock_init:
             mock_init.return_value = (
                 torch.randn(50, 64),
                 torch.randn(20),
@@ -457,8 +457,8 @@ class TestDifferentiableBandPassFilter:
         sig_len = 256
         fs = 128
 
-        with patch("scitex.nn._Filters.init_bandpass_filters") as mock_init:
-            with patch("scitex.nn._Filters.build_bandpass_filters") as mock_build:
+        with patch("scitex_nn._Filters.init_bandpass_filters") as mock_init:
+            with patch("scitex_nn._Filters.build_bandpass_filters") as mock_build:
                 # Setup mocks
                 n_total_bands = 20
                 mock_init.return_value = (
@@ -485,8 +485,8 @@ class TestDifferentiableBandPassFilter:
         sig_len = 128
         fs = 64
 
-        with patch("scitex.nn._Filters.init_bandpass_filters") as mock_init:
-            with patch("scitex.nn._Filters.build_bandpass_filters") as mock_build:
+        with patch("scitex_nn._Filters.init_bandpass_filters") as mock_init:
+            with patch("scitex_nn._Filters.build_bandpass_filters") as mock_build:
                 # Make pha_mids and amp_mids parameters
                 pha_mids = nn.Parameter(torch.linspace(2, 20, 5))
                 amp_mids = nn.Parameter(torch.linspace(25, 30, 5))
@@ -520,7 +520,7 @@ class TestEdgeCases:
         fs = 50
         seq_len = 32  # Very short
 
-        with patch("scitex.nn._Filters.design_filter") as mock_design:
+        with patch("scitex_nn._Filters.design_filter") as mock_design:
             mock_design.return_value = np.random.randn(8)
 
             bp_filter = BandPassFilter(bands, fs, seq_len)
@@ -539,7 +539,7 @@ class TestEdgeCases:
         fs = 50
         seq_len = 100
 
-        with patch("scitex.nn._Filters.design_filter") as mock_design:
+        with patch("scitex_nn._Filters.design_filter") as mock_design:
             mock_design.return_value = np.random.randn(16)
 
             lp_filter = LowPassFilter(cutoffs, fs, seq_len)
@@ -558,7 +558,7 @@ class TestEdgeCases:
         fs = 20
         seq_len = 200
 
-        with patch("scitex.nn._Filters.design_filter") as mock_design:
+        with patch("scitex_nn._Filters.design_filter") as mock_design:
             mock_design.return_value = np.random.randn(16)
 
             hp_filter = HighPassFilter(cutoffs, fs, seq_len)
@@ -594,7 +594,7 @@ class TestMultiFilterProcessing:
         fs = 256
         seq_len = 1024
 
-        with patch("scitex.nn._Filters.design_filter") as mock_design:
+        with patch("scitex_nn._Filters.design_filter") as mock_design:
             mock_design.return_value = np.random.randn(64)
 
             bp_filter = BandPassFilter(bands, fs, seq_len)
@@ -612,7 +612,7 @@ class TestMultiFilterProcessing:
         fs = 100
         seq_len = 500
 
-        with patch("scitex.nn._Filters.design_filter") as mock_design:
+        with patch("scitex_nn._Filters.design_filter") as mock_design:
             mock_design.return_value = np.random.randn(32)
 
             # Highpass then lowpass (bandpass equivalent)
@@ -659,7 +659,7 @@ class TestDeviceCompatibility:
         fs = 100
         seq_len = 256
 
-        with patch("scitex.nn._Filters.design_filter") as mock_design:
+        with patch("scitex_nn._Filters.design_filter") as mock_design:
             mock_design.return_value = np.random.randn(32)
 
             bp_filter = BandPassFilter(bands, fs, seq_len).cuda()
