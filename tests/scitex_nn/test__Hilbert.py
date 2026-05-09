@@ -11,7 +11,8 @@ pytest.importorskip("torch")
 import numpy as np
 import torch
 import torch.nn as nn
-from scitex.nn import Hilbert
+
+from scitex_nn import Hilbert
 
 
 class TestHilbert:
