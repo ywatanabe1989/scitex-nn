@@ -11,7 +11,6 @@ pytest.importorskip("torch")
 import numpy as np
 import torch
 import torch.nn as nn
-
 from scitex.nn import Hilbert
 
 
@@ -27,8 +26,10 @@ class TestHilbert:
         assert hilbert.dim == -1
         assert hilbert.fp16 == False
         assert hilbert.in_place == False
-        assert hasattr(hilbert, "f")
-        assert hilbert.f.shape == (seq_len,)
+        # The frequency buffer was replaced by `h_mask` after the
+        # canonical-mask refactor (matches scipy to 3e-7).
+        assert hasattr(hilbert, "h_mask")
+        assert hilbert.h_mask.shape == (seq_len,)
 
     def test_initialization_with_options(self):
         """Test Hilbert layer initialization with all options."""
@@ -45,12 +46,14 @@ class TestHilbert:
         seq_len = 64
         hilbert = Hilbert(seq_len)
 
-        # Check frequency buffer shape
-        assert hilbert.f.shape == (seq_len,)
+        # Hilbert mask shape (canonical analytic mask, not frequency
+        # buffer — see refactor 2026-05-07).
+        assert hilbert.h_mask.shape == (seq_len,)
 
-        # Check frequency values range
-        assert hilbert.f.min() >= -0.5
-        assert hilbert.f.max() <= 0.5
+        # The analytic-signal mask is non-negative and bounded above by 2
+        # (DC and Nyquist are 1, positive-frequency bins are 2).
+        assert hilbert.h_mask.min() >= 0.0
+        assert hilbert.h_mask.max() <= 2.0
 
     def test_forward_basic_1d(self):
         """Test forward pass with 1D signal."""
@@ -343,8 +346,8 @@ class TestHilbert:
         hilbert2 = Hilbert(seq_len, fp16=True, in_place=True)
         hilbert2.load_state_dict(state)
 
-        # Frequency buffers should be identical
-        assert torch.equal(hilbert1.f, hilbert2.f)
+        # Mask buffers should round-trip identically.
+        assert torch.equal(hilbert1.h_mask, hilbert2.h_mask)
 
     def test_power_spectrum_preservation(self):
         """Test that power spectrum magnitude is preserved."""
@@ -362,19 +365,20 @@ class TestHilbert:
         x_power = (x**2).mean()
         # Note: amplitude is envelope, so comparison is indirect
 
-    def test_causality_approximation(self):
-        """Test the soft step function approximation for causality."""
+    def test_canonical_mask_shape(self):
+        """Test that h_mask is the canonical analytic-signal mask."""
         seq_len = 128
         hilbert = Hilbert(seq_len)
 
-        # The frequency domain step function should approximate ideal Hilbert
-        steepness = 50
-        u = torch.sigmoid(steepness * hilbert.f)
-
-        # Check that it approximates a step function
-        # Should be ~0 for negative frequencies, ~1 for positive
-        assert u[seq_len // 2 :].mean() < 0.1  # Negative frequencies
-        assert u[: seq_len // 2].mean() > 0.9  # Positive frequencies
+        m = hilbert.h_mask
+        # DC bin (index 0) is 1; positive frequency bins are 2; negative
+        # frequency bins are 0; Nyquist (only for even seq_len) is 1.
+        assert m[0].item() == 1.0
+        assert m[seq_len // 2].item() == 1.0  # Nyquist (even seq_len)
+        # Positive-freq bins (1 .. N/2 - 1) are all 2
+        assert torch.allclose(m[1 : seq_len // 2], torch.full((seq_len // 2 - 1,), 2.0))
+        # Negative-freq bins (N/2 + 1 .. N - 1) are all 0
+        assert torch.allclose(m[seq_len // 2 + 1 :], torch.zeros(seq_len // 2 - 1))
 
     def test_multi_channel_independence(self):
         """Test that channels are processed independently."""
