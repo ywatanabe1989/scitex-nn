@@ -15,18 +15,19 @@ import pytest
 
 # Required for this module
 pytest.importorskip("torch")
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import Mock, patch
 
-import numpy as np
 import torch
 import torch.nn as nn
 
-import scitex
+import scitex_nn
 
-# Use the correctly exported names
-BHead = scitex.nn.BHead_v1
-BNet = scitex.nn.BNet_v1
-BNet_config = scitex.nn.BNet_config_v1
+# Use the standalone-package exports — patches to `scitex_nn._BNet.*`
+# above only intercept this package's MNet_1000, not the umbrella's
+# separate copy at `scitex_nn._BNet`.
+BHead = scitex_nn.BHead_v1
+BNet = scitex_nn.BNet_v1
+BNet_config = scitex_nn.BNet_config_v1
 
 
 class TestBHead:
@@ -238,7 +239,7 @@ class TestBNet:
 
             # Check dropout is present and configured correctly
             assert hasattr(model, "dc")
-            assert isinstance(model.dc, scitex.nn.DropoutChannels)
+            assert isinstance(model.dc, scitex_nn.DropoutChannels)
 
     def test_bnet_frequency_gain_changer(self, base_bnet_config, mock_mnet_config):
         """Test frequency gain changer configuration."""
@@ -246,7 +247,7 @@ class TestBNet:
             model = BNet(base_bnet_config, mock_mnet_config)
 
             assert hasattr(model, "fgc")
-            assert isinstance(model.fgc, scitex.nn.FreqGainChanger)
+            assert isinstance(model.fgc, scitex_nn.FreqGainChanger)
 
     def test_bnet_channel_gain_changers(self, base_bnet_config, mock_mnet_config):
         """Test channel gain changers for each modality."""
@@ -257,7 +258,7 @@ class TestBNet:
             assert len(model.cgcs) == len(base_bnet_config["n_chs"])
 
             for i, cgc in enumerate(model.cgcs):
-                assert isinstance(cgc, scitex.nn.ChannelGainChanger)
+                assert isinstance(cgc, scitex_nn.ChannelGainChanger)
 
     @pytest.mark.skip(reason="Mocking MNet prevents proper gradient flow testing")
     def test_bnet_gradient_flow_complete(self, base_bnet_config, mock_mnet_config):
@@ -523,12 +524,12 @@ if __name__ == "__main__":
 #     BS, N_CHS, SEQ_LEN = 16, 19, 1000
 #     x_EEG = torch.rand(BS, N_CHS, SEQ_LEN).cuda()
 #
-#     # model = MNetBackBorn(scitex.nn.MNet_config).cuda()
+#     # model = MNetBackBorn(scitex_nn.MNet_config).cuda()
 #     # model(x_MEG)
 #     # Model
 #     BNet_config["n_chs"] = [160, 19]
 #     BNet_config["n_classes"] = [2, 4]
-#     model = BNet(BNet_config, scitex.nn.MNet_config).cuda()
+#     model = BNet(BNet_config, scitex_nn.MNet_config).cuda()
 #
 #     # MEG
 #     y = model(x_MEG, 0)
