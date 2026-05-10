@@ -9,7 +9,7 @@
 <p align="center"><b>PyTorch neural-network building blocks for signal processing — BNet, Hilbert, PAC, Wavelet, Filters, AxiswiseDropout, and more.</b></p>
 
 <p align="center">
-  <a href="https://scitex-nn.readthedocs.io/">Full Documentation</a> · <code>pip install scitex-nn</code>
+  <a href="https://scitex-nn.readthedocs.io/">Full Documentation</a> · <code>uv pip install scitex-nn[all]</code>
 </p>
 
 <!-- scitex-badges:start -->
