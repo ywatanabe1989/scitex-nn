@@ -10,7 +10,7 @@ import torch
 import torch.nn as nn
 
 # Import the module to test
-from scitex.nn import DropoutChannels
+from scitex_nn import DropoutChannels
 
 
 class TestDropoutChannels:

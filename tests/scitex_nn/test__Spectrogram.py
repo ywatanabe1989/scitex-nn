@@ -20,7 +20,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from scitex.nn import Spectrogram
+from scitex_nn import Spectrogram
 
 
 class TestSpectrogram:

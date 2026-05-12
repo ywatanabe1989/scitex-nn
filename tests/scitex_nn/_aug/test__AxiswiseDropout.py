@@ -21,7 +21,8 @@ pytest.importorskip("torch")
 import numpy as np
 import torch
 import torch.nn as nn
-from scitex.nn import AxiswiseDropout
+
+from scitex_nn import AxiswiseDropout
 
 
 class TestAxiswiseDropoutBasics:

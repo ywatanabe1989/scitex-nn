@@ -22,12 +22,12 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-import scitex
+import scitex_nn
 
 # Use correctly exported names (BNet_Res is exported from _BNet_Res.py)
-BNet = scitex.nn.BNet_Res
-BHead = scitex.nn.BHead_Res
-BNet_config = scitex.nn.BNet_config_Res
+BNet = scitex_nn.BNet_Res
+BHead = scitex_nn.BHead_Res
+BNet_config = scitex_nn.BNet_config_Res
 
 
 class TestBNetRes:
@@ -64,7 +64,7 @@ class TestBNetRes:
     def test_bnet_res_residual_blocks_structure(self, base_config, mock_mnet_config):
         """Test residual blocks are properly configured."""
 
-        with patch("scitex.nn.ResNetBasicBlock") as mock_resnet_block:
+        with patch("scitex_nn.ResNetBasicBlock") as mock_resnet_block:
             mock_resnet_block.return_value = Mock(spec=nn.Module)
 
             model = BNet(base_config, mock_mnet_config)
@@ -78,7 +78,7 @@ class TestBNetRes:
     ):
         """Test channel reduction through network depth."""
 
-        with patch("scitex.nn.ResNetBasicBlock") as mock_resnet_block:
+        with patch("scitex_nn.ResNetBasicBlock") as mock_resnet_block:
             # Track how ResNetBasicBlock was called
             call_args = []
             mock_resnet_block.side_effect = lambda *args: (
@@ -113,7 +113,7 @@ class TestBNetRes:
         seq_len = 1024  # Must be power of 2 for multiple pooling operations
 
         # Create mocks for all components
-        with patch("scitex.nn.ResNetBasicBlock") as mock_resnet:
+        with patch("scitex_nn.ResNetBasicBlock") as mock_resnet:
             mock_resnet.return_value = Mock(
                 return_value=torch.randn(batch_size, 16, seq_len)
             )
@@ -273,7 +273,7 @@ class TestBNetRes:
 
         # Check dropout channels
         assert hasattr(model, "dc")
-        assert isinstance(model.dc, scitex.nn.DropoutChannels)
+        assert isinstance(model.dc, scitex_nn.DropoutChannels)
 
     def test_bnet_res_frequency_bands_configuration(self, mock_mnet_config):
         """Test different frequency band configurations."""
@@ -350,7 +350,7 @@ class TestBNetRes:
 
         # SwapChannels is created but not used (commented in forward)
         assert hasattr(model, "sc")
-        assert isinstance(model.sc, scitex.nn.SwapChannels)
+        assert isinstance(model.sc, scitex_nn.SwapChannels)
 
     def test_bnet_res_parameter_shapes(self, base_config, mock_mnet_config):
         """Test parameter shapes throughout the network."""

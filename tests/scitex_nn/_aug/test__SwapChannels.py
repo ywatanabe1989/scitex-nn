@@ -10,7 +10,7 @@ import torch
 import torch.nn as nn
 
 # Import the module to test
-from scitex.nn import SwapChannels
+from scitex_nn import SwapChannels
 
 
 class TestSwapChannels:

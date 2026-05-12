@@ -10,7 +10,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 # Import the module to test
-from scitex.nn import ChannelGainChanger
+from scitex_nn import ChannelGainChanger
 
 
 class TestChannelGainChanger:

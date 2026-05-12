@@ -23,7 +23,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from scitex.nn import TransposeLayer
+from scitex_nn import TransposeLayer
 
 
 class TestTransposeLayerBasics:

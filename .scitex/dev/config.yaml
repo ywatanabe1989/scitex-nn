@@ -1,0 +1,8 @@
+# scitex-dev local config: per-package overrides for audit rules.
+# See `_skills/general/01_ecosystem_06_local-state-directories.md`.
+
+audit:
+  # Files allowed at repo root (in addition to the global baseline)
+  root-whitelist:
+    files:
+      - codecov.yml

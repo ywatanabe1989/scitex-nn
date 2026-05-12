@@ -12,7 +12,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from scitex.nn import PSD
+from scitex_nn import PSD
 
 
 class TestPSD:

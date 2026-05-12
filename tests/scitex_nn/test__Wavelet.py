@@ -54,7 +54,7 @@ with patch.dict(
     sys.modules["scitex.gen._to_even"].to_even = mock_to_even
     sys.modules["scitex.gen._to_odd"].to_odd = mock_to_odd
 
-    from scitex.nn import Wavelet
+    from scitex_nn import Wavelet
 
 
 class TestWavelet:

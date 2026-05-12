@@ -25,7 +25,8 @@ if not os.environ.get("SCITEX_RUN_HEAVY"):
 pytest.importorskip("torch")
 import torch
 import torch.nn as nn
-from scitex.nn import MNet1000, MNet_1000, MNet_config, ReshapeLayer, SwapLayer
+
+from scitex_nn import MNet1000, MNet_1000, MNet_config, ReshapeLayer, SwapLayer
 
 
 class TestMNet1000Architecture:

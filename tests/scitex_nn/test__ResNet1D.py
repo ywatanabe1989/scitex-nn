@@ -23,7 +23,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-import scitex
+import scitex_nn
 
 
 class TestResNetBasicBlock:
@@ -34,14 +34,14 @@ class TestResNetBasicBlock:
         configs = [(32, 64), (64, 64), (19, 76), (128, 32)]
 
         for in_chs, out_chs in configs:
-            block = scitex.nn.ResNetBasicBlock(in_chs, out_chs)
+            block = scitex_nn.ResNetBasicBlock(in_chs, out_chs)
             assert isinstance(block, nn.Module)
             assert block.in_chs == in_chs
             assert block.out_chs == out_chs
 
     def test_basic_block_layers_structure(self):
         """Test that ResNetBasicBlock has all required layers."""
-        block = scitex.nn.ResNetBasicBlock(32, 64)
+        block = scitex_nn.ResNetBasicBlock(32, 64)
 
         # Check convolutional layers
         assert hasattr(block, "conv7")
@@ -64,7 +64,7 @@ class TestResNetBasicBlock:
     def test_basic_block_forward_same_channels(self):
         """Test forward pass when input and output channels are the same."""
         batch_size, in_chs, seq_len = 16, 64, 1000
-        block = scitex.nn.ResNetBasicBlock(in_chs, in_chs)
+        block = scitex_nn.ResNetBasicBlock(in_chs, in_chs)
 
         x = torch.randn(batch_size, in_chs, seq_len)
         output = block(x)
@@ -74,7 +74,7 @@ class TestResNetBasicBlock:
     def test_basic_block_forward_different_channels(self):
         """Test forward pass with channel expansion."""
         batch_size, in_chs, out_chs, seq_len = 16, 32, 128, 500
-        block = scitex.nn.ResNetBasicBlock(in_chs, out_chs)
+        block = scitex_nn.ResNetBasicBlock(in_chs, out_chs)
 
         x = torch.randn(batch_size, in_chs, seq_len)
         output = block(x)
@@ -83,7 +83,7 @@ class TestResNetBasicBlock:
 
     def test_basic_block_conv_k_static_method(self):
         """Test the static conv_k method for creating convolution layers."""
-        conv = scitex.nn.ResNetBasicBlock.conv_k(32, 64, k=3, s=1, p=1)
+        conv = scitex_nn.ResNetBasicBlock.conv_k(32, 64, k=3, s=1, p=1)
 
         assert isinstance(conv, nn.Conv1d)
         assert conv.in_channels == 32
@@ -95,7 +95,7 @@ class TestResNetBasicBlock:
 
     def test_basic_block_residual_connection(self):
         """Test that residual connection is properly applied."""
-        block = scitex.nn.ResNetBasicBlock(64, 64)
+        block = scitex_nn.ResNetBasicBlock(64, 64)
         x = torch.randn(8, 64, 256, requires_grad=True)
 
         # Forward pass
@@ -111,7 +111,7 @@ class TestResNetBasicBlock:
 
     def test_basic_block_expansion_conv_usage(self):
         """Test expansion convolution is used when channels differ."""
-        block = scitex.nn.ResNetBasicBlock(32, 64)
+        block = scitex_nn.ResNetBasicBlock(32, 64)
 
         # Verify expansion_conv exists when input/output channels differ
         assert block.expansion_conv is not None
@@ -126,7 +126,7 @@ class TestResNetBasicBlock:
 
     def test_basic_block_kernel_sizes(self):
         """Test different kernel sizes in the block."""
-        block = scitex.nn.ResNetBasicBlock(32, 64)
+        block = scitex_nn.ResNetBasicBlock(32, 64)
 
         # Check kernel sizes
         assert block.conv7.kernel_size == (7,)
@@ -137,7 +137,7 @@ class TestResNetBasicBlock:
     def test_basic_block_padding_preservation(self):
         """Test that padding preserves sequence length."""
         seq_lengths = [100, 256, 512, 1000, 2048]
-        block = scitex.nn.ResNetBasicBlock(32, 64)
+        block = scitex_nn.ResNetBasicBlock(32, 64)
 
         for seq_len in seq_lengths:
             x = torch.randn(2, 32, seq_len)
@@ -146,7 +146,7 @@ class TestResNetBasicBlock:
 
     def test_basic_block_gradient_flow(self):
         """Test gradient flows properly through the block."""
-        block = scitex.nn.ResNetBasicBlock(32, 64)
+        block = scitex_nn.ResNetBasicBlock(32, 64)
         x = torch.randn(4, 32, 128, requires_grad=True)
 
         output = block(x)
@@ -167,7 +167,7 @@ class TestResNet1D:
 
     def test_resnet1d_instantiation_default(self):
         """Test ResNet1D instantiation with default parameters."""
-        model = scitex.nn.ResNet1D()
+        model = scitex_nn.ResNet1D()
         assert isinstance(model, nn.Module)
         assert hasattr(model, "res_conv_blk_layers")
 
@@ -181,14 +181,14 @@ class TestResNet1D:
         ]
 
         for n_chs, n_out, n_blks in configs:
-            model = scitex.nn.ResNet1D(n_chs=n_chs, n_out=n_out, n_blks=n_blks)
+            model = scitex_nn.ResNet1D(n_chs=n_chs, n_out=n_out, n_blks=n_blks)
             assert isinstance(model, nn.Module)
 
     def test_resnet1d_blocks_structure(self):
         """Test the structure of residual blocks in ResNet1D."""
         n_blks = 5
         n_chs = 32
-        model = scitex.nn.ResNet1D(n_chs=n_chs, n_blks=n_blks)
+        model = scitex_nn.ResNet1D(n_chs=n_chs, n_blks=n_blks)
 
         # Check sequential container
         assert isinstance(model.res_conv_blk_layers, nn.Sequential)
@@ -196,7 +196,7 @@ class TestResNet1D:
 
         # First block should expand channels
         first_block = model.res_conv_blk_layers[0]
-        assert isinstance(first_block, scitex.nn.ResNetBasicBlock)
+        assert isinstance(first_block, scitex_nn.ResNetBasicBlock)
         assert first_block.in_chs == n_chs
         assert first_block.out_chs == n_chs * 4  # _N_FILTS_PER_CH = 4
 
@@ -209,7 +209,7 @@ class TestResNet1D:
     def test_resnet1d_forward_pass_basic(self):
         """Test basic forward pass through ResNet1D."""
         batch_size, n_chs, seq_len = 16, 32, 1000
-        model = scitex.nn.ResNet1D(n_chs=n_chs, n_out=10)
+        model = scitex_nn.ResNet1D(n_chs=n_chs, n_out=10)
 
         x = torch.randn(batch_size, n_chs, seq_len)
         output = model(x)
@@ -220,7 +220,7 @@ class TestResNet1D:
 
     def test_resnet1d_forward_various_sequence_lengths(self):
         """Test ResNet1D with various sequence lengths."""
-        model = scitex.nn.ResNet1D(n_chs=19, n_out=4)
+        model = scitex_nn.ResNet1D(n_chs=19, n_out=4)
         batch_size = 8
         seq_lengths = [128, 256, 512, 1024, 2048, 4096]
 
@@ -231,7 +231,7 @@ class TestResNet1D:
 
     def test_resnet1d_forward_various_batch_sizes(self):
         """Test ResNet1D with various batch sizes."""
-        model = scitex.nn.ResNet1D(n_chs=32, n_out=10)
+        model = scitex_nn.ResNet1D(n_chs=32, n_out=10)
         seq_len = 1000
         batch_sizes = [1, 4, 16, 32, 64, 128]
 
@@ -245,14 +245,14 @@ class TestResNet1D:
         depths = [1, 3, 5, 10, 20, 50]
 
         for n_blks in depths:
-            model = scitex.nn.ResNet1D(n_chs=16, n_out=10, n_blks=n_blks)
+            model = scitex_nn.ResNet1D(n_chs=16, n_out=10, n_blks=n_blks)
             x = torch.randn(2, 16, 256)
             output = model(x)
             assert output.shape == (2, 64, 256)  # 16 * 4 = 64
 
     def test_resnet1d_gradient_flow_shallow(self):
         """Test gradient flow in shallow ResNet1D."""
-        model = scitex.nn.ResNet1D(n_chs=32, n_out=10, n_blks=3)
+        model = scitex_nn.ResNet1D(n_chs=32, n_out=10, n_blks=3)
         x = torch.randn(4, 32, 512, requires_grad=True)
 
         output = model(x)
@@ -265,7 +265,7 @@ class TestResNet1D:
 
     def test_resnet1d_gradient_flow_deep(self):
         """Test gradient flow in deep ResNet1D (vanishing gradient test)."""
-        model = scitex.nn.ResNet1D(n_chs=32, n_out=10, n_blks=20)
+        model = scitex_nn.ResNet1D(n_chs=32, n_out=10, n_blks=20)
         x = torch.randn(2, 32, 256, requires_grad=True)
 
         output = model(x)
@@ -279,7 +279,7 @@ class TestResNet1D:
 
     def test_resnet1d_device_compatibility_cpu(self):
         """Test ResNet1D on CPU."""
-        model = scitex.nn.ResNet1D(n_chs=19, n_out=4)
+        model = scitex_nn.ResNet1D(n_chs=19, n_out=4)
         x = torch.randn(8, 19, 1000)
 
         output = model(x)
@@ -288,7 +288,7 @@ class TestResNet1D:
     @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA not available")
     def test_resnet1d_device_compatibility_gpu(self):
         """Test ResNet1D on GPU if available."""
-        model = scitex.nn.ResNet1D(n_chs=19, n_out=4).cuda()
+        model = scitex_nn.ResNet1D(n_chs=19, n_out=4).cuda()
         x = torch.randn(8, 19, 1000).cuda()
 
         output = model(x)
@@ -303,7 +303,7 @@ class TestResNet1D:
         ]
 
         for n_chs, n_out, n_blks in configs:
-            model = scitex.nn.ResNet1D(n_chs=n_chs, n_out=n_out, n_blks=n_blks)
+            model = scitex_nn.ResNet1D(n_chs=n_chs, n_out=n_out, n_blks=n_blks)
 
             total_params = sum(p.numel() for p in model.parameters())
             trainable_params = sum(
@@ -317,7 +317,7 @@ class TestResNet1D:
 
     def test_resnet1d_eval_train_modes(self):
         """Test behavior in training vs evaluation modes."""
-        model = scitex.nn.ResNet1D(n_chs=32, n_out=10)
+        model = scitex_nn.ResNet1D(n_chs=32, n_out=10)
         x = torch.randn(4, 32, 256)
 
         # Training mode
@@ -335,7 +335,7 @@ class TestResNet1D:
 
     def test_resnet1d_multiple_forward_consistency(self):
         """Test consistency of multiple forward passes in eval mode."""
-        model = scitex.nn.ResNet1D(n_chs=19, n_out=4)
+        model = scitex_nn.ResNet1D(n_chs=19, n_out=4)
         model.eval()
 
         x = torch.randn(8, 19, 512)
@@ -351,7 +351,7 @@ class TestResNet1D:
         n_chs_list = [8, 16, 19, 32, 64]
 
         for n_chs in n_chs_list:
-            model = scitex.nn.ResNet1D(n_chs=n_chs)
+            model = scitex_nn.ResNet1D(n_chs=n_chs)
             x = torch.randn(2, n_chs, 128)
             output = model(x)
 
@@ -360,7 +360,7 @@ class TestResNet1D:
 
     def test_resnet1d_with_single_channel(self):
         """Test ResNet1D with single channel input."""
-        model = scitex.nn.ResNet1D(n_chs=1, n_out=2, n_blks=3)
+        model = scitex_nn.ResNet1D(n_chs=1, n_out=2, n_blks=3)
         x = torch.randn(16, 1, 1000)
 
         output = model(x)
@@ -368,7 +368,7 @@ class TestResNet1D:
 
     def test_resnet1d_with_many_channels(self):
         """Test ResNet1D with many input channels."""
-        model = scitex.nn.ResNet1D(n_chs=256, n_out=10, n_blks=5)
+        model = scitex_nn.ResNet1D(n_chs=256, n_out=10, n_blks=5)
         x = torch.randn(2, 256, 512)
 
         output = model(x)
@@ -376,7 +376,7 @@ class TestResNet1D:
 
     def test_resnet1d_output_features(self):
         """Test that output maintains spatial resolution."""
-        model = scitex.nn.ResNet1D(n_chs=32, n_out=10)
+        model = scitex_nn.ResNet1D(n_chs=32, n_out=10)
 
         # Test that convolutions preserve spatial dimensions
         x = torch.randn(4, 32, 1000)
@@ -391,7 +391,7 @@ class TestResNet1D:
         class ResNet1DClassifier(nn.Module):
             def __init__(self, n_chs, n_out):
                 super().__init__()
-                self.feature_extractor = scitex.nn.ResNet1D(n_chs, n_out)
+                self.feature_extractor = scitex_nn.ResNet1D(n_chs, n_out)
                 self.classifier = nn.Linear(n_chs * 4, n_out)
 
             def forward(self, x):

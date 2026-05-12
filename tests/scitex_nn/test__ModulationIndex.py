@@ -23,7 +23,7 @@ class TestModulationIndexInitialization:
 
     def test_basic_initialization(self):
         """Test basic ModulationIndex initialization with default parameters."""
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         mi = ModulationIndex()
 
@@ -34,7 +34,7 @@ class TestModulationIndexInitialization:
 
     def test_initialization_with_custom_bins(self):
         """Test initialization with custom number of phase bins."""
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         n_bins = 36
         mi = ModulationIndex(n_bins=n_bins)
@@ -46,21 +46,21 @@ class TestModulationIndexInitialization:
 
     def test_initialization_with_fp16(self):
         """Test initialization with half precision enabled."""
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         mi = ModulationIndex(fp16=True)
         assert mi.fp16 is True
 
     def test_initialization_with_amp_prob(self):
         """Test initialization with amplitude probability output."""
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         mi = ModulationIndex(amp_prob=True)
         assert mi.amp_prob is True
 
     def test_phase_bin_cutoffs_buffer(self):
         """Test phase bin cutoffs are registered as buffer."""
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         mi = ModulationIndex(n_bins=10)
 
@@ -77,7 +77,7 @@ class TestModulationIndexInitialization:
         - centers[8] ≈ -0.175, centers[9] ≈ 0.175
         - No bin is centered exactly at 0 with even number of bins
         """
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         mi = ModulationIndex(n_bins=18)
         centers = mi.pha_bin_centers
@@ -99,7 +99,7 @@ class TestModulationIndexForward:
         Note: Amplitude values must be positive for valid MI calculation,
         as the algorithm computes probabilities and log values.
         """
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         mi = ModulationIndex()
 
@@ -115,7 +115,7 @@ class TestModulationIndexForward:
 
     def test_forward_with_different_freq_dimensions(self):
         """Test forward pass with different phase and amplitude frequency dimensions."""
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         mi = ModulationIndex()
 
@@ -135,7 +135,7 @@ class TestModulationIndexForward:
 
         Note: Amplitude values must be positive for valid MI calculation.
         """
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         mi = ModulationIndex(fp16=True)
 
@@ -149,7 +149,7 @@ class TestModulationIndexForward:
 
     def test_forward_returns_amp_prob(self):
         """Test forward pass returning amplitude probability distributions."""
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         mi = ModulationIndex(n_bins=20, amp_prob=True)
 
@@ -165,7 +165,7 @@ class TestModulationIndexForward:
 
     def test_forward_modulation_index_range(self):
         """Test modulation index output is in valid range [0, 1]."""
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         mi = ModulationIndex()
 
@@ -194,7 +194,7 @@ class TestModulationIndexForward:
         This is expected behavior - ModulationIndex computes a metric based on
         binned phase-amplitude distributions, which is inherently non-differentiable.
         """
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         mi = ModulationIndex()
 
@@ -216,7 +216,7 @@ class TestPhaseToMasks:
 
     def test_phase_to_masks_basic(self):
         """Test basic phase to mask conversion."""
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         n_bins = 10
         phase_bin_cutoffs = torch.linspace(-np.pi, np.pi, n_bins + 1)
@@ -233,7 +233,7 @@ class TestPhaseToMasks:
 
     def test_phase_to_masks_edge_cases(self):
         """Test phase binning at bin edges."""
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         n_bins = 4
         phase_bin_cutoffs = torch.linspace(-np.pi, np.pi, n_bins + 1)
@@ -248,7 +248,7 @@ class TestPhaseToMasks:
 
     def test_phase_to_masks_out_of_range(self):
         """Test phase binning with out-of-range values."""
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         phase_bin_cutoffs = torch.linspace(-np.pi, np.pi, 10)
 
@@ -262,7 +262,7 @@ class TestPhaseToMasks:
 
     def test_phase_to_masks_large_input(self):
         """Test phase binning with large multidimensional input."""
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         phase_bin_cutoffs = torch.linspace(-np.pi, np.pi, 18 + 1)
 
@@ -280,7 +280,7 @@ class TestModulationIndexCalculation:
 
     def test_uniform_amplitude_distribution(self):
         """Test MI calculation with uniform amplitude distribution."""
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         mi = ModulationIndex(n_bins=10)
 
@@ -303,7 +303,7 @@ class TestModulationIndexCalculation:
 
     def test_concentrated_amplitude_distribution(self):
         """Test MI calculation with concentrated amplitude distribution."""
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         mi = ModulationIndex(n_bins=10)
 
@@ -319,7 +319,7 @@ class TestModulationIndexCalculation:
 
     def test_nan_warning(self):
         """Test NaN warning is raised appropriately."""
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         mi = ModulationIndex()
 
@@ -343,7 +343,7 @@ class TestMultiChannelProcessing:
 
     def test_multi_channel_independence(self):
         """Test that channels are processed independently."""
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         mi = ModulationIndex()
 
@@ -364,7 +364,7 @@ class TestMultiChannelProcessing:
 
     def test_multi_segment_averaging(self):
         """Test that MI is averaged across segments."""
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         mi = ModulationIndex()
 
@@ -392,7 +392,7 @@ class TestMemoryEfficiency:
 
         Note: Amplitude values must be positive for valid MI calculation.
         """
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         mi = ModulationIndex()
 
@@ -408,7 +408,7 @@ class TestMemoryEfficiency:
 
     def test_memory_consumption_with_broadcasting(self):
         """Test memory-efficient broadcasting in coupling computation."""
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         mi = ModulationIndex(n_bins=50)  # More bins
 
@@ -427,7 +427,7 @@ class TestDeviceCompatibility:
 
     def test_cpu_computation(self):
         """Test computation on CPU."""
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         mi = ModulationIndex()
 
@@ -440,7 +440,7 @@ class TestDeviceCompatibility:
 
     def test_cuda_computation(self):
         """Test computation on CUDA if available."""
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         if not torch.cuda.is_available():
             pytest.skip("CUDA not available")
@@ -457,7 +457,7 @@ class TestDeviceCompatibility:
 
     def test_device_consistency_with_amp_prob(self):
         """Test device handling when returning amplitude probabilities."""
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         if not torch.cuda.is_available():
             pytest.skip("CUDA not available")
@@ -478,7 +478,7 @@ class TestNumericalStability:
 
     def test_epsilon_handling(self):
         """Test epsilon prevents division by zero."""
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         mi = ModulationIndex()
 
@@ -493,7 +493,7 @@ class TestNumericalStability:
 
     def test_log_stability(self):
         """Test logarithm computation stability."""
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         mi = ModulationIndex()
 
@@ -508,7 +508,7 @@ class TestNumericalStability:
 
     def test_extreme_values(self):
         """Test handling of extreme input values."""
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         mi = ModulationIndex()
 
@@ -526,7 +526,7 @@ class TestIntegration:
 
     def test_in_sequential_model(self):
         """Test ModulationIndex in a sequential model."""
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         # Custom wrapper to handle 5D input requirement
         class MIWrapper(nn.Module):
@@ -557,7 +557,7 @@ class TestIntegration:
 
         Note: Amplitude values must be positive for valid MI calculation.
         """
-        from scitex.nn import ModulationIndex
+        from scitex_nn import ModulationIndex
 
         mi = ModulationIndex(n_bins=24)
 
