@@ -32,56 +32,216 @@ from scitex_nn import MNet1000, MNet_1000, MNet_config, ReshapeLayer, SwapLayer
 class TestMNet1000Architecture:
     """Test MNet1000 architecture and initialization."""
 
-    def test_basic_instantiation(self):
+    def test_basic_instantiation_mnet_1000_behaves_correctly_isinstance(self):
         """Test basic model instantiation with default config."""
+        # Arrange
+        # Act
         model = MNet1000(MNet_config)
+        # Assert
         assert isinstance(model, nn.Module)
-        assert hasattr(model, "config")
-        assert hasattr(model, "backborn")
-        assert hasattr(model, "fc")
+        pass
+        pass
+        pass
+
+    def test_basic_instantiation_mnet_1000_behaves_correctly_hasattr(self):
+        """Test basic model instantiation with default config."""
+        # Arrange
+        # Act
+        model = MNet1000(MNet_config)
+        # Assert
+        pass
+        assert hasattr(model, 'config')
+        pass
+        pass
+
+    def test_basic_instantiation_mnet_1000_behaves_correctly_hasattr_v2(self):
+        """Test basic model instantiation with default config."""
+        # Arrange
+        # Act
+        model = MNet1000(MNet_config)
+        # Assert
+        pass
+        pass
+        assert hasattr(model, 'backborn')
+        pass
+
+    def test_basic_instantiation_mnet_1000_behaves_correctly_hasattr_v3(self):
+        """Test basic model instantiation with default config."""
+        # Arrange
+        # Act
+        model = MNet1000(MNet_config)
+        # Assert
+        pass
+        pass
+        pass
+        assert hasattr(model, 'fc')
 
     def test_backward_compatibility_alias(self):
         """Test that MNet_1000 alias works for backward compatibility."""
+        # Arrange
+        # Act
         model = MNet_1000(MNet_config)
+        # Assert
         assert isinstance(model, MNet1000)
 
-    def test_custom_config(self):
+    def test_custom_config_mnet_1000_behaves_correctly_config(self):
         """Test instantiation with custom configuration."""
-        custom_config = {
-            "classes": ["A", "B", "C"],
-            "n_chs": 128,
-            "n_fc1": 512,
-            "d_ratio1": 0.5,
-            "n_fc2": 128,
-            "d_ratio2": 0.5,
-        }
+        # Arrange
+        custom_config = {'classes': ['A', 'B', 'C'], 'n_chs': 128, 'n_fc1': 512, 'd_ratio1': 0.5, 'n_fc2': 128, 'd_ratio2': 0.5}
+        # Act
         model = MNet1000(custom_config)
+        # Assert
         assert model.config == custom_config
-        # Check output dimension matches number of classes
+        pass
+
+    def test_custom_config_mnet_1000_behaves_correctly_out_features(self):
+        """Test instantiation with custom configuration."""
+        # Arrange
+        custom_config = {'classes': ['A', 'B', 'C'], 'n_chs': 128, 'n_fc1': 512, 'd_ratio1': 0.5, 'n_fc2': 128, 'd_ratio2': 0.5}
+        # Act
+        model = MNet1000(custom_config)
+        # Assert
+        pass
         assert model.fc[-1].out_features == 3
 
-    def test_backbone_structure(self):
+    def test_backbone_structure_mnet_1000_behaves_correctly_len(self):
         """Test the backbone convolutional structure."""
+        # Arrange
         model = MNet1000(MNet_config)
-        # Check backbone contains expected layers
         backbone_modules = list(model.backborn.modules())
+        # Act
         conv_layers = [m for m in backbone_modules if isinstance(m, nn.Conv2d)]
+        # Assert
         assert len(conv_layers) == 4
-        # Verify kernel sizes
+        pass
+        pass
+        pass
+        pass
+
+    def test_backbone_structure_mnet_1000_behaves_correctly_kernel_size(self):
+        """Test the backbone convolutional structure."""
+        # Arrange
+        model = MNet1000(MNet_config)
+        backbone_modules = list(model.backborn.modules())
+        # Act
+        conv_layers = [m for m in backbone_modules if isinstance(m, nn.Conv2d)]
+        # Assert
+        pass
         assert conv_layers[0].kernel_size == (270, 4)
+        pass
+        pass
+        pass
+
+    def test_backbone_structure_mnet_1000_behaves_correctly_kernel_size_v2(self):
+        """Test the backbone convolutional structure."""
+        # Arrange
+        model = MNet1000(MNet_config)
+        backbone_modules = list(model.backborn.modules())
+        # Act
+        conv_layers = [m for m in backbone_modules if isinstance(m, nn.Conv2d)]
+        # Assert
+        pass
+        pass
         assert conv_layers[1].kernel_size == (1, 4)
+        pass
+        pass
+
+    def test_backbone_structure_mnet_1000_behaves_correctly_kernel_size_v3(self):
+        """Test the backbone convolutional structure."""
+        # Arrange
+        model = MNet1000(MNet_config)
+        backbone_modules = list(model.backborn.modules())
+        # Act
+        conv_layers = [m for m in backbone_modules if isinstance(m, nn.Conv2d)]
+        # Assert
+        pass
+        pass
+        pass
         assert conv_layers[2].kernel_size == (8, 12)
+        pass
+
+    def test_backbone_structure_mnet_1000_behaves_correctly_kernel_size_v4(self):
+        """Test the backbone convolutional structure."""
+        # Arrange
+        model = MNet1000(MNet_config)
+        backbone_modules = list(model.backborn.modules())
+        # Act
+        conv_layers = [m for m in backbone_modules if isinstance(m, nn.Conv2d)]
+        # Assert
+        pass
+        pass
+        pass
+        pass
         assert conv_layers[3].kernel_size == (1, 5)
 
-    def test_fc_structure(self):
+    def test_fc_structure_mnet_1000_behaves_correctly_len(self):
         """Test the fully connected layer structure."""
+        # Arrange
         model = MNet1000(MNet_config)
         fc_modules = list(model.fc.modules())
+        # Act
         linear_layers = [m for m in fc_modules if isinstance(m, nn.Linear)]
+        # Assert
         assert len(linear_layers) == 2
+        pass
+        pass
+        pass
+        pass
+
+    def test_fc_structure_mnet_1000_behaves_correctly_in_features(self):
+        """Test the fully connected layer structure."""
+        # Arrange
+        model = MNet1000(MNet_config)
+        fc_modules = list(model.fc.modules())
+        # Act
+        linear_layers = [m for m in fc_modules if isinstance(m, nn.Linear)]
+        # Assert
+        pass
         assert linear_layers[0].in_features == 1024
+        pass
+        pass
+        pass
+
+    def test_fc_structure_mnet_1000_behaves_correctly_out_features(self):
+        """Test the fully connected layer structure."""
+        # Arrange
+        model = MNet1000(MNet_config)
+        fc_modules = list(model.fc.modules())
+        # Act
+        linear_layers = [m for m in fc_modules if isinstance(m, nn.Linear)]
+        # Assert
+        pass
+        pass
         assert linear_layers[0].out_features == 256
+        pass
+        pass
+
+    def test_fc_structure_mnet_1000_behaves_correctly_in_features_v2(self):
+        """Test the fully connected layer structure."""
+        # Arrange
+        model = MNet1000(MNet_config)
+        fc_modules = list(model.fc.modules())
+        # Act
+        linear_layers = [m for m in fc_modules if isinstance(m, nn.Linear)]
+        # Assert
+        pass
+        pass
+        pass
         assert linear_layers[1].in_features == 256
+        pass
+
+    def test_fc_structure_mnet_1000_behaves_correctly_out_features_v2(self):
+        """Test the fully connected layer structure."""
+        # Arrange
+        model = MNet1000(MNet_config)
+        fc_modules = list(model.fc.modules())
+        # Act
+        linear_layers = [m for m in fc_modules if isinstance(m, nn.Linear)]
+        # Assert
+        pass
+        pass
+        pass
+        pass
         assert linear_layers[1].out_features == 2
 
 
@@ -90,16 +250,22 @@ class TestMNet1000ForwardPass:
 
     def test_forward_pass_basic(self):
         """Test basic forward pass with standard input."""
+        # Arrange
         model = MNet1000(MNet_config)
-        BS, N_CHS, SEQ_LEN = 4, 270, 1000
+        BS, N_CHS, SEQ_LEN = (4, 270, 1000)
         x = torch.randn(BS, N_CHS, SEQ_LEN)
+        # Act
         output = model(x)
+        # Assert
         assert output.shape == (BS, 2)
 
     def test_forward_pass_different_batch_sizes(self):
         """Test forward pass with various batch sizes."""
+        # Arrange
+        # Act
         model = MNet1000(MNet_config)
-        N_CHS, SEQ_LEN = 270, 1000
+        N_CHS, SEQ_LEN = (270, 1000)
+        # Assert
         for batch_size in [1, 8, 16, 32]:
             x = torch.randn(batch_size, N_CHS, SEQ_LEN)
             output = model(x)
@@ -107,65 +273,94 @@ class TestMNet1000ForwardPass:
 
     def test_forward_bb_method(self):
         """Test forward_bb method for backbone features."""
+        # Arrange
         model = MNet1000(MNet_config)
-        BS, N_CHS, SEQ_LEN = 4, 270, 1000
+        BS, N_CHS, SEQ_LEN = (4, 270, 1000)
         x = torch.randn(BS, N_CHS, SEQ_LEN)
+        # Act
         features = model.forward_bb(x)
+        # Assert
         assert features.shape == (BS, 1024)
 
     def test_reshape_input_static_method(self):
         """Test _reshape_input static method.
 
-        The reshape operation transforms:
-        (batch, channel, time) -> (batch, 1, channel, time)
-        via unsqueeze and transpose operations.
-        """
-        BS, N_CHS, SEQ_LEN = 4, 270, 1000
+            The reshape operation transforms:
+            (batch, channel, time) -> (batch, 1, channel, time)
+            via unsqueeze and transpose operations.
+            """
+        # Arrange
+        BS, N_CHS, SEQ_LEN = (4, 270, 1000)
         x = torch.randn(BS, N_CHS, SEQ_LEN)
+        # Act
         reshaped = MNet1000._reshape_input(x, N_CHS)
+        # Assert
         assert reshaped.shape == (BS, 1, N_CHS, SEQ_LEN)
 
-    def test_znorm_static_method(self):
+    def test_znorm_static_method_max(self):
         """Test _znorm_along_the_last_dim static method."""
+        # Arrange
         x = torch.randn(4, 270, 1000)
+        # Act
         normalized = MNet1000._znorm_along_the_last_dim(x)
-        # Check mean is close to 0 and std is close to 1
-        assert torch.abs(normalized.mean(dim=-1)).max() < 1e-5
-        assert torch.abs(normalized.std(dim=-1) - 1.0).max() < 1e-5
+        # Assert
+        assert torch.abs(normalized.mean(dim=-1)).max() < 1e-05
+        pass
+
+    def test_znorm_static_method_max_v2(self):
+        """Test _znorm_along_the_last_dim static method."""
+        # Arrange
+        x = torch.randn(4, 270, 1000)
+        # Act
+        normalized = MNet1000._znorm_along_the_last_dim(x)
+        # Assert
+        pass
+        assert torch.abs(normalized.std(dim=-1) - 1.0).max() < 1e-05
 
 
 class TestMNet1000Gradient:
     """Test gradient flow and backpropagation."""
 
-    def test_gradient_flow(self):
+    def test_gradient_flow_mnet_1000_behaves_correctly_grad(self):
         """Test that gradients flow through the model."""
+        # Arrange
         model = MNet1000(MNet_config)
         x = torch.randn(4, 270, 1000, requires_grad=True)
         output = model(x)
         loss = output.sum()
+        # Act
         loss.backward()
+        # Assert
         assert x.grad is not None
+        pass
+
+    def test_gradient_flow_mnet_1000_behaves_correctly_any(self):
+        """Test that gradients flow through the model."""
+        # Arrange
+        model = MNet1000(MNet_config)
+        x = torch.randn(4, 270, 1000, requires_grad=True)
+        output = model(x)
+        loss = output.sum()
+        # Act
+        loss.backward()
+        # Assert
+        pass
         assert not torch.isnan(x.grad).any()
 
-    def test_parameter_updates(self):
+    def test_parameter_updates_mnet_1000_behaves_correctly(self):
         """Test that parameters can be updated."""
+        # Arrange
         model = MNet1000(MNet_config)
         optimizer = torch.optim.Adam(model.parameters())
         x = torch.randn(4, 270, 1000)
         target = torch.randint(0, 2, (4,))
-
-        # Store initial parameters
-        initial_params = {
-            name: param.clone() for name, param in model.named_parameters()
-        }
-
-        # Forward pass and update
+        initial_params = {name: param.clone() for name, param in model.named_parameters()}
         output = model(x)
         loss = nn.CrossEntropyLoss()(output, target)
         loss.backward()
+        # Act
         optimizer.step()
-
-        # Check parameters were updated
+        # Assert
         for name, param in model.named_parameters():
             assert not torch.equal(param, initial_params[name])
 
@@ -173,24 +368,33 @@ class TestMNet1000Gradient:
 class TestMNet1000Device:
     """Test device compatibility."""
 
-    def test_cpu_computation(self):
+    def test_cpu_computation_mnet_1000_behaves_correctly(self):
         """Test computation on CPU."""
+        # Arrange
         model = MNet1000(MNet_config)
         x = torch.randn(2, 270, 1000)
+        # Act
         output = model(x)
-        assert output.device.type == "cpu"
+        # Assert
+        assert output.device.type == 'cpu'
 
-    @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA not available")
-    def test_cuda_computation(self):
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason='CUDA not available')
+    def test_cuda_computation_mnet_1000_behaves_correctly(self):
         """Test computation on CUDA."""
+        # Arrange
         model = MNet1000(MNet_config).cuda()
         x = torch.randn(2, 270, 1000).cuda()
+        # Act
         output = model(x)
-        assert output.device.type == "cuda"
+        # Assert
+        assert output.device.type == 'cuda'
 
-    @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA not available")
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason='CUDA not available')
     def test_multi_gpu_compatibility(self):
         """Test DataParallel compatibility."""
+        # Arrange
+        # Act
+        # Assert
         if torch.cuda.device_count() > 1:
             model = nn.DataParallel(MNet1000(MNet_config))
             x = torch.randn(8, 270, 1000).cuda()
@@ -201,21 +405,38 @@ class TestMNet1000Device:
 class TestSwapLayer:
     """Test SwapLayer functionality."""
 
-    def test_swap_layer_forward(self):
+    def test_swap_layer_forward_shape(self):
         """Test SwapLayer forward pass."""
+        # Arrange
         layer = SwapLayer()
         x = torch.randn(4, 10, 20)
+        # Act
         output = layer(x)
+        # Assert
         assert output.shape == (4, 20, 10)
+        pass
+
+    def test_swap_layer_forward_equal(self):
+        """Test SwapLayer forward pass."""
+        # Arrange
+        layer = SwapLayer()
+        x = torch.randn(4, 10, 20)
+        # Act
+        output = layer(x)
+        # Assert
+        pass
         assert torch.equal(output, x.transpose(1, 2))
 
     def test_swap_layer_gradient(self):
         """Test gradient flow through SwapLayer."""
+        # Arrange
         layer = SwapLayer()
         x = torch.randn(4, 10, 20, requires_grad=True)
         output = layer(x)
         loss = output.sum()
+        # Act
         loss.backward()
+        # Assert
         assert x.grad is not None
 
 
@@ -224,38 +445,49 @@ class TestReshapeLayer:
 
     def test_reshape_layer_forward(self):
         """Test ReshapeLayer forward pass."""
+        # Arrange
         layer = ReshapeLayer()
         x = torch.randn(4, 10, 20, 5)
+        # Act
         output = layer(x)
+        # Assert
         assert output.shape == (4, 10 * 20 * 5)
 
     def test_reshape_layer_preserves_data(self):
         """Test that ReshapeLayer preserves data."""
+        # Arrange
         layer = ReshapeLayer()
         x = torch.randn(4, 10, 20, 5)
         output = layer(x)
+        # Act
         expected = x.reshape(4, -1)
+        # Assert
         assert torch.equal(output, expected)
 
 
 class TestMNet1000Memory:
     """Test memory efficiency."""
 
-    def test_memory_efficiency(self):
+    def test_memory_efficiency_mnet_1000_behaves_correctly(self):
         """Test model memory footprint."""
+        # Arrange
         model = MNet1000(MNet_config)
-        total_params = sum(p.numel() for p in model.parameters())
-        total_size_mb = total_params * 4 / (1024 * 1024)  # 4 bytes per float32
-        assert total_size_mb < 100  # Model should be under 100MB
+        # Act
+        total_params = sum((p.numel() for p in model.parameters()))
+        total_size_mb = total_params * 4 / (1024 * 1024)
+        # Assert
+        assert total_size_mb < 100
 
-    def test_inference_memory(self):
+    def test_inference_memory_mnet_1000_behaves_correctly(self):
         """Test memory usage during inference."""
+        # Arrange
         model = MNet1000(MNet_config)
         model.eval()
+        # Act
         x = torch.randn(1, 270, 1000)
-
         with torch.no_grad():
             output = model(x)
+        # Assert
         assert output.shape == (1, 2)
 
 
@@ -264,54 +496,61 @@ class TestMNet1000Integration:
 
     def test_with_different_optimizers(self):
         """Test compatibility with different optimizers."""
+        # Arrange
         model = MNet1000(MNet_config)
-        optimizers = [
-            torch.optim.SGD(model.parameters(), lr=0.01),
-            torch.optim.Adam(model.parameters()),
-            torch.optim.AdamW(model.parameters()),
-        ]
-
+        optimizers = [torch.optim.SGD(model.parameters(), lr=0.01), torch.optim.Adam(model.parameters()), torch.optim.AdamW(model.parameters())]
         x = torch.randn(4, 270, 1000)
+        # Act
         target = torch.randint(0, 2, (4,))
-
         for optimizer in optimizers:
             output = model(x)
             loss = nn.CrossEntropyLoss()(output, target)
             loss.backward()
             optimizer.step()
             optimizer.zero_grad()
+        # Assert
+        assert target is not None
 
-    def test_with_different_loss_functions(self):
+    def test_with_different_loss_functions_item(self):
         """Test with different loss functions."""
+        # Arrange
         model = MNet1000(MNet_config)
         x = torch.randn(4, 270, 1000)
         output = model(x)
-
-        # Test with various losses
         ce_loss = nn.CrossEntropyLoss()(output, torch.randint(0, 2, (4,)))
+        # Act
         mse_loss = nn.MSELoss()(output, torch.randn(4, 2))
-
+        # Assert
         assert ce_loss.item() > 0
+        pass
+
+    def test_with_different_loss_functions_item_v2(self):
+        """Test with different loss functions."""
+        # Arrange
+        model = MNet1000(MNet_config)
+        x = torch.randn(4, 270, 1000)
+        output = model(x)
+        ce_loss = nn.CrossEntropyLoss()(output, torch.randint(0, 2, (4,)))
+        # Act
+        mse_loss = nn.MSELoss()(output, torch.randn(4, 2))
+        # Assert
+        pass
         assert mse_loss.item() > 0
 
     def test_dropout_training_eval_difference(self):
         """Test that dropout behaves differently in train/eval mode."""
+        # Arrange
         model = MNet1000(MNet_config)
         x = torch.randn(16, 270, 1000)
-
-        # Get outputs in training mode
         model.train()
         outputs_train = [model(x) for _ in range(10)]
-
-        # Get outputs in eval mode
         model.eval()
         with torch.no_grad():
             outputs_eval = [model(x) for _ in range(10)]
-
-        # Training outputs should vary due to dropout
         train_variance = torch.stack(outputs_train).var(dim=0).mean()
+        # Act
         eval_variance = torch.stack(outputs_eval).var(dim=0).mean()
-
+        # Assert
         assert train_variance > eval_variance
 
 

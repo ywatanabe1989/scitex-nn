@@ -71,358 +71,674 @@ class TestWavelet:
         batch_size, n_channels, seq_len = 2, 3, 1000
         return torch.randn(batch_size, n_channels, seq_len)
 
-    def test_initialization_default_params(self, sample_rate):
+    def test_initialization_default_params_out_scale(self, sample_rate):
         """Test initialization with default parameters."""
+        # Arrange
+        # Act
         layer = Wavelet(samp_rate=sample_rate)
+        # Assert
+        assert layer.out_scale == 'log'
+        pass
+        pass
+        pass
 
-        assert layer.out_scale == "log"
+    def test_initialization_default_params_kernel(self, sample_rate):
+        """Test initialization with default parameters."""
+        # Arrange
+        # Act
+        layer = Wavelet(samp_rate=sample_rate)
+        # Assert
+        pass
         assert layer.kernel is not None
+        pass
+        pass
+
+    def test_initialization_default_params_freqs(self, sample_rate):
+        """Test initialization with default parameters."""
+        # Arrange
+        # Act
+        layer = Wavelet(samp_rate=sample_rate)
+        # Assert
+        pass
+        pass
         assert layer.freqs is not None
+        pass
+
+    def test_initialization_default_params_isinstance(self, sample_rate):
+        """Test initialization with default parameters."""
+        # Arrange
+        # Act
+        layer = Wavelet(samp_rate=sample_rate)
+        # Assert
+        pass
+        pass
+        pass
         assert isinstance(layer.dummy, torch.Tensor)
 
-    def test_initialization_custom_params(self, sample_rate):
+    def test_initialization_custom_params_out_scale(self, sample_rate):
         """Test initialization with custom parameters."""
+        # Arrange
         kernel_size = 512
-        freq_scale = "log"
-        out_scale = "linear"
-
-        layer = Wavelet(
-            samp_rate=sample_rate,
-            kernel_size=kernel_size,
-            freq_scale=freq_scale,
-            out_scale=out_scale,
-        )
-
+        freq_scale = 'log'
+        out_scale = 'linear'
+        # Act
+        layer = Wavelet(samp_rate=sample_rate, kernel_size=kernel_size, freq_scale=freq_scale, out_scale=out_scale)
+        # Assert
         assert layer.out_scale == out_scale
+        pass
+
+    def test_initialization_custom_params_kernel_size(self, sample_rate):
+        """Test initialization with custom parameters."""
+        # Arrange
+        kernel_size = 512
+        freq_scale = 'log'
+        out_scale = 'linear'
+        # Act
+        layer = Wavelet(samp_rate=sample_rate, kernel_size=kernel_size, freq_scale=freq_scale, out_scale=out_scale)
+        # Assert
+        pass
         assert layer.kernel_size == mock_to_even(kernel_size)
 
-    def test_morlet_generation_linear_scale(self, sample_rate):
+    def test_morlet_generation_linear_scale_isinstance(self, sample_rate):
         """Test Morlet wavelet generation with linear frequency scale."""
-        morlets, freqs = Wavelet.gen_morlet_to_nyquist(
-            samp_rate=sample_rate, kernel_size=None, freq_scale="linear"
-        )
-
-        # Check output types
+        # Arrange
+        # Act
+        morlets, freqs = Wavelet.gen_morlet_to_nyquist(samp_rate=sample_rate, kernel_size=None, freq_scale='linear')
+        # Assert
         assert isinstance(morlets, np.ndarray)
-        assert isinstance(freqs, np.ndarray)
+        pass
+        nyquist = sample_rate / 2
+        pass
+        pass
+        pass
+        pass
 
-        # Check frequency range
+    def test_morlet_generation_linear_scale_isinstance_v2(self, sample_rate):
+        """Test Morlet wavelet generation with linear frequency scale."""
+        # Arrange
+        # Act
+        morlets, freqs = Wavelet.gen_morlet_to_nyquist(samp_rate=sample_rate, kernel_size=None, freq_scale='linear')
+        # Assert
+        pass
+        assert isinstance(freqs, np.ndarray)
+        nyquist = sample_rate / 2
+        pass
+        pass
+        pass
+        pass
+
+    def test_morlet_generation_linear_scale_check3(self, sample_rate):
+        """Test Morlet wavelet generation with linear frequency scale."""
+        # Arrange
+        # Act
+        morlets, freqs = Wavelet.gen_morlet_to_nyquist(samp_rate=sample_rate, kernel_size=None, freq_scale='linear')
+        # Assert
+        pass
+        pass
         nyquist = sample_rate / 2
         assert freqs[0] > 0
+        pass
+        pass
+        pass
+
+    def test_morlet_generation_linear_scale_check4(self, sample_rate):
+        """Test Morlet wavelet generation with linear frequency scale."""
+        # Arrange
+        # Act
+        morlets, freqs = Wavelet.gen_morlet_to_nyquist(samp_rate=sample_rate, kernel_size=None, freq_scale='linear')
+        # Assert
+        pass
+        pass
+        nyquist = sample_rate / 2
+        pass
         assert freqs[-1] <= nyquist
+        pass
+        pass
 
-        # Check monotonic increase
+    def test_morlet_generation_linear_scale_all(self, sample_rate):
+        """Test Morlet wavelet generation with linear frequency scale."""
+        # Arrange
+        # Act
+        morlets, freqs = Wavelet.gen_morlet_to_nyquist(samp_rate=sample_rate, kernel_size=None, freq_scale='linear')
+        # Assert
+        pass
+        pass
+        nyquist = sample_rate / 2
+        pass
+        pass
         assert np.all(np.diff(freqs) > 0)
+        pass
 
-        # Check morlets are complex
+    def test_morlet_generation_linear_scale_dtype(self, sample_rate):
+        """Test Morlet wavelet generation with linear frequency scale."""
+        # Arrange
+        # Act
+        morlets, freqs = Wavelet.gen_morlet_to_nyquist(samp_rate=sample_rate, kernel_size=None, freq_scale='linear')
+        # Assert
+        pass
+        pass
+        nyquist = sample_rate / 2
+        pass
+        pass
+        pass
         assert morlets.dtype == np.complex128
 
     def test_morlet_generation_log_scale(self, sample_rate):
         """Test Morlet wavelet generation with log frequency scale."""
-        morlets, freqs = Wavelet.gen_morlet_to_nyquist(
-            samp_rate=sample_rate, kernel_size=None, freq_scale="log"
-        )
-
-        # Check logarithmic spacing
+        # Arrange
+        # Act
+        morlets, freqs = Wavelet.gen_morlet_to_nyquist(samp_rate=sample_rate, kernel_size=None, freq_scale='log')
         freq_ratios = freqs[1:] / freqs[:-1]
-        # For log scale, ratios should be approximately constant
+        # Assert
         assert np.std(freq_ratios) < np.mean(freq_ratios) * 0.5
 
-    def test_forward_basic(self, sample_rate, sample_input):
+    def test_forward_basic_wavelet_behaves_correctly_shape(self, sample_rate, sample_input):
         """Test basic forward pass."""
+        # Arrange
         layer = Wavelet(samp_rate=sample_rate)
+        # Act
         pha, amp, freqs = layer(sample_input)
-
         batch_size, n_channels, seq_len = sample_input.shape
         n_freqs = layer.kernel.shape[0]
-
-        # Check output shapes
+        # Assert
         assert pha.shape == (batch_size, n_channels, n_freqs, seq_len)
+        pass
+        pass
+
+    def test_forward_basic_wavelet_behaves_correctly_shape_v2(self, sample_rate, sample_input):
+        """Test basic forward pass."""
+        # Arrange
+        layer = Wavelet(samp_rate=sample_rate)
+        # Act
+        pha, amp, freqs = layer(sample_input)
+        batch_size, n_channels, seq_len = sample_input.shape
+        n_freqs = layer.kernel.shape[0]
+        # Assert
+        pass
         assert amp.shape == (batch_size, n_channels, n_freqs, seq_len)
+        pass
+
+    def test_forward_basic_wavelet_behaves_correctly_shape_v3(self, sample_rate, sample_input):
+        """Test basic forward pass."""
+        # Arrange
+        layer = Wavelet(samp_rate=sample_rate)
+        # Act
+        pha, amp, freqs = layer(sample_input)
+        batch_size, n_channels, seq_len = sample_input.shape
+        n_freqs = layer.kernel.shape[0]
+        # Assert
+        pass
+        pass
         assert freqs.shape == (batch_size, n_channels, n_freqs)
 
     def test_forward_log_scale_output(self, sample_rate, sample_input):
         """Test forward pass with log scale output."""
-        layer = Wavelet(samp_rate=sample_rate, out_scale="log")
+        # Arrange
+        layer = Wavelet(samp_rate=sample_rate, out_scale='log')
+        # Act
         pha, amp, freqs = layer(sample_input)
-
-        # Amplitude should be log-transformed
-        assert not torch.isinf(amp).any()  # Log should handle small values
+        # Assert
+        assert not torch.isinf(amp).any()
 
     def test_forward_linear_scale_output(self, sample_rate, sample_input):
         """Test forward pass with linear scale output."""
-        layer = Wavelet(samp_rate=sample_rate, out_scale="linear")
+        # Arrange
+        layer = Wavelet(samp_rate=sample_rate, out_scale='linear')
+        # Act
         pha, amp, freqs = layer(sample_input)
-
-        # Amplitude should be non-negative
+        # Assert
         assert (amp >= 0).all()
 
-    def test_phase_range(self, sample_rate, sample_input):
+    def test_phase_range_wavelet_behaves_correctly_all(self, sample_rate, sample_input):
         """Test that phase values are in correct range."""
+        # Arrange
         layer = Wavelet(samp_rate=sample_rate)
+        # Act
         pha, _, _ = layer(sample_input)
-
-        # Phase should be between -pi and pi
+        # Assert
         assert (pha >= -np.pi).all()
+        pass
+
+    def test_phase_range_wavelet_behaves_correctly_all_v2(self, sample_rate, sample_input):
+        """Test that phase values are in correct range."""
+        # Arrange
+        layer = Wavelet(samp_rate=sample_rate)
+        # Act
+        pha, _, _ = layer(sample_input)
+        # Assert
+        pass
         assert (pha <= np.pi).all()
 
-    def test_gradient_flow(self, sample_rate, sample_input):
+    def test_gradient_flow_wavelet_behaves_correctly_grad(self, sample_rate, sample_input):
         """Test that gradients flow properly through the layer."""
+        # Arrange
         layer = Wavelet(samp_rate=sample_rate)
         sample_input.requires_grad = True
-
         pha, amp, _ = layer(sample_input)
         loss = amp.sum() + pha.sum()
+        # Act
         loss.backward()
-
+        # Assert
         assert sample_input.grad is not None
-        assert not torch.allclose(
-            sample_input.grad, torch.zeros_like(sample_input.grad)
-        )
+        pass
 
-    def test_edge_handling(self, sample_rate):
-        """Test edge handling with reflection padding."""
+    def test_gradient_flow_wavelet_behaves_correctly_allclose(self, sample_rate, sample_input):
+        """Test that gradients flow properly through the layer."""
+        # Arrange
         layer = Wavelet(samp_rate=sample_rate)
+        sample_input.requires_grad = True
+        pha, amp, _ = layer(sample_input)
+        loss = amp.sum() + pha.sum()
+        # Act
+        loss.backward()
+        # Assert
+        pass
+        assert not torch.allclose(sample_input.grad, torch.zeros_like(sample_input.grad))
 
-        # Create signal with sharp edges
+    def test_edge_handling_wavelet_behaves_correctly_any(self, sample_rate):
+        """Test edge handling with reflection padding."""
+        # Arrange
+        layer = Wavelet(samp_rate=sample_rate)
         x = torch.ones(1, 1, 1000)
         x[:, :, :100] = -1
         x[:, :, -100:] = -1
-
+        # Act
         pha, amp, _ = layer(x)
-
-        # Should not have NaN or Inf at edges
+        # Assert
         assert not torch.isnan(pha).any()
+        pass
+
+    def test_edge_handling_wavelet_behaves_correctly_any_v2(self, sample_rate):
+        """Test edge handling with reflection padding."""
+        # Arrange
+        layer = Wavelet(samp_rate=sample_rate)
+        x = torch.ones(1, 1, 1000)
+        x[:, :, :100] = -1
+        x[:, :, -100:] = -1
+        # Act
+        pha, amp, _ = layer(x)
+        # Assert
+        pass
         assert not torch.isinf(amp).any()
 
-    def test_device_compatibility_cpu(self, sample_rate):
+    def test_device_compatibility_cpu_device(self, sample_rate):
         """Test layer works on CPU."""
+        # Arrange
         layer = Wavelet(samp_rate=sample_rate)
         x = torch.randn(2, 3, 1000)
-
+        # Act
         pha, amp, freqs = layer(x)
-
+        # Assert
         assert pha.device == x.device
+        pass
+        pass
+
+    def test_device_compatibility_cpu_device_v2(self, sample_rate):
+        """Test layer works on CPU."""
+        # Arrange
+        layer = Wavelet(samp_rate=sample_rate)
+        x = torch.randn(2, 3, 1000)
+        # Act
+        pha, amp, freqs = layer(x)
+        # Assert
+        pass
         assert amp.device == x.device
+        pass
+
+    def test_device_compatibility_cpu_is_cuda(self, sample_rate):
+        """Test layer works on CPU."""
+        # Arrange
+        layer = Wavelet(samp_rate=sample_rate)
+        x = torch.randn(2, 3, 1000)
+        # Act
+        pha, amp, freqs = layer(x)
+        # Assert
+        pass
+        pass
         assert not pha.is_cuda
 
-    @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA not available")
-    def test_device_compatibility_cuda(self, sample_rate):
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason='CUDA not available')
+    def test_device_compatibility_cuda_device(self, sample_rate):
         """Test layer works on CUDA."""
+        # Arrange
         layer = Wavelet(samp_rate=sample_rate).cuda()
         x = torch.randn(2, 3, 1000).cuda()
-
+        # Act
         pha, amp, freqs = layer(x)
-
+        # Assert
         assert pha.device == x.device
+        pass
+        pass
+        pass
+
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason='CUDA not available')
+    def test_device_compatibility_cuda_device_v2(self, sample_rate):
+        """Test layer works on CUDA."""
+        # Arrange
+        layer = Wavelet(samp_rate=sample_rate).cuda()
+        x = torch.randn(2, 3, 1000).cuda()
+        # Act
+        pha, amp, freqs = layer(x)
+        # Assert
+        pass
         assert amp.device == x.device
+        pass
+        pass
+
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason='CUDA not available')
+    def test_device_compatibility_cuda_is_cuda(self, sample_rate):
+        """Test layer works on CUDA."""
+        # Arrange
+        layer = Wavelet(samp_rate=sample_rate).cuda()
+        x = torch.randn(2, 3, 1000).cuda()
+        # Act
+        pha, amp, freqs = layer(x)
+        # Assert
+        pass
+        pass
         assert pha.is_cuda
+        pass
+
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason='CUDA not available')
+    def test_device_compatibility_cuda_is_cuda_v2(self, sample_rate):
+        """Test layer works on CUDA."""
+        # Arrange
+        layer = Wavelet(samp_rate=sample_rate).cuda()
+        x = torch.randn(2, 3, 1000).cuda()
+        # Act
+        pha, amp, freqs = layer(x)
+        # Assert
+        pass
+        pass
+        pass
         assert layer.kernel.is_cuda
 
-    def test_different_kernel_sizes(self, sample_rate):
+    def test_different_kernel_sizes_check1(self, sample_rate):
         """Test with various kernel sizes."""
+        # Arrange
         kernel_sizes = [256, 512, 1024, 2048]
+        # Act
         x = torch.randn(2, 3, 2000)
-
+        # Assert
         for kernel_size in kernel_sizes:
             layer = Wavelet(samp_rate=sample_rate, kernel_size=kernel_size)
             pha, amp, _ = layer(x)
-
-            # Output should maintain input sequence length
             assert pha.shape[-1] == x.shape[-1]
+            pass
+
+    def test_different_kernel_sizes_check2(self, sample_rate):
+        """Test with various kernel sizes."""
+        # Arrange
+        kernel_sizes = [256, 512, 1024, 2048]
+        # Act
+        x = torch.randn(2, 3, 2000)
+        # Assert
+        for kernel_size in kernel_sizes:
+            layer = Wavelet(samp_rate=sample_rate, kernel_size=kernel_size)
+            pha, amp, _ = layer(x)
+            pass
             assert amp.shape[-1] == x.shape[-1]
 
-    def test_frequency_resolution(self, sample_rate):
+    def test_frequency_resolution_wavelet_behaves_correctly(self, sample_rate):
         """Test frequency resolution with different scales."""
-        layer_linear = Wavelet(samp_rate=sample_rate, freq_scale="linear")
-        layer_log = Wavelet(samp_rate=sample_rate, freq_scale="log")
-
-        # Linear scale should have more high-frequency components
+        # Arrange
+        layer_linear = Wavelet(samp_rate=sample_rate, freq_scale='linear')
+        # Act
+        layer_log = Wavelet(samp_rate=sample_rate, freq_scale='log')
         n_freqs_linear = layer_linear.freqs.shape[0]
         n_freqs_log = layer_log.freqs.shape[0]
-
-        assert n_freqs_linear > n_freqs_log  # Linear has more bins overall
+        # Assert
+        assert n_freqs_linear > n_freqs_log
 
     def test_single_tone_analysis(self, sample_rate):
         """Test wavelet analysis of single frequency tone."""
-        layer = Wavelet(samp_rate=sample_rate, freq_scale="linear")
-
-        # Create single tone at 100 Hz
+        # Arrange
+        layer = Wavelet(samp_rate=sample_rate, freq_scale='linear')
         t = torch.arange(0, 2, 1 / sample_rate)
         freq = 100
         x = torch.sin(2 * np.pi * freq * t).unsqueeze(0).unsqueeze(0)
-
         pha, amp, freqs = layer(x)
-
-        # Find peak frequency
         avg_amp = amp[0, 0].mean(dim=1)
+        # Act
         peak_idx = torch.argmax(avg_amp)
         peak_freq = freqs[0, 0, peak_idx]
-
-        # Peak should be close to 100 Hz
-        assert abs(peak_freq - freq) < 20  # Within 20 Hz tolerance
+        # Assert
+        assert abs(peak_freq - freq) < 20
 
     def test_chirp_signal_analysis(self, sample_rate):
         """Test wavelet analysis of chirp signal."""
+        # Arrange
         layer = Wavelet(samp_rate=sample_rate)
-
-        # Create chirp signal (frequency increases over time)
         t = torch.arange(0, 2, 1 / sample_rate)
-        f0, f1 = 50, 200
+        f0, f1 = (50, 200)
         chirp = torch.sin(2 * np.pi * (f0 + (f1 - f0) * t / 2) * t)
         x = chirp.unsqueeze(0).unsqueeze(0)
-
         pha, amp, freqs = layer(x)
-
-        # Early time should have lower frequency content
         early_amp = amp[0, 0, :, :100].mean(dim=1)
         late_amp = amp[0, 0, :, -100:].mean(dim=1)
-
         early_peak = freqs[0, 0, torch.argmax(early_amp)]
+        # Act
         late_peak = freqs[0, 0, torch.argmax(late_amp)]
-
-        # Frequency should increase over time
+        # Assert
         assert late_peak > early_peak
 
-    def test_zero_input_handling(self, sample_rate):
+    def test_zero_input_handling_all(self, sample_rate):
         """Test behavior with zero input."""
+        # Arrange
         layer = Wavelet(samp_rate=sample_rate)
         x = torch.zeros(2, 3, 1000)
-
+        # Act
         pha, amp, _ = layer(x)
+        # Assert
+        if layer.out_scale == 'log':
+            assert (amp < -5).all()
+        else:
+            pass
 
-        # Amplitude should be near zero (or log of small value)
-        if layer.out_scale == "log":
-            assert (amp < -5).all()  # Log of small values
+    def test_zero_input_handling_allclose(self, sample_rate):
+        """Test behavior with zero input."""
+        # Arrange
+        layer = Wavelet(samp_rate=sample_rate)
+        x = torch.zeros(2, 3, 1000)
+        # Act
+        pha, amp, _ = layer(x)
+        # Assert
+        if layer.out_scale == 'log':
+            pass
         else:
             assert torch.allclose(amp, torch.zeros_like(amp), atol=1e-10)
 
-    def test_numerical_stability(self, sample_rate):
+    def test_numerical_stability_wavelet_behaves_correctly_any(self, sample_rate):
         """Test numerical stability with extreme values."""
+        # Arrange
         layer = Wavelet(samp_rate=sample_rate)
-
-        # Test with very large values
-        x_large = torch.randn(2, 3, 1000) * 1e6
+        x_large = torch.randn(2, 3, 1000) * 1000000.0
+        # Act
         pha_large, amp_large, _ = layer(x_large)
+        # Assert
         assert not torch.isnan(pha_large).any()
-        assert not torch.isinf(amp_large).any()
+        pass
+        x_small = torch.randn(2, 3, 1000) * 1e-06
+        pha_small, amp_small, _ = layer(x_small)
+        pass
+        pass
 
-        # Test with very small values
-        x_small = torch.randn(2, 3, 1000) * 1e-6
+    def test_numerical_stability_wavelet_behaves_correctly_any_v2(self, sample_rate):
+        """Test numerical stability with extreme values."""
+        # Arrange
+        layer = Wavelet(samp_rate=sample_rate)
+        x_large = torch.randn(2, 3, 1000) * 1000000.0
+        # Act
+        pha_large, amp_large, _ = layer(x_large)
+        # Assert
+        pass
+        assert not torch.isinf(amp_large).any()
+        x_small = torch.randn(2, 3, 1000) * 1e-06
+        pha_small, amp_small, _ = layer(x_small)
+        pass
+        pass
+
+    def test_numerical_stability_wavelet_behaves_correctly_any_v3(self, sample_rate):
+        """Test numerical stability with extreme values."""
+        # Arrange
+        layer = Wavelet(samp_rate=sample_rate)
+        x_large = torch.randn(2, 3, 1000) * 1000000.0
+        # Act
+        pha_large, amp_large, _ = layer(x_large)
+        # Assert
+        pass
+        pass
+        x_small = torch.randn(2, 3, 1000) * 1e-06
         pha_small, amp_small, _ = layer(x_small)
         assert not torch.isnan(pha_small).any()
+        pass
+
+    def test_numerical_stability_wavelet_behaves_correctly_any_v4(self, sample_rate):
+        """Test numerical stability with extreme values."""
+        # Arrange
+        layer = Wavelet(samp_rate=sample_rate)
+        x_large = torch.randn(2, 3, 1000) * 1000000.0
+        # Act
+        pha_large, amp_large, _ = layer(x_large)
+        # Assert
+        pass
+        pass
+        x_small = torch.randn(2, 3, 1000) * 1e-06
+        pha_small, amp_small, _ = layer(x_small)
+        pass
         assert not torch.isinf(amp_small).any()
 
-    def test_batch_consistency(self, sample_rate):
+    def test_batch_consistency_wavelet_behaves_correctly_allclose(self, sample_rate):
         """Test that batched processing gives consistent results."""
+        # Arrange
         layer = Wavelet(samp_rate=sample_rate)
-
-        # Single sample
         x_single = torch.randn(1, 3, 1000)
         pha_single, amp_single, _ = layer(x_single)
-
-        # Batched with same data
         x_batch = x_single.repeat(4, 1, 1)
+        # Act
         pha_batch, amp_batch, _ = layer(x_batch)
-
-        # All batch elements should be identical
+        # Assert
         for i in range(4):
             assert torch.allclose(pha_batch[i], pha_single[0])
+            pass
+
+    def test_batch_consistency_wavelet_behaves_correctly_allclose_v2(self, sample_rate):
+        """Test that batched processing gives consistent results."""
+        # Arrange
+        layer = Wavelet(samp_rate=sample_rate)
+        x_single = torch.randn(1, 3, 1000)
+        pha_single, amp_single, _ = layer(x_single)
+        x_batch = x_single.repeat(4, 1, 1)
+        # Act
+        pha_batch, amp_batch, _ = layer(x_batch)
+        # Assert
+        for i in range(4):
+            pass
             assert torch.allclose(amp_batch[i], amp_single[0])
 
-    def test_kernel_properties(self, sample_rate):
+    def test_kernel_properties_wavelet_behaves_correctly_dtype(self, sample_rate):
         """Test properties of generated Morlet wavelets."""
+        # Arrange
+        # Act
         layer = Wavelet(samp_rate=sample_rate)
-
-        # Kernel should be complex
-        assert (
-            layer.kernel.dtype == torch.complex64
-            or layer.kernel.dtype == torch.complex128
-        )
-
-        # Each wavelet should be normalized
+        # Assert
+        assert layer.kernel.dtype == torch.complex64 or layer.kernel.dtype == torch.complex128
         for i in range(layer.kernel.shape[0]):
             wavelet = layer.kernel[i]
-            # Check that wavelet has reasonable magnitude
+            pass
+            pass
+
+    def test_kernel_properties_wavelet_behaves_correctly_max(self, sample_rate):
+        """Test properties of generated Morlet wavelets."""
+        # Arrange
+        # Act
+        layer = Wavelet(samp_rate=sample_rate)
+        # Assert
+        pass
+        for i in range(layer.kernel.shape[0]):
+            wavelet = layer.kernel[i]
             assert wavelet.abs().max() > 0
+            pass
+
+    def test_kernel_properties_wavelet_behaves_correctly_max_v2(self, sample_rate):
+        """Test properties of generated Morlet wavelets."""
+        # Arrange
+        # Act
+        layer = Wavelet(samp_rate=sample_rate)
+        # Assert
+        pass
+        for i in range(layer.kernel.shape[0]):
+            wavelet = layer.kernel[i]
+            pass
             assert wavelet.abs().max() < 10
 
-    def test_memory_efficiency(self, sample_rate):
+    def test_memory_efficiency_wavelet_behaves_correctly_check1(self, sample_rate):
         """Test memory usage with large inputs."""
+        # Arrange
         layer = Wavelet(samp_rate=sample_rate)
-
-        # Large input
         x = torch.randn(4, 8, 4000)
-
-        # Should not raise memory errors
+        # Act
         pha, amp, _ = layer(x)
+        # Assert
         assert pha.shape[0] == 4
+        pass
+
+    def test_memory_efficiency_wavelet_behaves_correctly_check2(self, sample_rate):
+        """Test memory usage with large inputs."""
+        # Arrange
+        layer = Wavelet(samp_rate=sample_rate)
+        x = torch.randn(4, 8, 4000)
+        # Act
+        pha, amp, _ = layer(x)
+        # Assert
+        pass
         assert pha.shape[1] == 8
 
     def test_integration_with_sequential(self, sample_rate):
         """Test integration in nn.Sequential."""
+        # Arrange
 
         class WaveletFeatures(nn.Module):
+
             def __init__(self, samp_rate):
                 super().__init__()
                 self.wavelet = Wavelet(samp_rate)
 
             def forward(self, x):
                 _, amp, _ = self.wavelet(x)
-                # Average over time for feature extraction
                 return amp.mean(dim=-1)
-
-        model = nn.Sequential(
-            WaveletFeatures(sample_rate),
-            nn.Flatten(),
-            nn.Linear(3 * 10, 64),  # Assuming ~10 frequency bands
-            nn.ReLU(),
-            nn.Linear(64, 10),
-        )
-
+        model = nn.Sequential(WaveletFeatures(sample_rate), nn.Flatten(), nn.Linear(3 * 10, 64), nn.ReLU(), nn.Linear(64, 10))
+        # Act
         x = torch.randn(4, 3, 1000)
-        # Note: This might fail due to dynamic frequency band calculation
-        # Just check it doesn't crash
+        # Assert
         try:
             output = model(x)
             assert output.shape[0] == 4
         except RuntimeError:
-            # Expected if linear layer size doesn't match
             pass
 
     def test_phase_amplitude_consistency(self, sample_rate, sample_input):
         """Test that phase and amplitude are consistent."""
+        # Arrange
         layer = Wavelet(samp_rate=sample_rate)
         pha, amp, _ = layer(sample_input)
-
-        # Reconstruct complex representation
-        # complex = amp * exp(i * pha)
-        # This is just a sanity check that values are reasonable
-
-        # Phase should vary smoothly for continuous signals
         phase_diff = torch.diff(pha, dim=-1)
-        # Phase differences up to pi are normal; values > pi indicate wrapping
-        # At high frequencies, phase changes rapidly, so we just verify
-        # that the majority of phase differences are bounded
+        # Act
         fraction_small = (torch.abs(phase_diff) < np.pi).float().mean()
-        assert fraction_small > 0.7  # At least 70% should be < pi
+        # Assert
+        assert fraction_small > 0.7
 
     def test_custom_kernel_size_effect(self, sample_rate):
         """Test that kernel size affects frequency resolution."""
+        # Arrange
         x = torch.randn(1, 1, 2000)
-
-        # Smaller kernel - less frequency resolution
         layer_small = Wavelet(samp_rate=sample_rate, kernel_size=256)
         _, amp_small, freqs_small = layer_small(x)
-
-        # Larger kernel - better frequency resolution
         layer_large = Wavelet(samp_rate=sample_rate, kernel_size=2048)
+        # Act
         _, amp_large, freqs_large = layer_large(x)
-
-        # Different kernel sizes should give different results
-        assert amp_small.shape != amp_large.shape or not torch.allclose(
-            amp_small, amp_large
-        )
+        # Assert
+        assert amp_small.shape != amp_large.shape or not torch.allclose(amp_small, amp_large)
 
 
 if __name__ == "__main__":

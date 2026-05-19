@@ -14,18 +14,24 @@ NOTEBOOK = (
 )
 
 
-def test_11_pac(tmp_path: Path) -> None:
-    assert NOTEBOOK.exists(), f"missing example: {NOTEBOOK}"
-    if shutil.which("jupyter") is None:
-        pytest.skip("jupyter not installed")
-
+@pytest.mark.skipif(shutil.which('jupyter') is None, reason='jupyter not installed')
+def test_11_pac_11_pac_behaves_correctly_exists(tmp_path: Path) -> None:
+    # Arrange
+    # Act
+    # Assert
+    assert NOTEBOOK.exists(), f'missing example: {NOTEBOOK}'
     target = tmp_path / NOTEBOOK.name
     shutil.copy(NOTEBOOK, target)
-    r = subprocess.run(
-        ["jupyter", "nbconvert", "--to", "notebook", "--execute",
-         "--output", target.name, str(target)],
-        cwd=tmp_path, capture_output=True, text=True, timeout=300,
-    )
-    assert r.returncode == 0, (
-        f"11_pac.ipynb failed:\nSTDOUT:\n{r.stdout}\nSTDERR:\n{r.stderr}"
-    )
+    r = subprocess.run(['jupyter', 'nbconvert', '--to', 'notebook', '--execute', '--output', target.name, str(target)], cwd=tmp_path, capture_output=True, text=True, timeout=300)
+    pass
+
+@pytest.mark.skipif(shutil.which('jupyter') is None, reason='jupyter not installed')
+def test_11_pac_11_pac_behaves_correctly_returncode(tmp_path: Path) -> None:
+    # Arrange
+    # Act
+    # Assert
+    pass
+    target = tmp_path / NOTEBOOK.name
+    shutil.copy(NOTEBOOK, target)
+    r = subprocess.run(['jupyter', 'nbconvert', '--to', 'notebook', '--execute', '--output', target.name, str(target)], cwd=tmp_path, capture_output=True, text=True, timeout=300)
+    assert r.returncode == 0, f'11_pac.ipynb failed:\nSTDOUT:\n{r.stdout}\nSTDERR:\n{r.stderr}'

@@ -20,166 +20,308 @@ import torch.nn as nn
 class TestPACInitialization:
     """Test PAC layer initialization with various configurations."""
 
-    def test_basic_initialization(self):
+    def test_basic_initialization_pac_behaves_correctly_fp16(self):
         """Test basic PAC layer initialization with default parameters."""
+        # Arrange
         from scitex_nn import PAC
-
         seq_len = 1024
         fs = 512
+        # Act
         pac = PAC(seq_len, fs)
-
+        # Assert
         assert pac.fp16 is False
+        pass
+        pass
+        pass
+
+    def test_basic_initialization_pac_behaves_correctly_n_perm(self):
+        """Test basic PAC layer initialization with default parameters."""
+        # Arrange
+        from scitex_nn import PAC
+        seq_len = 1024
+        fs = 512
+        # Act
+        pac = PAC(seq_len, fs)
+        # Assert
+        pass
         assert pac.n_perm is None
+        pass
+        pass
+
+    def test_basic_initialization_pac_behaves_correctly_amp_prob(self):
+        """Test basic PAC layer initialization with default parameters."""
+        # Arrange
+        from scitex_nn import PAC
+        seq_len = 1024
+        fs = 512
+        # Act
+        pac = PAC(seq_len, fs)
+        # Assert
+        pass
+        pass
         assert pac.amp_prob is False
+        pass
+
+    def test_basic_initialization_pac_behaves_correctly_trainable(self):
+        """Test basic PAC layer initialization with default parameters."""
+        # Arrange
+        from scitex_nn import PAC
+        seq_len = 1024
+        fs = 512
+        # Act
+        pac = PAC(seq_len, fs)
+        # Assert
+        pass
+        pass
+        pass
         assert pac.trainable is False
 
-    def test_initialization_with_custom_frequency_bands(self):
+    def test_initialization_with_custom_frequency_bands_shape(self):
         """Test PAC initialization with custom frequency band parameters."""
+        # Arrange
         from scitex_nn import PAC
-
         seq_len = 2048
         fs = 1000
-        pac = PAC(
-            seq_len,
-            fs,
-            pha_start_hz=4,
-            pha_end_hz=30,
-            pha_n_bands=40,
-            amp_start_hz=50,
-            amp_end_hz=200,
-            amp_n_bands=25,
-        )
-
+        # Act
+        pac = PAC(seq_len, fs, pha_start_hz=4, pha_end_hz=30, pha_n_bands=40, amp_start_hz=50, amp_end_hz=200, amp_n_bands=25)
+        # Assert
         assert pac.BANDS_PHA.shape == (40, 2)
+        pass
+
+    def test_initialization_with_custom_frequency_bands_shape_v2(self):
+        """Test PAC initialization with custom frequency band parameters."""
+        # Arrange
+        from scitex_nn import PAC
+        seq_len = 2048
+        fs = 1000
+        # Act
+        pac = PAC(seq_len, fs, pha_start_hz=4, pha_end_hz=30, pha_n_bands=40, amp_start_hz=50, amp_end_hz=200, amp_n_bands=25)
+        # Assert
+        pass
         assert pac.BANDS_AMP.shape == (25, 2)
 
     def test_initialization_with_fp16(self):
         """Test PAC initialization with half precision (fp16) enabled."""
+        # Arrange
         from scitex_nn import PAC
-
+        # Act
         pac = PAC(1024, 512, fp16=True)
+        # Assert
         assert pac.fp16 is True
 
     def test_initialization_with_permutations(self):
         """Test PAC initialization with surrogate permutations enabled."""
+        # Arrange
         from scitex_nn import PAC
-
+        # Act
         pac = PAC(1024, 512, n_perm=100)
+        # Assert
         assert pac.n_perm == 100
 
     def test_initialization_with_invalid_permutations(self):
         """Test PAC initialization fails with invalid permutation parameter."""
+        # Arrange
         from scitex_nn import PAC
+        # Act
+        # Assert
+        with pytest.raises(ValueError, match='n_perm should be None or an integer'):
+            PAC(1024, 512, n_perm='invalid')
 
-        with pytest.raises(ValueError, match="n_perm should be None or an integer"):
-            PAC(1024, 512, n_perm="invalid")
-
-    def test_trainable_initialization(self):
+    def test_trainable_initialization_pac_behaves_correctly(self):
         """Test PAC initialization with trainable bandpass filters."""
+        # Arrange
         from scitex_nn import PAC
-
-        with patch("scitex_nn.DifferentiableBandPassFilter") as mock_filter:
+        # Act
+        # Assert
+        with patch('scitex_nn.DifferentiableBandPassFilter') as mock_filter:
             mock_instance = Mock()
             mock_instance.pha_mids = torch.tensor([10.0, 15.0])
             mock_instance.amp_mids = torch.tensor([100.0, 120.0])
             mock_filter.return_value = mock_instance
-
             pac = PAC(1024, 512, trainable=True)
             assert pac.trainable is True
             mock_filter.assert_called_once()
 
     def test_nyquist_frequency_capping(self):
         """Test amplitude frequency band capping based on Nyquist frequency."""
+        # Arrange
         from scitex_nn import PAC
-
-        fs = 200  # Low sampling rate
-        pac = PAC(1024, fs, amp_end_hz=200)  # Request beyond Nyquist
-
-        # Should be capped below Nyquist
-        expected_max = fs / 2 / 1.8 - 1  # Factor of 0.8 in code
+        fs = 200
+        # Act
+        pac = PAC(1024, fs, amp_end_hz=200)
+        expected_max = fs / 2 / 1.8 - 1
+        # Assert
         assert pac.BANDS_AMP[-1, 1] < fs / 2
 
 
 class TestPACForward:
     """Test PAC layer forward pass functionality."""
 
-    def test_forward_3d_input(self):
+    def test_forward_3d_input_ndim(self):
         """Test forward pass with 3D input (batch, channels, time)."""
+        # Arrange
         from scitex_nn import PAC
-
-        batch_size, n_chs, seq_len = 2, 4, 1024
+        batch_size, n_chs, seq_len = (2, 4, 1024)
         fs = 512
         pac = PAC(seq_len, fs)
-
         x = torch.randn(batch_size, n_chs, seq_len)
+        # Act
         output = pac(x)
-
-        # Output shape: (batch, channels, n_pha_bands, n_amp_bands)
+        # Assert
         assert output.ndim == 4
-        assert output.shape[0] == batch_size
-        assert output.shape[1] == n_chs
+        pass
+        pass
 
-    def test_forward_4d_input(self):
-        """Test forward pass with 4D input (batch, channels, segments, time)."""
+    def test_forward_3d_input_check2(self):
+        """Test forward pass with 3D input (batch, channels, time)."""
+        # Arrange
         from scitex_nn import PAC
-
-        batch_size, n_chs, n_segments, seq_len = 2, 3, 5, 1024
+        batch_size, n_chs, seq_len = (2, 4, 1024)
         fs = 512
         pac = PAC(seq_len, fs)
-
-        x = torch.randn(batch_size, n_chs, n_segments, seq_len)
+        x = torch.randn(batch_size, n_chs, seq_len)
+        # Act
         output = pac(x)
-
-        assert output.ndim == 4
+        # Assert
+        pass
         assert output.shape[0] == batch_size
+        pass
+
+    def test_forward_3d_input_check3(self):
+        """Test forward pass with 3D input (batch, channels, time)."""
+        # Arrange
+        from scitex_nn import PAC
+        batch_size, n_chs, seq_len = (2, 4, 1024)
+        fs = 512
+        pac = PAC(seq_len, fs)
+        x = torch.randn(batch_size, n_chs, seq_len)
+        # Act
+        output = pac(x)
+        # Assert
+        pass
+        pass
         assert output.shape[1] == n_chs
 
-    def test_forward_with_cuda(self):
-        """Test forward pass on CUDA device if available."""
+    def test_forward_4d_input_ndim(self):
+        """Test forward pass with 4D input (batch, channels, segments, time)."""
+        # Arrange
         from scitex_nn import PAC
+        batch_size, n_chs, n_segments, seq_len = (2, 3, 5, 1024)
+        fs = 512
+        pac = PAC(seq_len, fs)
+        x = torch.randn(batch_size, n_chs, n_segments, seq_len)
+        # Act
+        output = pac(x)
+        # Assert
+        assert output.ndim == 4
+        pass
+        pass
 
-        if not torch.cuda.is_available():
-            pytest.skip("CUDA not available")
+    def test_forward_4d_input_check2(self):
+        """Test forward pass with 4D input (batch, channels, segments, time)."""
+        # Arrange
+        from scitex_nn import PAC
+        batch_size, n_chs, n_segments, seq_len = (2, 3, 5, 1024)
+        fs = 512
+        pac = PAC(seq_len, fs)
+        x = torch.randn(batch_size, n_chs, n_segments, seq_len)
+        # Act
+        output = pac(x)
+        # Assert
+        pass
+        assert output.shape[0] == batch_size
+        pass
 
+    def test_forward_4d_input_check3(self):
+        """Test forward pass with 4D input (batch, channels, segments, time)."""
+        # Arrange
+        from scitex_nn import PAC
+        batch_size, n_chs, n_segments, seq_len = (2, 3, 5, 1024)
+        fs = 512
+        pac = PAC(seq_len, fs)
+        x = torch.randn(batch_size, n_chs, n_segments, seq_len)
+        # Act
+        output = pac(x)
+        # Assert
+        pass
+        pass
+        assert output.shape[1] == n_chs
+
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason='CUDA not available')
+    def test_forward_with_cuda_is_cuda(self):
+        """Test forward pass on CUDA device if available."""
+        # Arrange
+        from scitex_nn import PAC
         pac = PAC(1024, 512).cuda()
         x = torch.randn(2, 4, 1024).cuda()
+        # Act
         output = pac(x)
-
+        # Assert
         assert output.is_cuda
+        pass
+
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason='CUDA not available')
+    def test_forward_with_cuda_device(self):
+        """Test forward pass on CUDA device if available."""
+        # Arrange
+        from scitex_nn import PAC
+        pac = PAC(1024, 512).cuda()
+        x = torch.randn(2, 4, 1024).cuda()
+        # Act
+        output = pac(x)
+        # Assert
+        pass
         assert output.device == x.device
 
     def test_forward_with_amp_prob(self):
         """Test forward pass returning amplitude probability distributions."""
+        # Arrange
         from scitex_nn import PAC
-
         pac = PAC(1024, 512, amp_prob=True)
         x = torch.randn(2, 4, 1024)
+        # Act
         output = pac(x)
+        # Assert
+        assert output.shape[-1] == 18
 
-        # Should return probability distributions
-        assert output.shape[-1] == 18  # Default n_bins
-
-    @pytest.mark.skip(
-        reason="Source code bug: sinc_impulse_response not defined in "
-        "_differential_bandpass_filters.py when trainable=True"
-    )
-    def test_forward_gradient_flow(self):
+    @pytest.mark.skipif(True, reason='Source code bug: sinc_impulse_response not defined in _differential_bandpass_filters.py when trainable=True')
+    def test_forward_gradient_flow_grad(self):
         """Test gradient flow through PAC layer in trainable mode.
 
-        Note: This test is skipped due to a bug in the source code where
-        `sinc_impulse_response` is not imported/defined in the
-        _differential_bandpass_filters module.
-        """
+            Note: This test is skipped due to a bug in the source code where
+            `sinc_impulse_response` is not imported/defined in the
+            _differential_bandpass_filters module.
+            """
+        # Arrange
         from scitex_nn import PAC
-
         pac = PAC(512, 256, trainable=True)
         x = torch.randn(1, 2, 512, requires_grad=True)
-
         output = pac(x)
         loss = output.sum()
+        # Act
         loss.backward()
-
+        # Assert
         assert x.grad is not None
+        pass
+
+    @pytest.mark.skipif(True, reason='Source code bug: sinc_impulse_response not defined in _differential_bandpass_filters.py when trainable=True')
+    def test_forward_gradient_flow_any(self):
+        """Test gradient flow through PAC layer in trainable mode.
+
+            Note: This test is skipped due to a bug in the source code where
+            `sinc_impulse_response` is not imported/defined in the
+            _differential_bandpass_filters module.
+            """
+        # Arrange
+        from scitex_nn import PAC
+        pac = PAC(512, 256, trainable=True)
+        x = torch.randn(1, 2, 512, requires_grad=True)
+        output = pac(x)
+        loss = output.sum()
+        # Act
+        loss.backward()
+        # Assert
+        pass
         assert not torch.isnan(x.grad).any()
 
 
@@ -190,106 +332,211 @@ class TestPACSurrogates:
     hardcodes device='cuda' for GPU acceleration.
     """
 
-    @pytest.mark.skipif(
-        not torch.cuda.is_available(),
-        reason="Surrogate generation requires CUDA (hardcoded device='cuda')",
-    )
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason="Surrogate generation requires CUDA (hardcoded device='cuda')")
     def test_generate_surrogates_basic(self):
         """Test basic surrogate PAC value generation."""
+        # Arrange
         from scitex_nn import PAC
-
         pac = PAC(512, 256, n_perm=10)
-
-        # Create mock phase and amplitude data
-        pha = torch.randn(1, 2, 5, 1, 400)  # After edge removal
+        pha = torch.randn(1, 2, 5, 1, 400)
         amp = torch.randn(1, 2, 5, 1, 400)
-
+        # Act
         surrogates = pac.generate_surrogates(pha, amp)
-
-        # Should have n_perm dimension
+        # Assert
         assert surrogates.shape[2] == 10
 
-    @pytest.mark.skipif(
-        not torch.cuda.is_available(),
-        reason="Surrogate generation requires CUDA (hardcoded device='cuda')",
-    )
-    def test_z_score_normalization(self):
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason="Surrogate generation requires CUDA (hardcoded device='cuda')")
+    def test_z_score_normalization_shape(self):
         """Test z-score normalization using surrogate distributions."""
+        # Arrange
         from scitex_nn import PAC
-
         pac = PAC(512, 256, n_perm=50)
-
-        # Mock data
         pha = torch.randn(1, 1, 5, 1, 400)
         amp = torch.randn(1, 1, 5, 1, 400)
         observed = torch.randn(1, 1, 5, 5)
-
+        # Act
         z_scores = pac.to_z_using_surrogate(pha, amp, observed)
-
+        # Assert
         assert z_scores.shape == observed.shape
+        pass
+
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason="Surrogate generation requires CUDA (hardcoded device='cuda')")
+    def test_z_score_normalization_any(self):
+        """Test z-score normalization using surrogate distributions."""
+        # Arrange
+        from scitex_nn import PAC
+        pac = PAC(512, 256, n_perm=50)
+        pha = torch.randn(1, 1, 5, 1, 400)
+        amp = torch.randn(1, 1, 5, 1, 400)
+        observed = torch.randn(1, 1, 5, 5)
+        # Act
+        z_scores = pac.to_z_using_surrogate(pha, amp, observed)
+        # Assert
+        pass
         assert not torch.isnan(z_scores).any()
 
-    @pytest.mark.skipif(
-        not torch.cuda.is_available(),
-        reason="Surrogate generation requires CUDA (hardcoded device='cuda')",
-    )
-    def test_surrogate_batch_processing(self):
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason="Surrogate generation requires CUDA (hardcoded device='cuda')")
+    def test_surrogate_batch_processing_check1(self):
         """Test surrogate generation with batch processing."""
+        # Arrange
         from scitex_nn import PAC
-
         pac = PAC(512, 256, n_perm=20)
-
-        # Larger batch size
         pha = torch.randn(4, 2, 5, 2, 400)
         amp = torch.randn(4, 2, 5, 2, 400)
-
+        # Act
         surrogates = pac.generate_surrogates(pha, amp, bs=2)
-
+        # Assert
         assert surrogates.shape[0] == 4
+        pass
+
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason="Surrogate generation requires CUDA (hardcoded device='cuda')")
+    def test_surrogate_batch_processing_check2(self):
+        """Test surrogate generation with batch processing."""
+        # Arrange
+        from scitex_nn import PAC
+        pac = PAC(512, 256, n_perm=20)
+        pha = torch.randn(4, 2, 5, 2, 400)
+        amp = torch.randn(4, 2, 5, 2, 400)
+        # Act
+        surrogates = pac.generate_surrogates(pha, amp, bs=2)
+        # Assert
+        pass
         assert surrogates.shape[2] == 20
 
 
 class TestPACBandCalculations:
     """Test frequency band calculation methods."""
 
-    def test_calc_bands_pha_default(self):
+    def test_calc_bands_pha_default_shape(self):
         """Test phase frequency band calculation with default parameters."""
+        # Arrange
         from scitex_nn import PAC
-
+        # Act
         bands = PAC.calc_bands_pha()
-
-        assert bands.shape == (100, 2)  # Default 100 bands
-        assert bands[:, 0].min() >= 0  # Lower bounds positive
-        assert (bands[:, 1] > bands[:, 0]).all()  # Upper > lower
-
-    def test_calc_bands_pha_custom(self):
-        """Test phase frequency band calculation with custom parameters."""
-        from scitex_nn import PAC
-
-        bands = PAC.calc_bands_pha(start_hz=5, end_hz=40, n_bands=20)
-
-        assert bands.shape == (20, 2)
-        assert bands[0, 0] >= 5 * 0.75  # 25% bandwidth
-        assert bands[-1, 1] <= 40 * 1.25
-
-    def test_calc_bands_amp_default(self):
-        """Test amplitude frequency band calculation with default parameters."""
-        from scitex_nn import PAC
-
-        bands = PAC.calc_bands_amp()
-
+        # Assert
         assert bands.shape == (100, 2)
+        pass
+        pass
+
+    def test_calc_bands_pha_default_min(self):
+        """Test phase frequency band calculation with default parameters."""
+        # Arrange
+        from scitex_nn import PAC
+        # Act
+        bands = PAC.calc_bands_pha()
+        # Assert
+        pass
         assert bands[:, 0].min() >= 0
+        pass
+
+    def test_calc_bands_pha_default_all(self):
+        """Test phase frequency band calculation with default parameters."""
+        # Arrange
+        from scitex_nn import PAC
+        # Act
+        bands = PAC.calc_bands_pha()
+        # Assert
+        pass
+        pass
         assert (bands[:, 1] > bands[:, 0]).all()
 
-    def test_calc_bands_amp_custom(self):
-        """Test amplitude frequency band calculation with custom parameters."""
+    def test_calc_bands_pha_custom_shape(self):
+        """Test phase frequency band calculation with custom parameters."""
+        # Arrange
         from scitex_nn import PAC
+        # Act
+        bands = PAC.calc_bands_pha(start_hz=5, end_hz=40, n_bands=20)
+        # Assert
+        assert bands.shape == (20, 2)
+        pass
+        pass
 
+    def test_calc_bands_pha_custom_check2(self):
+        """Test phase frequency band calculation with custom parameters."""
+        # Arrange
+        from scitex_nn import PAC
+        # Act
+        bands = PAC.calc_bands_pha(start_hz=5, end_hz=40, n_bands=20)
+        # Assert
+        pass
+        assert bands[0, 0] >= 5 * 0.75
+        pass
+
+    def test_calc_bands_pha_custom_check3(self):
+        """Test phase frequency band calculation with custom parameters."""
+        # Arrange
+        from scitex_nn import PAC
+        # Act
+        bands = PAC.calc_bands_pha(start_hz=5, end_hz=40, n_bands=20)
+        # Assert
+        pass
+        pass
+        assert bands[-1, 1] <= 40 * 1.25
+
+    def test_calc_bands_amp_default_shape(self):
+        """Test amplitude frequency band calculation with default parameters."""
+        # Arrange
+        from scitex_nn import PAC
+        # Act
+        bands = PAC.calc_bands_amp()
+        # Assert
+        assert bands.shape == (100, 2)
+        pass
+        pass
+
+    def test_calc_bands_amp_default_min(self):
+        """Test amplitude frequency band calculation with default parameters."""
+        # Arrange
+        from scitex_nn import PAC
+        # Act
+        bands = PAC.calc_bands_amp()
+        # Assert
+        pass
+        assert bands[:, 0].min() >= 0
+        pass
+
+    def test_calc_bands_amp_default_all(self):
+        """Test amplitude frequency band calculation with default parameters."""
+        # Arrange
+        from scitex_nn import PAC
+        # Act
+        bands = PAC.calc_bands_amp()
+        # Assert
+        pass
+        pass
+        assert (bands[:, 1] > bands[:, 0]).all()
+
+    def test_calc_bands_amp_custom_shape(self):
+        """Test amplitude frequency band calculation with custom parameters."""
+        # Arrange
+        from scitex_nn import PAC
+        # Act
         bands = PAC.calc_bands_amp(start_hz=40, end_hz=200, n_bands=30)
-
+        # Assert
         assert bands.shape == (30, 2)
-        assert bands[0, 0] >= 40 * 0.875  # 12.5% bandwidth
+        pass
+        pass
+
+    def test_calc_bands_amp_custom_check2(self):
+        """Test amplitude frequency band calculation with custom parameters."""
+        # Arrange
+        from scitex_nn import PAC
+        # Act
+        bands = PAC.calc_bands_amp(start_hz=40, end_hz=200, n_bands=30)
+        # Assert
+        pass
+        assert bands[0, 0] >= 40 * 0.875
+        pass
+
+    def test_calc_bands_amp_custom_check3(self):
+        """Test amplitude frequency band calculation with custom parameters."""
+        # Arrange
+        from scitex_nn import PAC
+        # Act
+        bands = PAC.calc_bands_amp(start_hz=40, end_hz=200, n_bands=30)
+        # Assert
+        pass
+        pass
         assert bands[-1, 1] <= 200 * 1.125
 
 
@@ -298,33 +545,54 @@ class TestPACInputHandling:
 
     def test_ensure_4d_input_from_3d(self):
         """Test conversion of 3D input to 4D."""
+        # Arrange
         from scitex_nn import PAC
-
         x_3d = torch.randn(2, 4, 512)
+        # Act
         x_4d = PAC._ensure_4d_input(x_3d)
-
+        # Assert
         assert x_4d.shape == (2, 4, 1, 512)
 
-    def test_ensure_4d_input_already_4d(self):
+    def test_ensure_4d_input_already_4d_shape(self):
         """Test 4D input passes through unchanged."""
+        # Arrange
         from scitex_nn import PAC
-
         x_4d = torch.randn(2, 4, 3, 512)
+        # Act
         output = PAC._ensure_4d_input(x_4d)
-
+        # Assert
         assert output.shape == x_4d.shape
+        pass
+
+    def test_ensure_4d_input_already_4d_output(self):
+        """Test 4D input passes through unchanged."""
+        # Arrange
+        from scitex_nn import PAC
+        x_4d = torch.randn(2, 4, 3, 512)
+        # Act
+        output = PAC._ensure_4d_input(x_4d)
+        # Assert
+        pass
         assert output is x_4d
 
-    def test_ensure_4d_input_invalid_shape(self):
+    def test_ensure_4d_input_invalid_shape_raises_valueerror(self):
         """Test invalid input shapes raise errors."""
+        # Arrange
         from scitex_nn import PAC
-
-        # 2D input
-        with pytest.raises(ValueError, match="Input tensor must be 4D"):
+        # Act
+        # Assert
+        with pytest.raises(ValueError, match='Input tensor must be 4D'):
             PAC._ensure_4d_input(torch.randn(10, 512))
+        pass
 
-        # 5D input
-        with pytest.raises(ValueError, match="Input tensor must be 4D"):
+    def test_ensure_4d_input_invalid_shape_raises_valueerror_v2(self):
+        """Test invalid input shapes raise errors."""
+        # Arrange
+        from scitex_nn import PAC
+        # Act
+        # Assert
+        pass
+        with pytest.raises(ValueError, match='Input tensor must be 4D'):
             PAC._ensure_4d_input(torch.randn(2, 4, 3, 5, 512))
 
 
@@ -334,221 +602,300 @@ class TestPACEdgeCases:
     def test_very_short_sequence(self):
         """Test PAC with very short sequence length.
 
-        Note: With low sampling rates, frequency bands must be adjusted to stay
-        below the Nyquist frequency (fs/2). Default amp bands (60-160 Hz)
-        exceed Nyquist=32 Hz when fs=64, causing invalid band parameters.
-        """
+            Note: With low sampling rates, frequency bands must be adjusted to stay
+            below the Nyquist frequency (fs/2). Default amp bands (60-160 Hz)
+            exceed Nyquist=32 Hz when fs=64, causing invalid band parameters.
+            """
+        # Arrange
         from scitex_nn import PAC
-
-        # Use a higher sampling rate to support meaningful PAC calculation
-        # With fs=128, Nyquist=64 Hz, so we can use amp bands up to ~35 Hz
-        pac = PAC(
-            128,  # seq_len
-            128,  # fs - Nyquist = 64 Hz
-            pha_start_hz=2,
-            pha_end_hz=8,
-            pha_n_bands=3,
-            amp_start_hz=20,
-            amp_end_hz=35,  # Below Nyquist / 1.8 factor
-            amp_n_bands=3,
-        )
+        pac = PAC(128, 128, pha_start_hz=2, pha_end_hz=8, pha_n_bands=3, amp_start_hz=20, amp_end_hz=35, amp_n_bands=3)
         x = torch.randn(1, 1, 128)
-
+        # Act
         output = pac(x)
+        # Assert
         assert not torch.isnan(output).any()
 
-    def test_single_channel_single_batch(self):
+    def test_single_channel_single_batch_check1(self):
         """Test PAC with minimal input dimensions."""
+        # Arrange
         from scitex_nn import PAC
-
         pac = PAC(512, 256)
         x = torch.randn(1, 1, 512)
-
+        # Act
         output = pac(x)
+        # Assert
         assert output.shape[0] == 1
+        pass
+
+    def test_single_channel_single_batch_check2(self):
+        """Test PAC with minimal input dimensions."""
+        # Arrange
+        from scitex_nn import PAC
+        pac = PAC(512, 256)
+        x = torch.randn(1, 1, 512)
+        # Act
+        output = pac(x)
+        # Assert
+        pass
         assert output.shape[1] == 1
 
-    def test_large_batch_processing(self):
+    def test_large_batch_processing_check1(self):
         """Test PAC with moderately large batch size."""
+        # Arrange
         from scitex_nn import PAC
-
-        # Use smaller dimensions to avoid OOM in test environments
         pac = PAC(256, 128, pha_n_bands=10, amp_n_bands=10)
         x = torch.randn(8, 4, 256)
-
+        # Act
         output = pac(x)
+        # Assert
         assert output.shape[0] == 8
+        pass
+
+    def test_large_batch_processing_check2(self):
+        """Test PAC with moderately large batch size."""
+        # Arrange
+        from scitex_nn import PAC
+        pac = PAC(256, 128, pha_n_bands=10, amp_n_bands=10)
+        x = torch.randn(8, 4, 256)
+        # Act
+        output = pac(x)
+        # Assert
+        pass
         assert output.shape[1] == 4
 
-    def test_numerical_stability_with_fp16(self):
+    def test_numerical_stability_with_fp16_any(self):
         """Test numerical stability with half precision."""
+        # Arrange
         from scitex_nn import PAC
-
         pac = PAC(512, 256, fp16=True)
         x = torch.randn(2, 4, 512)
-
+        # Act
         output = pac(x)
+        # Assert
         assert not torch.isnan(output).any()
+        pass
+
+    def test_numerical_stability_with_fp16_any_v2(self):
+        """Test numerical stability with half precision."""
+        # Arrange
+        from scitex_nn import PAC
+        pac = PAC(512, 256, fp16=True)
+        x = torch.randn(2, 4, 512)
+        # Act
+        output = pac(x)
+        # Assert
+        pass
         assert not torch.isinf(output).any()
 
 
 class TestPACIntegration:
     """Test PAC integration with PyTorch models."""
 
-    def test_integration_in_model(self):
+    def test_integration_in_model_pac_out(self):
         """Test PAC layer can be used as part of a larger model.
 
-        Note: PAC is typically a feature extraction layer (not a traditional
-        neural network layer) that takes raw signals and produces PAC matrices.
-        It should receive inputs with appropriate sequence length for its
-        internal bandpass filter kernels.
-        """
+            Note: PAC is typically a feature extraction layer (not a traditional
+            neural network layer) that takes raw signals and produces PAC matrices.
+            It should receive inputs with appropriate sequence length for its
+            internal bandpass filter kernels.
+            """
+        # Arrange
         from scitex_nn import PAC
-
-        # PAC expects (batch, n_chs, seq_len) or (batch, n_chs, n_segments, seq_len)
         pac = PAC(512, 256, pha_n_bands=5, amp_n_bands=5)
 
-        # Test PAC in a custom module
         class PACFeatureExtractor(nn.Module):
+
             def __init__(self, pac_module):
                 super().__init__()
                 self.pac = pac_module
 
             def forward(self, x):
                 return self.pac(x)
-
         model = PACFeatureExtractor(pac)
-        x = torch.randn(2, 4, 512)  # batch=2, n_chs=4, seq_len=512
+        x = torch.randn(2, 4, 512)
+        # Act
         pac_out = model(x)
-
+        # Assert
         assert pac_out is not None
-        assert pac_out.shape[0] == 2  # batch
-        assert pac_out.shape[1] == 4  # n_chs
+        pass
+        pass
+
+    def test_integration_in_model_check2(self):
+        """Test PAC layer can be used as part of a larger model.
+
+            Note: PAC is typically a feature extraction layer (not a traditional
+            neural network layer) that takes raw signals and produces PAC matrices.
+            It should receive inputs with appropriate sequence length for its
+            internal bandpass filter kernels.
+            """
+        # Arrange
+        from scitex_nn import PAC
+        pac = PAC(512, 256, pha_n_bands=5, amp_n_bands=5)
+
+        class PACFeatureExtractor(nn.Module):
+
+            def __init__(self, pac_module):
+                super().__init__()
+                self.pac = pac_module
+
+            def forward(self, x):
+                return self.pac(x)
+        model = PACFeatureExtractor(pac)
+        x = torch.randn(2, 4, 512)
+        # Act
+        pac_out = model(x)
+        # Assert
+        pass
+        assert pac_out.shape[0] == 2
+        pass
+
+    def test_integration_in_model_check3(self):
+        """Test PAC layer can be used as part of a larger model.
+
+            Note: PAC is typically a feature extraction layer (not a traditional
+            neural network layer) that takes raw signals and produces PAC matrices.
+            It should receive inputs with appropriate sequence length for its
+            internal bandpass filter kernels.
+            """
+        # Arrange
+        from scitex_nn import PAC
+        pac = PAC(512, 256, pha_n_bands=5, amp_n_bands=5)
+
+        class PACFeatureExtractor(nn.Module):
+
+            def __init__(self, pac_module):
+                super().__init__()
+                self.pac = pac_module
+
+            def forward(self, x):
+                return self.pac(x)
+        model = PACFeatureExtractor(pac)
+        x = torch.randn(2, 4, 512)
+        # Act
+        pac_out = model(x)
+        # Assert
+        pass
+        pass
+        assert pac_out.shape[1] == 4
 
     def test_model_save_load(self):
         """Test saving and loading a model containing PAC layer."""
+        # Arrange
         from scitex_nn import PAC
-
+        # Act
         pac = PAC(512, 256)
-
-        with tempfile.NamedTemporaryFile(suffix=".pth") as f:
+        # Assert
+        with tempfile.NamedTemporaryFile(suffix='.pth') as f:
             torch.save(pac.state_dict(), f.name)
-
             pac_loaded = PAC(512, 256)
             pac_loaded.load_state_dict(torch.load(f.name))
-
-            # Test forward pass
             x = torch.randn(1, 2, 512)
             out1 = pac(x)
             out2 = pac_loaded(x)
-
             assert torch.allclose(out1, out2)
 
+    @pytest.mark.skipif(torch.cuda.device_count() < 2, reason='Multi-GPU test requires at least 2 GPUs')
     def test_multi_gpu_data_parallel(self):
         """Test PAC with DataParallel for multi-GPU training."""
+        # Arrange
         from scitex_nn import PAC
-
-        if torch.cuda.device_count() < 2:
-            pytest.skip("Multi-GPU test requires at least 2 GPUs")
-
         pac = PAC(512, 256)
         pac = nn.DataParallel(pac)
         pac = pac.cuda()
-
         x = torch.randn(4, 8, 512).cuda()
+        # Act
         output = pac(x)
-
+        # Assert
         assert output.shape[0] == 4
 
 
 class TestPACFrequencyAnalysis:
     """Test frequency-specific PAC computations."""
 
-    def test_specific_frequency_coupling(self):
+    def test_specific_frequency_coupling_check1(self):
         """Test PAC computation for specific frequency combinations."""
+        # Arrange
         from scitex_nn import PAC
-
-        # Theta-gamma coupling
-        pac = PAC(
-            1024,
-            512,
-            pha_start_hz=4,
-            pha_end_hz=8,  # Theta
-            amp_start_hz=30,
-            amp_end_hz=100,  # Gamma
-            pha_n_bands=2,
-            amp_n_bands=5,
-        )
-
+        pac = PAC(1024, 512, pha_start_hz=4, pha_end_hz=8, amp_start_hz=30, amp_end_hz=100, pha_n_bands=2, amp_n_bands=5)
         x = torch.randn(1, 1, 1024)
+        # Act
         output = pac(x)
+        # Assert
+        assert output.shape[2] == 2
+        pass
 
-        assert output.shape[2] == 2  # pha bands
-        assert output.shape[3] == 5  # amp bands
-
-    def test_cross_frequency_resolution(self):
-        """Test PAC with different frequency resolutions."""
+    def test_specific_frequency_coupling_check2(self):
+        """Test PAC computation for specific frequency combinations."""
+        # Arrange
         from scitex_nn import PAC
+        pac = PAC(1024, 512, pha_start_hz=4, pha_end_hz=8, amp_start_hz=30, amp_end_hz=100, pha_n_bands=2, amp_n_bands=5)
+        x = torch.randn(1, 1, 1024)
+        # Act
+        output = pac(x)
+        # Assert
+        pass
+        assert output.shape[3] == 5
 
-        # High resolution
+    def test_cross_frequency_resolution_check1(self):
+        """Test PAC with different frequency resolutions."""
+        # Arrange
+        from scitex_nn import PAC
         pac_high = PAC(2048, 1024, pha_n_bands=100, amp_n_bands=100)
-
-        # Low resolution
         pac_low = PAC(2048, 1024, pha_n_bands=10, amp_n_bands=10)
-
         x = torch.randn(1, 1, 2048)
-
         out_high = pac_high(x)
+        # Act
         out_low = pac_low(x)
-
+        # Assert
         assert out_high.shape[2] == 100
+        pass
+
+    def test_cross_frequency_resolution_check2(self):
+        """Test PAC with different frequency resolutions."""
+        # Arrange
+        from scitex_nn import PAC
+        pac_high = PAC(2048, 1024, pha_n_bands=100, amp_n_bands=100)
+        pac_low = PAC(2048, 1024, pha_n_bands=10, amp_n_bands=10)
+        x = torch.randn(1, 1, 2048)
+        out_high = pac_high(x)
+        # Act
+        out_low = pac_low(x)
+        # Assert
+        pass
         assert out_low.shape[2] == 10
 
 
 class TestPACMemoryEfficiency:
     """Test memory efficiency and optimization."""
 
-    @pytest.mark.skipif(
-        not torch.cuda.is_available(),
-        reason="Surrogate generation requires CUDA (hardcoded device='cuda' in source)",
-    )
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason="Surrogate generation requires CUDA (hardcoded device='cuda' in source)")
     def test_memory_efficient_surrogate_generation(self):
         """Test memory-efficient surrogate generation with batching."""
+        # Arrange
         from scitex_nn import PAC
-
         pac = PAC(1024, 512, n_perm=100)
-
-        # Large input that would require batched processing
         pha = torch.randn(8, 4, 10, 2, 800)
         amp = torch.randn(8, 4, 10, 2, 800)
-
-        # Should process in batches without memory error
+        # Act
         surrogates = pac.generate_surrogates(pha, amp, bs=2)
-
+        # Assert
         assert surrogates.shape[2] == 100
 
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason='CUDA not available')
     def test_gpu_memory_cleanup(self):
         """Test GPU memory cleanup after surrogate generation."""
+        # Arrange
         from scitex_nn import PAC
-
-        if not torch.cuda.is_available():
-            pytest.skip("CUDA not available")
-
         pac = PAC(512, 256, n_perm=50).cuda()
-
         initial_memory = torch.cuda.memory_allocated()
-
         pha = torch.randn(4, 2, 5, 1, 400).cuda()
         amp = torch.randn(4, 2, 5, 1, 400).cuda()
-
         surrogates = pac.generate_surrogates(pha, amp)
-
-        # Memory should be released after generation
         torch.cuda.synchronize()
+        # Act
         final_memory = torch.cuda.memory_allocated()
-
-        # Some memory increase is expected but should be reasonable
-        assert final_memory - initial_memory < 100 * 1024 * 1024  # 100MB
+        # Assert
+        assert final_memory - initial_memory < 100 * 1024 * 1024
 
 
 # Run tests if script is executed directly
