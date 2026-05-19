@@ -82,338 +82,513 @@ class TestFreqGainChanger:
         batch_size, n_channels, seq_len = 4, 32, 1000
         return torch.randn(batch_size, n_channels, seq_len)
 
-    def test_initialization_default_params(self, n_bands, sample_rate):
+    def test_initialization_default_params_n_bands(self, n_bands, sample_rate):
         """Test initialization with default parameters."""
+        # Arrange
+        # Act
         layer = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate)
+        # Assert
         assert layer.n_bands == n_bands
+        pass
+        pass
+        pass
+
+    def test_initialization_default_params_samp_rate(self, n_bands, sample_rate):
+        """Test initialization with default parameters."""
+        # Arrange
+        # Act
+        layer = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate)
+        # Assert
+        pass
         assert layer.samp_rate == sample_rate
+        pass
+        pass
+
+    def test_initialization_default_params_isinstance(self, n_bands, sample_rate):
+        """Test initialization with default parameters."""
+        # Arrange
+        # Act
+        layer = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate)
+        # Assert
+        pass
+        pass
         assert isinstance(layer.dropout, nn.Dropout)
+        pass
+
+    def test_initialization_default_params_p(self, n_bands, sample_rate):
+        """Test initialization with default parameters."""
+        # Arrange
+        # Act
+        layer = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate)
+        # Assert
+        pass
+        pass
+        pass
         assert layer.dropout.p == 0.5
 
     def test_initialization_custom_dropout(self, n_bands, sample_rate):
         """Test initialization with custom dropout ratio."""
+        # Arrange
         dropout_ratio = 0.3
-        layer = FreqGainChanger(
-            n_bands=n_bands, samp_rate=sample_rate, dropout_ratio=dropout_ratio
-        )
-        assert (
-            layer.dropout.p == 0.5
-        )  # Note: dropout_ratio param not used in current implementation
+        # Act
+        layer = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate, dropout_ratio=dropout_ratio)
+        # Assert
+        assert layer.dropout.p == 0.5
 
-    def test_forward_training_mode(self, n_bands, sample_rate, sample_input):
+    def test_forward_training_mode_shape(self, n_bands, sample_rate, sample_input):
         """Test forward pass in training mode."""
-        # Setup mock return value for split_bands
+        # Arrange
         split_output = torch.randn(n_bands, *sample_input.shape)
         julius_mock.bands.split_bands.return_value = split_output
-
         layer = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate)
         layer.train()
-
+        # Act
         output = layer(sample_input)
-
-        # Check output shape matches input shape
+        # Assert
         assert output.shape == sample_input.shape
+        pass
 
-        # Verify split_bands was called (check call count increased)
+    def test_forward_training_mode_called(self, n_bands, sample_rate, sample_input):
+        """Test forward pass in training mode."""
+        # Arrange
+        split_output = torch.randn(n_bands, *sample_input.shape)
+        julius_mock.bands.split_bands.return_value = split_output
+        layer = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate)
+        layer.train()
+        # Act
+        output = layer(sample_input)
+        # Assert
+        pass
         assert julius_mock.bands.split_bands.called
 
     def test_forward_eval_mode(self, n_bands, sample_rate, sample_input):
         """Test forward pass in evaluation mode (should be identity)."""
+        # Arrange
         layer = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate)
         layer.eval()
-
+        # Act
         output = layer(sample_input)
-
-        # In eval mode, output should be identical to input
+        # Assert
         assert torch.allclose(output, sample_input)
-
-        # split_bands should not be called in eval mode
         julius_mock.bands.split_bands.assert_not_called()
 
-    def test_frequency_gain_application(self, n_bands, sample_rate):
+    def test_frequency_gain_application_shape(self, n_bands, sample_rate):
         """Test that frequency gains are properly applied."""
+        # Arrange
         layer = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate)
         layer.train()
-
-        # Create controlled input
-        batch_size, n_channels, seq_len = 2, 3, 100
+        batch_size, n_channels, seq_len = (2, 3, 100)
         x = torch.ones(batch_size, n_channels, seq_len)
-
-        # Mock split_bands to return separable bands
+        # Act
         split_output = torch.stack([x * (i + 1) for i in range(n_bands)])
         julius_mock.bands.split_bands.return_value = split_output
-
         with torch.no_grad():
             output = layer(x)
-
-        # Output should be weighted sum of bands
+        # Assert
         assert output.shape == x.shape
-        assert not torch.allclose(output, x)  # Should be modified
+        pass
 
-    @pytest.mark.skip(
-        reason="Mock julius.bands.split_bands breaks computation graph, gradients don't flow through mock"
-    )
-    def test_gradient_flow(self, n_bands, sample_rate, sample_input):
-        """Test that gradients flow properly through the layer.
-
-        Note: This test is skipped because mocking split_bands breaks the
-        computation graph. In actual usage with real julius, gradients flow correctly.
-        """
+    def test_frequency_gain_application_allclose(self, n_bands, sample_rate):
+        """Test that frequency gains are properly applied."""
+        # Arrange
         layer = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate)
         layer.train()
+        batch_size, n_channels, seq_len = (2, 3, 100)
+        x = torch.ones(batch_size, n_channels, seq_len)
+        # Act
+        split_output = torch.stack([x * (i + 1) for i in range(n_bands)])
+        julius_mock.bands.split_bands.return_value = split_output
+        with torch.no_grad():
+            output = layer(x)
+        # Assert
+        pass
+        assert not torch.allclose(output, x)
 
-        # Setup for gradient computation
+    @pytest.mark.skipif(True, reason="Mock julius.bands.split_bands breaks computation graph, gradients don't flow through mock")
+    def test_gradient_flow_freq_gain_changer_behaves_correctly_grad(self, n_bands, sample_rate, sample_input):
+        """Test that gradients flow properly through the layer.
+
+            Note: This test is skipped because mocking split_bands breaks the
+            computation graph. In actual usage with real julius, gradients flow correctly.
+            """
+        # Arrange
+        layer = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate)
+        layer.train()
         sample_input.requires_grad = True
-
-        # Mock split_bands
         split_output = torch.randn(n_bands, *sample_input.shape, requires_grad=True)
         julius_mock.bands.split_bands.return_value = split_output
-
         output = layer(sample_input)
         loss = output.sum()
+        # Act
         loss.backward()
-
-        # Check that input has gradients
+        # Assert
         assert sample_input.grad is not None
-        assert not torch.allclose(
-            sample_input.grad, torch.zeros_like(sample_input.grad)
-        )
+        pass
+
+    @pytest.mark.skipif(True, reason="Mock julius.bands.split_bands breaks computation graph, gradients don't flow through mock")
+    def test_gradient_flow_freq_gain_changer_behaves_correctly_allclose(self, n_bands, sample_rate, sample_input):
+        """Test that gradients flow properly through the layer.
+
+            Note: This test is skipped because mocking split_bands breaks the
+            computation graph. In actual usage with real julius, gradients flow correctly.
+            """
+        # Arrange
+        layer = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate)
+        layer.train()
+        sample_input.requires_grad = True
+        split_output = torch.randn(n_bands, *sample_input.shape, requires_grad=True)
+        julius_mock.bands.split_bands.return_value = split_output
+        output = layer(sample_input)
+        loss = output.sum()
+        # Act
+        loss.backward()
+        # Assert
+        pass
+        assert not torch.allclose(sample_input.grad, torch.zeros_like(sample_input.grad))
 
     def test_device_compatibility_cpu(self, n_bands, sample_rate):
         """Test layer works on CPU."""
+        # Arrange
         layer = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate)
         layer.train()
-
         x = torch.randn(2, 3, 100)
         split_output = torch.randn(n_bands, 2, 3, 100)
         julius_mock.bands.split_bands.return_value = split_output
-
+        # Act
         output = layer(x)
+        # Assert
         assert output.device == x.device
 
-    @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA not available")
-    def test_device_compatibility_cuda(self, n_bands, sample_rate):
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason='CUDA not available')
+    def test_device_compatibility_cuda_device(self, n_bands, sample_rate):
         """Test layer works on CUDA."""
+        # Arrange
         layer = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate).cuda()
         layer.train()
-
         x = torch.randn(2, 3, 100).cuda()
         split_output = torch.randn(n_bands, 2, 3, 100).cuda()
         julius_mock.bands.split_bands.return_value = split_output
-
+        # Act
         output = layer(x)
+        # Assert
         assert output.device == x.device
+        pass
+
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason='CUDA not available')
+    def test_device_compatibility_cuda_is_cuda(self, n_bands, sample_rate):
+        """Test layer works on CUDA."""
+        # Arrange
+        layer = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate).cuda()
+        layer.train()
+        x = torch.randn(2, 3, 100).cuda()
+        split_output = torch.randn(n_bands, 2, 3, 100).cuda()
+        julius_mock.bands.split_bands.return_value = split_output
+        # Act
+        output = layer(x)
+        # Assert
+        pass
         assert output.is_cuda
 
     def test_different_input_shapes(self, n_bands, sample_rate):
         """Test with various input shapes."""
+        # Arrange
         layer = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate)
+        # Act
         layer.train()
-
-        test_shapes = [
-            (1, 1, 100),  # Single batch, single channel
-            (8, 64, 500),  # Larger batch and channels
-            (2, 3, 2048),  # Longer sequence
-        ]
-
+        test_shapes = [(1, 1, 100), (8, 64, 500), (2, 3, 2048)]
+        # Assert
         for shape in test_shapes:
             x = torch.randn(*shape)
             split_output = torch.randn(n_bands, *shape)
             julius_mock.bands.split_bands.return_value = split_output
-
             output = layer(x)
             assert output.shape == x.shape
 
     def test_frequency_gain_normalization(self, n_bands, sample_rate):
         """Test that frequency gains are normalized with softmax."""
+        # Arrange
         layer = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate)
         layer.train()
-
-        # Track the gains applied
         x = torch.ones(2, 3, 100)
-
-        # Create bands with known values
         bands = []
         for i in range(n_bands):
             band = torch.ones_like(x) * (i + 1)
             bands.append(band)
+        # Act
         split_output = torch.stack(bands)
         julius_mock.bands.split_bands.return_value = split_output
-
-        # Multiple forward passes should give different results due to randomness
         outputs = []
         for _ in range(5):
             output = layer(x)
             outputs.append(output)
-
-        # Check that outputs are different (due to random gains)
+        # Assert
         for i in range(1, len(outputs)):
             assert not torch.allclose(outputs[0], outputs[i])
 
     def test_reproducibility_with_seed(self, n_bands, sample_rate):
         """Test reproducible results with fixed random seed."""
+        # Arrange
         torch.manual_seed(42)
         layer1 = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate)
         layer1.train()
-
         torch.manual_seed(42)
         layer2 = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate)
         layer2.train()
-
         x = torch.randn(2, 3, 100)
         split_output = torch.randn(n_bands, 2, 3, 100)
-
-        # Set same seed before each forward pass
         torch.manual_seed(42)
         julius_mock.bands.split_bands.return_value = split_output
         output1 = layer1(x)
-
         torch.manual_seed(42)
         julius_mock.bands.split_bands.return_value = split_output
+        # Act
         output2 = layer2(x)
-
+        # Assert
         assert torch.allclose(output1, output2)
 
     def test_zero_input_handling(self, n_bands, sample_rate):
         """Test behavior with zero input."""
+        # Arrange
         layer = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate)
         layer.train()
-
         x = torch.zeros(2, 3, 100)
         split_output = torch.zeros(n_bands, 2, 3, 100)
         julius_mock.bands.split_bands.return_value = split_output
-
+        # Act
         output = layer(x)
+        # Assert
         assert torch.allclose(output, x)
 
     def test_single_band_edge_case(self, sample_rate):
         """Test with single frequency band."""
+        # Arrange
         layer = FreqGainChanger(n_bands=1, samp_rate=sample_rate)
         layer.train()
-
         x = torch.randn(2, 3, 100)
-        split_output = x.unsqueeze(0)  # Single band
+        split_output = x.unsqueeze(0)
         julius_mock.bands.split_bands.return_value = split_output
-
+        # Act
         output = layer(x)
+        # Assert
         assert output.shape == x.shape
 
     def test_high_frequency_bands(self, sample_rate):
         """Test with many frequency bands."""
+        # Arrange
         n_bands = 50
         layer = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate)
         layer.train()
-
         x = torch.randn(2, 3, 100)
         split_output = torch.randn(n_bands, 2, 3, 100)
         julius_mock.bands.split_bands.return_value = split_output
-
+        # Act
         output = layer(x)
+        # Assert
         assert output.shape == x.shape
 
-    def test_numerical_stability(self, n_bands, sample_rate):
+    def test_numerical_stability_freq_gain_changer_behaves_correctly_any(self, n_bands, sample_rate):
         """Test numerical stability with extreme values."""
+        # Arrange
         layer = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate)
         layer.train()
-
-        # Test with very large values
-        x_large = torch.randn(2, 3, 100) * 1e6
-        split_large = torch.randn(n_bands, 2, 3, 100) * 1e6
+        x_large = torch.randn(2, 3, 100) * 1000000.0
+        split_large = torch.randn(n_bands, 2, 3, 100) * 1000000.0
         julius_mock.bands.split_bands.return_value = split_large
-
+        # Act
         output_large = layer(x_large)
+        # Assert
         assert not torch.isnan(output_large).any()
-        assert not torch.isinf(output_large).any()
-
-        # Test with very small values
-        x_small = torch.randn(2, 3, 100) * 1e-6
-        split_small = torch.randn(n_bands, 2, 3, 100) * 1e-6
+        pass
+        x_small = torch.randn(2, 3, 100) * 1e-06
+        split_small = torch.randn(n_bands, 2, 3, 100) * 1e-06
         julius_mock.bands.split_bands.return_value = split_small
+        output_small = layer(x_small)
+        pass
 
+    def test_numerical_stability_freq_gain_changer_behaves_correctly_any_v2(self, n_bands, sample_rate):
+        """Test numerical stability with extreme values."""
+        # Arrange
+        layer = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate)
+        layer.train()
+        x_large = torch.randn(2, 3, 100) * 1000000.0
+        split_large = torch.randn(n_bands, 2, 3, 100) * 1000000.0
+        julius_mock.bands.split_bands.return_value = split_large
+        # Act
+        output_large = layer(x_large)
+        # Assert
+        pass
+        assert not torch.isinf(output_large).any()
+        x_small = torch.randn(2, 3, 100) * 1e-06
+        split_small = torch.randn(n_bands, 2, 3, 100) * 1e-06
+        julius_mock.bands.split_bands.return_value = split_small
+        output_small = layer(x_small)
+        pass
+
+    def test_numerical_stability_freq_gain_changer_behaves_correctly_any_v3(self, n_bands, sample_rate):
+        """Test numerical stability with extreme values."""
+        # Arrange
+        layer = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate)
+        layer.train()
+        x_large = torch.randn(2, 3, 100) * 1000000.0
+        split_large = torch.randn(n_bands, 2, 3, 100) * 1000000.0
+        julius_mock.bands.split_bands.return_value = split_large
+        # Act
+        output_large = layer(x_large)
+        # Assert
+        pass
+        pass
+        x_small = torch.randn(2, 3, 100) * 1e-06
+        split_small = torch.randn(n_bands, 2, 3, 100) * 1e-06
+        julius_mock.bands.split_bands.return_value = split_small
         output_small = layer(x_small)
         assert not torch.isnan(output_small).any()
 
-    def test_memory_efficiency(self, n_bands, sample_rate):
+    def test_memory_efficiency_freq_gain_changer_behaves_correctly(self, n_bands, sample_rate):
         """Test memory usage is reasonable."""
+        # Arrange
         layer = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate)
         layer.train()
-
-        # Large input
         x = torch.randn(8, 64, 1000)
         split_output = torch.randn(n_bands, 8, 64, 1000)
         julius_mock.bands.split_bands.return_value = split_output
-
-        # Should not raise memory errors
+        # Act
         output = layer(x)
+        # Assert
         assert output.shape == x.shape
 
     def test_integration_with_sequential(self, n_bands, sample_rate):
         """Test integration in nn.Sequential."""
-        model = nn.Sequential(
-            nn.Conv1d(32, 64, 3, padding=1),
-            FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate),
-            nn.ReLU(),
-            nn.Conv1d(64, 32, 3, padding=1),
-        )
+        # Arrange
+        model = nn.Sequential(nn.Conv1d(32, 64, 3, padding=1), FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate), nn.ReLU(), nn.Conv1d(64, 32, 3, padding=1))
         model.train()
-
         x = torch.randn(4, 32, 100)
 
-        # Mock for the FreqGainChanger layer
         def mock_split_bands(x, sr, n_bands):
             return torch.randn(n_bands, *x.shape)
-
         julius_mock.bands.split_bands.side_effect = mock_split_bands
-
+        # Act
         output = model(x)
+        # Assert
         assert output.shape == (4, 32, 100)
 
     def test_different_sample_rates(self, n_bands):
         """Test with various sample rates."""
+        # Arrange
         sample_rates = [100, 500, 1000, 2000, 44100]
-
+        # Act
+        # Assert
         for sr in sample_rates:
             layer = FreqGainChanger(n_bands=n_bands, samp_rate=sr)
             layer.train()
-
             x = torch.randn(2, 3, 100)
             split_output = torch.randn(n_bands, 2, 3, 100)
             julius_mock.bands.split_bands.return_value = split_output
-
             output = layer(x)
             assert output.shape == x.shape
 
-    def test_gain_range_validity(self, n_bands, sample_rate):
+    def test_gain_range_validity_all(self, n_bands, sample_rate):
         """Test that frequency gains produce valid numerical output.
 
-        Note: Softmax gains are positive, but output can be negative if input bands
-        contain negative values. This test verifies numerical stability and that
-        with all-positive bands, output is positive.
-        """
+            Note: Softmax gains are positive, but output can be negative if input bands
+            contain negative values. This test verifies numerical stability and that
+            with all-positive bands, output is positive.
+            """
+        # Arrange
         layer = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate)
         layer.train()
-
-        # Test with all-positive bands (output should be positive)
         x = torch.ones(2, 3, 100)
+        # Act
         split_output = torch.ones(n_bands, 2, 3, 100)
-
-        # Use global mock with proper return value
         julius_mock.bands.split_bands.return_value = split_output
-
         outputs = []
         for _ in range(10):
             output = layer(x)
             outputs.append(output)
-
-        # With all-positive bands and positive softmax gains, output should be positive
+        # Assert
         for output in outputs:
-            assert (output >= 0).all()  # All-positive bands -> positive output
+            assert (output >= 0).all()
+            pass
+            pass
+        for output in outputs:
+            pass
+
+    def test_gain_range_validity_any(self, n_bands, sample_rate):
+        """Test that frequency gains produce valid numerical output.
+
+            Note: Softmax gains are positive, but output can be negative if input bands
+            contain negative values. This test verifies numerical stability and that
+            with all-positive bands, output is positive.
+            """
+        # Arrange
+        layer = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate)
+        layer.train()
+        x = torch.ones(2, 3, 100)
+        # Act
+        split_output = torch.ones(n_bands, 2, 3, 100)
+        julius_mock.bands.split_bands.return_value = split_output
+        outputs = []
+        for _ in range(10):
+            output = layer(x)
+            outputs.append(output)
+        # Assert
+        for output in outputs:
+            pass
             assert not torch.isnan(output).any()
-            assert not torch.isinf(output).any()
-
-        # Also verify output is approximately 1 (sum of softmax weights = 1)
+            pass
         for output in outputs:
-            assert torch.allclose(output, torch.ones_like(output), atol=1e-6)
+            pass
+
+    def test_gain_range_validity_any_v2(self, n_bands, sample_rate):
+        """Test that frequency gains produce valid numerical output.
+
+            Note: Softmax gains are positive, but output can be negative if input bands
+            contain negative values. This test verifies numerical stability and that
+            with all-positive bands, output is positive.
+            """
+        # Arrange
+        layer = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate)
+        layer.train()
+        x = torch.ones(2, 3, 100)
+        # Act
+        split_output = torch.ones(n_bands, 2, 3, 100)
+        julius_mock.bands.split_bands.return_value = split_output
+        outputs = []
+        for _ in range(10):
+            output = layer(x)
+            outputs.append(output)
+        # Assert
+        for output in outputs:
+            pass
+            pass
+            assert not torch.isinf(output).any()
+        for output in outputs:
+            pass
+
+    def test_gain_range_validity_allclose(self, n_bands, sample_rate):
+        """Test that frequency gains produce valid numerical output.
+
+            Note: Softmax gains are positive, but output can be negative if input bands
+            contain negative values. This test verifies numerical stability and that
+            with all-positive bands, output is positive.
+            """
+        # Arrange
+        layer = FreqGainChanger(n_bands=n_bands, samp_rate=sample_rate)
+        layer.train()
+        x = torch.ones(2, 3, 100)
+        # Act
+        split_output = torch.ones(n_bands, 2, 3, 100)
+        julius_mock.bands.split_bands.return_value = split_output
+        outputs = []
+        for _ in range(10):
+            output = layer(x)
+            outputs.append(output)
+        # Assert
+        for output in outputs:
+            pass
+            pass
+            pass
+        for output in outputs:
+            assert torch.allclose(output, torch.ones_like(output), atol=1e-06)
 
 
 if __name__ == "__main__":
