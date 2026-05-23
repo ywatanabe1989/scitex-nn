@@ -17,7 +17,6 @@ import pytest
 
 # Required for this module
 pytest.importorskip("torch")
-from unittest.mock import Mock, patch
 
 import numpy as np
 import torch
@@ -71,7 +70,7 @@ class TestResNetBasicBlock:
         # Act
         block = scitex_nn.ResNetBasicBlock(32, 64)
         # Assert
-        assert hasattr(block, 'conv7')
+        assert hasattr(block, "conv7")
         pass
         pass
         pass
@@ -91,7 +90,7 @@ class TestResNetBasicBlock:
         block = scitex_nn.ResNetBasicBlock(32, 64)
         # Assert
         pass
-        assert hasattr(block, 'conv5')
+        assert hasattr(block, "conv5")
         pass
         pass
         pass
@@ -111,7 +110,7 @@ class TestResNetBasicBlock:
         # Assert
         pass
         pass
-        assert hasattr(block, 'conv3')
+        assert hasattr(block, "conv3")
         pass
         pass
         pass
@@ -131,7 +130,7 @@ class TestResNetBasicBlock:
         pass
         pass
         pass
-        assert hasattr(block, 'expansion_conv')
+        assert hasattr(block, "expansion_conv")
         pass
         pass
         pass
@@ -151,7 +150,7 @@ class TestResNetBasicBlock:
         pass
         pass
         pass
-        assert hasattr(block, 'bn7')
+        assert hasattr(block, "bn7")
         pass
         pass
         pass
@@ -171,7 +170,7 @@ class TestResNetBasicBlock:
         pass
         pass
         pass
-        assert hasattr(block, 'bn5')
+        assert hasattr(block, "bn5")
         pass
         pass
         pass
@@ -191,7 +190,7 @@ class TestResNetBasicBlock:
         pass
         pass
         pass
-        assert hasattr(block, 'bn3')
+        assert hasattr(block, "bn3")
         pass
         pass
         pass
@@ -211,7 +210,7 @@ class TestResNetBasicBlock:
         pass
         pass
         pass
-        assert hasattr(block, 'bn')
+        assert hasattr(block, "bn")
         pass
         pass
         pass
@@ -231,7 +230,7 @@ class TestResNetBasicBlock:
         pass
         pass
         pass
-        assert hasattr(block, 'activation7')
+        assert hasattr(block, "activation7")
         pass
         pass
         pass
@@ -251,7 +250,7 @@ class TestResNetBasicBlock:
         pass
         pass
         pass
-        assert hasattr(block, 'activation5')
+        assert hasattr(block, "activation5")
         pass
         pass
 
@@ -271,7 +270,7 @@ class TestResNetBasicBlock:
         pass
         pass
         pass
-        assert hasattr(block, 'activation3')
+        assert hasattr(block, "activation3")
         pass
 
     def test_basic_block_layers_structure_hasattr_v12(self):
@@ -291,7 +290,7 @@ class TestResNetBasicBlock:
         pass
         pass
         pass
-        assert hasattr(block, 'activation')
+        assert hasattr(block, "activation")
 
     def test_basic_block_forward_same_channels(self):
         """Test forward pass when input and output channels are the same."""
@@ -645,7 +644,7 @@ class TestResNet1D:
         model = scitex_nn.ResNet1D()
         # Assert
         pass
-        assert hasattr(model, 'res_conv_blk_layers')
+        assert hasattr(model, "res_conv_blk_layers")
 
     def test_resnet1d_instantiation_custom(self):
         """Test ResNet1D instantiation with custom parameters."""
@@ -932,9 +931,9 @@ class TestResNet1D:
         # Act
         output = model(x)
         # Assert
-        assert output.device.type == 'cpu'
+        assert output.device.type == "cpu"
 
-    @pytest.mark.skipif(not torch.cuda.is_available(), reason='CUDA not available')
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA not available")
     def test_resnet1d_device_compatibility_gpu(self):
         """Test ResNet1D on GPU if available."""
         # Arrange
@@ -943,7 +942,7 @@ class TestResNet1D:
         # Act
         output = model(x)
         # Assert
-        assert output.device.type == 'cuda'
+        assert output.device.type == "cuda"
 
     def test_resnet1d_parameter_count_total_params(self):
         """Test parameter count for different configurations."""
@@ -954,7 +953,9 @@ class TestResNet1D:
         for n_chs, n_out, n_blks in configs:
             model = scitex_nn.ResNet1D(n_chs=n_chs, n_out=n_out, n_blks=n_blks)
             total_params = sum((p.numel() for p in model.parameters()))
-            trainable_params = sum((p.numel() for p in model.parameters() if p.requires_grad))
+            trainable_params = sum(
+                (p.numel() for p in model.parameters() if p.requires_grad)
+            )
             assert total_params > 10000
             pass
             pass
@@ -968,7 +969,9 @@ class TestResNet1D:
         for n_chs, n_out, n_blks in configs:
             model = scitex_nn.ResNet1D(n_chs=n_chs, n_out=n_out, n_blks=n_blks)
             total_params = sum((p.numel() for p in model.parameters()))
-            trainable_params = sum((p.numel() for p in model.parameters() if p.requires_grad))
+            trainable_params = sum(
+                (p.numel() for p in model.parameters() if p.requires_grad)
+            )
             pass
             assert total_params < 100000000
             pass
@@ -982,7 +985,9 @@ class TestResNet1D:
         for n_chs, n_out, n_blks in configs:
             model = scitex_nn.ResNet1D(n_chs=n_chs, n_out=n_out, n_blks=n_blks)
             total_params = sum((p.numel() for p in model.parameters()))
-            trainable_params = sum((p.numel() for p in model.parameters() if p.requires_grad))
+            trainable_params = sum(
+                (p.numel() for p in model.parameters() if p.requires_grad)
+            )
             pass
             pass
             assert trainable_params == total_params
@@ -1091,7 +1096,6 @@ class TestResNet1D:
         # Arrange
 
         class ResNet1DClassifier(nn.Module):
-
             def __init__(self, n_chs, n_out):
                 super().__init__()
                 self.feature_extractor = scitex_nn.ResNet1D(n_chs, n_out)
@@ -1101,6 +1105,7 @@ class TestResNet1D:
                 features = self.feature_extractor(x)
                 pooled = features.mean(dim=-1)
                 return self.classifier(pooled)
+
         model = ResNet1DClassifier(n_chs=19, n_out=4)
         x = torch.randn(8, 19, 1000)
         # Act
