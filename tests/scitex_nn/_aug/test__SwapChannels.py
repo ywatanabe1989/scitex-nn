@@ -3,7 +3,6 @@ import pytest
 # Required for this module
 pytest.importorskip("torch")
 import random
-from unittest.mock import patch
 
 import numpy as np
 import torch
@@ -181,7 +180,7 @@ class TestSwapChannels:
         # Assert
         assert output.device == x.device
 
-    @pytest.mark.skipif(not torch.cuda.is_available(), reason='CUDA not available')
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA not available")
     def test_device_compatibility_cuda_device(self):
         """Test layer works on CUDA."""
         # Arrange
@@ -193,7 +192,7 @@ class TestSwapChannels:
         assert output.device == x.device
         pass
 
-    @pytest.mark.skipif(not torch.cuda.is_available(), reason='CUDA not available')
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA not available")
     def test_device_compatibility_cuda_is_cuda(self):
         """Test layer works on CUDA."""
         # Arrange
@@ -256,7 +255,9 @@ class TestSwapChannels:
     def test_integration_with_sequential_check1(self):
         """Test integration in nn.Sequential."""
         # Arrange
-        model = nn.Sequential(nn.Conv1d(10, 20, 3), SwapChannels(dropout=0.5), nn.Conv1d(20, 10, 3))
+        model = nn.Sequential(
+            nn.Conv1d(10, 20, 3), SwapChannels(dropout=0.5), nn.Conv1d(20, 10, 3)
+        )
         x = torch.randn(4, 10, 100)
         # Act
         output = model(x)
@@ -267,7 +268,9 @@ class TestSwapChannels:
     def test_integration_with_sequential_check2(self):
         """Test integration in nn.Sequential."""
         # Arrange
-        model = nn.Sequential(nn.Conv1d(10, 20, 3), SwapChannels(dropout=0.5), nn.Conv1d(20, 10, 3))
+        model = nn.Sequential(
+            nn.Conv1d(10, 20, 3), SwapChannels(dropout=0.5), nn.Conv1d(20, 10, 3)
+        )
         x = torch.randn(4, 10, 100)
         # Act
         output = model(x)
@@ -392,7 +395,13 @@ class TestSwapChannels:
         n_trials = 100
         n_channels = 20
         for trial in range(n_trials):
-            x = torch.arange(n_channels).float().unsqueeze(0).unsqueeze(-1).expand(1, -1, 10)
+            x = (
+                torch.arange(n_channels)
+                .float()
+                .unsqueeze(0)
+                .unsqueeze(-1)
+                .expand(1, -1, 10)
+            )
             torch.manual_seed(trial)
             output = layer(x)
             for ch in range(n_channels):

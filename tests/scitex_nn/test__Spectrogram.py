@@ -14,7 +14,6 @@ import pytest
 pytest.importorskip("torch")
 import os
 import tempfile
-from unittest.mock import MagicMock, patch
 
 import numpy as np
 import torch
@@ -127,7 +126,13 @@ class TestSpectrogram:
         hop_length = 128
         win_length = 400
         # Act
-        layer = Spectrogram(sampling_rate=sampling_rate, n_fft=n_fft, hop_length=hop_length, win_length=win_length, window='hann')
+        layer = Spectrogram(
+            sampling_rate=sampling_rate,
+            n_fft=n_fft,
+            hop_length=hop_length,
+            win_length=win_length,
+            window="hann",
+        )
         # Assert
         assert layer.n_fft == n_fft
         pass
@@ -141,7 +146,13 @@ class TestSpectrogram:
         hop_length = 128
         win_length = 400
         # Act
-        layer = Spectrogram(sampling_rate=sampling_rate, n_fft=n_fft, hop_length=hop_length, win_length=win_length, window='hann')
+        layer = Spectrogram(
+            sampling_rate=sampling_rate,
+            n_fft=n_fft,
+            hop_length=hop_length,
+            win_length=win_length,
+            window="hann",
+        )
         # Assert
         pass
         assert layer.hop_length == hop_length
@@ -155,7 +166,13 @@ class TestSpectrogram:
         hop_length = 128
         win_length = 400
         # Act
-        layer = Spectrogram(sampling_rate=sampling_rate, n_fft=n_fft, hop_length=hop_length, win_length=win_length, window='hann')
+        layer = Spectrogram(
+            sampling_rate=sampling_rate,
+            n_fft=n_fft,
+            hop_length=hop_length,
+            win_length=win_length,
+            window="hann",
+        )
         # Assert
         pass
         pass
@@ -169,7 +186,13 @@ class TestSpectrogram:
         hop_length = 128
         win_length = 400
         # Act
-        layer = Spectrogram(sampling_rate=sampling_rate, n_fft=n_fft, hop_length=hop_length, win_length=win_length, window='hann')
+        layer = Spectrogram(
+            sampling_rate=sampling_rate,
+            n_fft=n_fft,
+            hop_length=hop_length,
+            win_length=win_length,
+            window="hann",
+        )
         # Assert
         pass
         pass
@@ -181,10 +204,12 @@ class TestSpectrogram:
         # Arrange
         # Act
         # Assert
-        with pytest.raises(ValueError, match='Unsupported window type'):
-            Spectrogram(sampling_rate=sampling_rate, window='invalid')
+        with pytest.raises(ValueError, match="Unsupported window type"):
+            Spectrogram(sampling_rate=sampling_rate, window="invalid")
 
-    def test_forward_basic_spectrogram_behaves_correctly_check1(self, sampling_rate, sample_input):
+    def test_forward_basic_spectrogram_behaves_correctly_check1(
+        self, sampling_rate, sample_input
+    ):
         """Test basic forward pass."""
         # Arrange
         layer = Spectrogram(sampling_rate=sampling_rate)
@@ -199,7 +224,9 @@ class TestSpectrogram:
         pass
         pass
 
-    def test_forward_basic_spectrogram_behaves_correctly_check2(self, sampling_rate, sample_input):
+    def test_forward_basic_spectrogram_behaves_correctly_check2(
+        self, sampling_rate, sample_input
+    ):
         """Test basic forward pass."""
         # Arrange
         layer = Spectrogram(sampling_rate=sampling_rate)
@@ -214,7 +241,9 @@ class TestSpectrogram:
         pass
         pass
 
-    def test_forward_basic_spectrogram_behaves_correctly_check3(self, sampling_rate, sample_input):
+    def test_forward_basic_spectrogram_behaves_correctly_check3(
+        self, sampling_rate, sample_input
+    ):
         """Test basic forward pass."""
         # Arrange
         layer = Spectrogram(sampling_rate=sampling_rate)
@@ -229,7 +258,9 @@ class TestSpectrogram:
         pass
         pass
 
-    def test_forward_basic_spectrogram_behaves_correctly_shape(self, sampling_rate, sample_input):
+    def test_forward_basic_spectrogram_behaves_correctly_shape(
+        self, sampling_rate, sample_input
+    ):
         """Test basic forward pass."""
         # Arrange
         layer = Spectrogram(sampling_rate=sampling_rate)
@@ -244,7 +275,9 @@ class TestSpectrogram:
         assert freqs.shape == (expected_freq_bins,)
         pass
 
-    def test_forward_basic_spectrogram_behaves_correctly_check5(self, sampling_rate, sample_input):
+    def test_forward_basic_spectrogram_behaves_correctly_check5(
+        self, sampling_rate, sample_input
+    ):
         """Test basic forward pass."""
         # Arrange
         layer = Spectrogram(sampling_rate=sampling_rate)
@@ -367,14 +400,18 @@ class TestSpectrogram:
         prev_n_frames = None
         # Assert
         for hop_length in hop_lengths:
-            layer = Spectrogram(sampling_rate=sampling_rate, n_fft=n_fft, hop_length=hop_length)
+            layer = Spectrogram(
+                sampling_rate=sampling_rate, n_fft=n_fft, hop_length=hop_length
+            )
             spectrograms, _, times = layer(x)
             n_frames = spectrograms.shape[3]
             if prev_n_frames is not None:
                 assert n_frames < prev_n_frames
             prev_n_frames = n_frames
 
-    def test_gradient_flow_spectrogram_behaves_correctly_grad(self, sampling_rate, sample_input):
+    def test_gradient_flow_spectrogram_behaves_correctly_grad(
+        self, sampling_rate, sample_input
+    ):
         """Test that gradients flow properly through the layer."""
         # Arrange
         layer = Spectrogram(sampling_rate=sampling_rate)
@@ -387,7 +424,9 @@ class TestSpectrogram:
         assert sample_input.grad is not None
         pass
 
-    def test_gradient_flow_spectrogram_behaves_correctly_allclose(self, sampling_rate, sample_input):
+    def test_gradient_flow_spectrogram_behaves_correctly_allclose(
+        self, sampling_rate, sample_input
+    ):
         """Test that gradients flow properly through the layer."""
         # Arrange
         layer = Spectrogram(sampling_rate=sampling_rate)
@@ -398,7 +437,9 @@ class TestSpectrogram:
         loss.backward()
         # Assert
         pass
-        assert not torch.allclose(sample_input.grad, torch.zeros_like(sample_input.grad))
+        assert not torch.allclose(
+            sample_input.grad, torch.zeros_like(sample_input.grad)
+        )
 
     def test_device_compatibility_cpu_device(self, sampling_rate):
         """Test layer works on CPU."""
@@ -422,7 +463,7 @@ class TestSpectrogram:
         pass
         assert not spectrograms.is_cuda
 
-    @pytest.mark.skipif(not torch.cuda.is_available(), reason='CUDA not available')
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA not available")
     def test_device_compatibility_cuda_device(self, sampling_rate):
         """Test layer works on CUDA."""
         # Arrange
@@ -435,7 +476,7 @@ class TestSpectrogram:
         pass
         pass
 
-    @pytest.mark.skipif(not torch.cuda.is_available(), reason='CUDA not available')
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA not available")
     def test_device_compatibility_cuda_is_cuda(self, sampling_rate):
         """Test layer works on CUDA."""
         # Arrange
@@ -448,7 +489,7 @@ class TestSpectrogram:
         assert spectrograms.is_cuda
         pass
 
-    @pytest.mark.skipif(not torch.cuda.is_available(), reason='CUDA not available')
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA not available")
     def test_device_compatibility_cuda_is_cuda_v2(self, sampling_rate):
         """Test layer works on CUDA."""
         # Arrange
@@ -470,7 +511,9 @@ class TestSpectrogram:
         x = torch.randn(2, 3, 2000)
         # Assert
         for win_length in win_lengths:
-            layer = Spectrogram(sampling_rate=sampling_rate, n_fft=n_fft, win_length=win_length)
+            layer = Spectrogram(
+                sampling_rate=sampling_rate, n_fft=n_fft, win_length=win_length
+            )
             spectrograms, _, _ = layer(x)
             assert not torch.isnan(spectrograms).any()
             pass
@@ -484,7 +527,9 @@ class TestSpectrogram:
         x = torch.randn(2, 3, 2000)
         # Assert
         for win_length in win_lengths:
-            layer = Spectrogram(sampling_rate=sampling_rate, n_fft=n_fft, win_length=win_length)
+            layer = Spectrogram(
+                sampling_rate=sampling_rate, n_fft=n_fft, win_length=win_length
+            )
             spectrograms, _, _ = layer(x)
             pass
             assert not torch.isinf(spectrograms).any()
@@ -492,9 +537,9 @@ class TestSpectrogram:
     def test_short_signal_handling_check1(self, sampling_rate):
         """Test with signals that are at minimum length for STFT.
 
-            Note: PyTorch STFT requires signal length >= n_fft for center=True.
-            Signals too short will raise RuntimeError.
-            """
+        Note: PyTorch STFT requires signal length >= n_fft for center=True.
+        Signals too short will raise RuntimeError.
+        """
         # Arrange
         n_fft = 256
         layer = Spectrogram(sampling_rate=sampling_rate, n_fft=n_fft)
@@ -509,9 +554,9 @@ class TestSpectrogram:
     def test_short_signal_handling_check2(self, sampling_rate):
         """Test with signals that are at minimum length for STFT.
 
-            Note: PyTorch STFT requires signal length >= n_fft for center=True.
-            Signals too short will raise RuntimeError.
-            """
+        Note: PyTorch STFT requires signal length >= n_fft for center=True.
+        Signals too short will raise RuntimeError.
+        """
         # Arrange
         n_fft = 256
         layer = Spectrogram(sampling_rate=sampling_rate, n_fft=n_fft)
@@ -526,9 +571,9 @@ class TestSpectrogram:
     def test_short_signal_handling_any(self, sampling_rate):
         """Test with signals that are at minimum length for STFT.
 
-            Note: PyTorch STFT requires signal length >= n_fft for center=True.
-            Signals too short will raise RuntimeError.
-            """
+        Note: PyTorch STFT requires signal length >= n_fft for center=True.
+        Signals too short will raise RuntimeError.
+        """
         # Arrange
         n_fft = 256
         layer = Spectrogram(sampling_rate=sampling_rate, n_fft=n_fft)
@@ -599,7 +644,9 @@ class TestSpectrogram:
         spectrograms_small, _, _ = layer(x_small)
         pass
 
-    def test_numerical_stability_spectrogram_behaves_correctly_any_v2(self, sampling_rate):
+    def test_numerical_stability_spectrogram_behaves_correctly_any_v2(
+        self, sampling_rate
+    ):
         """Test numerical stability with extreme values."""
         # Arrange
         layer = Spectrogram(sampling_rate=sampling_rate)
@@ -613,7 +660,9 @@ class TestSpectrogram:
         spectrograms_small, _, _ = layer(x_small)
         pass
 
-    def test_numerical_stability_spectrogram_behaves_correctly_any_v3(self, sampling_rate):
+    def test_numerical_stability_spectrogram_behaves_correctly_any_v3(
+        self, sampling_rate
+    ):
         """Test numerical stability with extreme values."""
         # Arrange
         layer = Spectrogram(sampling_rate=sampling_rate)
@@ -645,7 +694,6 @@ class TestSpectrogram:
         # Arrange
 
         class SpectrogramWrapper(nn.Module):
-
             def __init__(self, sampling_rate):
                 super().__init__()
                 self.spec = Spectrogram(sampling_rate)
@@ -653,14 +701,22 @@ class TestSpectrogram:
             def forward(self, x):
                 spec, _, _ = self.spec(x)
                 return spec
-        model = nn.Sequential(SpectrogramWrapper(sampling_rate), nn.Conv2d(3, 16, 3, padding=1), nn.ReLU(), nn.AdaptiveAvgPool2d((8, 8)))
+
+        model = nn.Sequential(
+            SpectrogramWrapper(sampling_rate),
+            nn.Conv2d(3, 16, 3, padding=1),
+            nn.ReLU(),
+            nn.AdaptiveAvgPool2d((8, 8)),
+        )
         x = torch.randn(4, 3, 1000)
         # Act
         output = model(x)
         # Assert
         assert output.shape == (4, 16, 8, 8)
 
-    def test_memory_efficiency_spectrogram_behaves_correctly_check1(self, sampling_rate):
+    def test_memory_efficiency_spectrogram_behaves_correctly_check1(
+        self, sampling_rate
+    ):
         """Test memory usage with large inputs."""
         # Arrange
         layer = Spectrogram(sampling_rate=sampling_rate)
@@ -671,7 +727,9 @@ class TestSpectrogram:
         assert spectrograms.shape[0] == 8
         pass
 
-    def test_memory_efficiency_spectrogram_behaves_correctly_check2(self, sampling_rate):
+    def test_memory_efficiency_spectrogram_behaves_correctly_check2(
+        self, sampling_rate
+    ):
         """Test memory usage with large inputs."""
         # Arrange
         layer = Spectrogram(sampling_rate=sampling_rate)
@@ -706,41 +764,45 @@ class TestSpectrogram:
         pass
         assert not torch.isinf(spectrograms).any()
 
-    def test_energy_preservation_spectrogram_behaves_correctly_ratio(self, sampling_rate):
+    def test_energy_preservation_spectrogram_behaves_correctly_ratio(
+        self, sampling_rate
+    ):
         """Test approximate energy preservation (Parseval's theorem).
 
-            Note: With non-normalized STFT and overlapping windows, the frequency
-            domain energy will be larger than time domain. The ratio depends on
-            window type, overlap, and n_fft. This test just verifies the ratio
-            is consistent and finite.
-            """
+        Note: With non-normalized STFT and overlapping windows, the frequency
+        domain energy will be larger than time domain. The ratio depends on
+        window type, overlap, and n_fft. This test just verifies the ratio
+        is consistent and finite.
+        """
         # Arrange
         layer = Spectrogram(sampling_rate=sampling_rate, n_fft=512)
         x = torch.randn(1, 1, 2000)
-        time_energy = (x ** 2).sum()
+        time_energy = (x**2).sum()
         spectrograms, _, _ = layer(x)
         # Act
-        freq_energy = (spectrograms ** 2).sum()
+        freq_energy = (spectrograms**2).sum()
         ratio = freq_energy / time_energy
         # Assert
         assert ratio > 0 and (not torch.isinf(ratio))
         pass
 
-    def test_energy_preservation_spectrogram_behaves_correctly_check2(self, sampling_rate):
+    def test_energy_preservation_spectrogram_behaves_correctly_check2(
+        self, sampling_rate
+    ):
         """Test approximate energy preservation (Parseval's theorem).
 
-            Note: With non-normalized STFT and overlapping windows, the frequency
-            domain energy will be larger than time domain. The ratio depends on
-            window type, overlap, and n_fft. This test just verifies the ratio
-            is consistent and finite.
-            """
+        Note: With non-normalized STFT and overlapping windows, the frequency
+        domain energy will be larger than time domain. The ratio depends on
+        window type, overlap, and n_fft. This test just verifies the ratio
+        is consistent and finite.
+        """
         # Arrange
         layer = Spectrogram(sampling_rate=sampling_rate, n_fft=512)
         x = torch.randn(1, 1, 2000)
-        time_energy = (x ** 2).sum()
+        time_energy = (x**2).sum()
         spectrograms, _, _ = layer(x)
         # Act
-        freq_energy = (spectrograms ** 2).sum()
+        freq_energy = (spectrograms**2).sum()
         ratio = freq_energy / time_energy
         # Assert
         pass

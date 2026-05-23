@@ -11,7 +11,6 @@ pytest.importorskip("torch")
 import os
 import tempfile
 import warnings
-from unittest.mock import Mock, patch
 
 import numpy as np
 import torch
@@ -25,6 +24,7 @@ class TestModulationIndexInitialization:
         """Test basic ModulationIndex initialization with default parameters."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         # Act
         mi = ModulationIndex()
         # Assert
@@ -37,6 +37,7 @@ class TestModulationIndexInitialization:
         """Test basic ModulationIndex initialization with default parameters."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         # Act
         mi = ModulationIndex()
         # Assert
@@ -49,6 +50,7 @@ class TestModulationIndexInitialization:
         """Test basic ModulationIndex initialization with default parameters."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         # Act
         mi = ModulationIndex()
         # Assert
@@ -61,18 +63,20 @@ class TestModulationIndexInitialization:
         """Test basic ModulationIndex initialization with default parameters."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         # Act
         mi = ModulationIndex()
         # Assert
         pass
         pass
         pass
-        assert hasattr(mi, 'pha_bin_cutoffs')
+        assert hasattr(mi, "pha_bin_cutoffs")
 
     def test_initialization_with_custom_bins_n_bins(self):
         """Test initialization with custom number of phase bins."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         n_bins = 36
         # Act
         mi = ModulationIndex(n_bins=n_bins)
@@ -86,6 +90,7 @@ class TestModulationIndexInitialization:
         """Test initialization with custom number of phase bins."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         n_bins = 36
         # Act
         mi = ModulationIndex(n_bins=n_bins)
@@ -99,6 +104,7 @@ class TestModulationIndexInitialization:
         """Test initialization with custom number of phase bins."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         n_bins = 36
         # Act
         mi = ModulationIndex(n_bins=n_bins)
@@ -112,6 +118,7 @@ class TestModulationIndexInitialization:
         """Test initialization with custom number of phase bins."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         n_bins = 36
         # Act
         mi = ModulationIndex(n_bins=n_bins)
@@ -125,6 +132,7 @@ class TestModulationIndexInitialization:
         """Test initialization with half precision enabled."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         # Act
         mi = ModulationIndex(fp16=True)
         # Assert
@@ -134,6 +142,7 @@ class TestModulationIndexInitialization:
         """Test initialization with amplitude probability output."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         # Act
         mi = ModulationIndex(amp_prob=True)
         # Assert
@@ -143,33 +152,36 @@ class TestModulationIndexInitialization:
         """Test phase bin cutoffs are registered as buffer."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         # Act
         mi = ModulationIndex(n_bins=10)
         # Assert
-        assert 'pha_bin_cutoffs' in dict(mi.named_buffers())
+        assert "pha_bin_cutoffs" in dict(mi.named_buffers())
         pass
 
     def test_phase_bin_cutoffs_buffer_check2(self):
         """Test phase bin cutoffs are registered as buffer."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         # Act
         mi = ModulationIndex(n_bins=10)
         # Assert
         pass
-        assert 'pha_bin_cutoffs' not in dict(mi.named_parameters())
+        assert "pha_bin_cutoffs" not in dict(mi.named_parameters())
 
     def test_phase_bin_centers_property_len(self):
         """Test phase bin centers calculation.
 
-            With 18 bins from -π to π:
-            - Bin width = 2π/18 = π/9
-            - centers[i] = -π + (i + 0.5) * (2π/18)
-            - centers[8] ≈ -0.175, centers[9] ≈ 0.175
-            - No bin is centered exactly at 0 with even number of bins
-            """
+        With 18 bins from -π to π:
+        - Bin width = 2π/18 = π/9
+        - centers[i] = -π + (i + 0.5) * (2π/18)
+        - centers[8] ≈ -0.175, centers[9] ≈ 0.175
+        - No bin is centered exactly at 0 with even number of bins
+        """
         # Arrange
         from scitex_nn import ModulationIndex
+
         # Act
         mi = ModulationIndex(n_bins=18)
         centers = mi.pha_bin_centers
@@ -183,14 +195,15 @@ class TestModulationIndexInitialization:
     def test_phase_bin_centers_property_check2(self):
         """Test phase bin centers calculation.
 
-            With 18 bins from -π to π:
-            - Bin width = 2π/18 = π/9
-            - centers[i] = -π + (i + 0.5) * (2π/18)
-            - centers[8] ≈ -0.175, centers[9] ≈ 0.175
-            - No bin is centered exactly at 0 with even number of bins
-            """
+        With 18 bins from -π to π:
+        - Bin width = 2π/18 = π/9
+        - centers[i] = -π + (i + 0.5) * (2π/18)
+        - centers[8] ≈ -0.175, centers[9] ≈ 0.175
+        - No bin is centered exactly at 0 with even number of bins
+        """
         # Arrange
         from scitex_nn import ModulationIndex
+
         # Act
         mi = ModulationIndex(n_bins=18)
         centers = mi.pha_bin_centers
@@ -204,14 +217,15 @@ class TestModulationIndexInitialization:
     def test_phase_bin_centers_property_check3(self):
         """Test phase bin centers calculation.
 
-            With 18 bins from -π to π:
-            - Bin width = 2π/18 = π/9
-            - centers[i] = -π + (i + 0.5) * (2π/18)
-            - centers[8] ≈ -0.175, centers[9] ≈ 0.175
-            - No bin is centered exactly at 0 with even number of bins
-            """
+        With 18 bins from -π to π:
+        - Bin width = 2π/18 = π/9
+        - centers[i] = -π + (i + 0.5) * (2π/18)
+        - centers[8] ≈ -0.175, centers[9] ≈ 0.175
+        - No bin is centered exactly at 0 with even number of bins
+        """
         # Arrange
         from scitex_nn import ModulationIndex
+
         # Act
         mi = ModulationIndex(n_bins=18)
         centers = mi.pha_bin_centers
@@ -225,14 +239,15 @@ class TestModulationIndexInitialization:
     def test_phase_bin_centers_property_isclose(self):
         """Test phase bin centers calculation.
 
-            With 18 bins from -π to π:
-            - Bin width = 2π/18 = π/9
-            - centers[i] = -π + (i + 0.5) * (2π/18)
-            - centers[8] ≈ -0.175, centers[9] ≈ 0.175
-            - No bin is centered exactly at 0 with even number of bins
-            """
+        With 18 bins from -π to π:
+        - Bin width = 2π/18 = π/9
+        - centers[i] = -π + (i + 0.5) * (2π/18)
+        - centers[8] ≈ -0.175, centers[9] ≈ 0.175
+        - No bin is centered exactly at 0 with even number of bins
+        """
         # Arrange
         from scitex_nn import ModulationIndex
+
         # Act
         mi = ModulationIndex(n_bins=18)
         centers = mi.pha_bin_centers
@@ -246,14 +261,15 @@ class TestModulationIndexInitialization:
     def test_phase_bin_centers_property_isclose_v2(self):
         """Test phase bin centers calculation.
 
-            With 18 bins from -π to π:
-            - Bin width = 2π/18 = π/9
-            - centers[i] = -π + (i + 0.5) * (2π/18)
-            - centers[8] ≈ -0.175, centers[9] ≈ 0.175
-            - No bin is centered exactly at 0 with even number of bins
-            """
+        With 18 bins from -π to π:
+        - Bin width = 2π/18 = π/9
+        - centers[i] = -π + (i + 0.5) * (2π/18)
+        - centers[8] ≈ -0.175, centers[9] ≈ 0.175
+        - No bin is centered exactly at 0 with even number of bins
+        """
         # Arrange
         from scitex_nn import ModulationIndex
+
         # Act
         mi = ModulationIndex(n_bins=18)
         centers = mi.pha_bin_centers
@@ -271,11 +287,12 @@ class TestModulationIndexForward:
     def test_forward_basic_modulation_index_behaves_correctly_shape(self):
         """Test basic forward pass with valid inputs.
 
-            Note: Amplitude values must be positive for valid MI calculation,
-            as the algorithm computes probabilities and log values.
-            """
+        Note: Amplitude values must be positive for valid MI calculation,
+        as the algorithm computes probabilities and log values.
+        """
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex()
         batch_size, n_channels, n_freqs_pha, n_segments, seq_len = (2, 3, 5, 4, 100)
         pha = torch.randn(batch_size, n_channels, n_freqs_pha, n_segments, seq_len)
@@ -289,11 +306,12 @@ class TestModulationIndexForward:
     def test_forward_basic_modulation_index_behaves_correctly_any(self):
         """Test basic forward pass with valid inputs.
 
-            Note: Amplitude values must be positive for valid MI calculation,
-            as the algorithm computes probabilities and log values.
-            """
+        Note: Amplitude values must be positive for valid MI calculation,
+        as the algorithm computes probabilities and log values.
+        """
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex()
         batch_size, n_channels, n_freqs_pha, n_segments, seq_len = (2, 3, 5, 4, 100)
         pha = torch.randn(batch_size, n_channels, n_freqs_pha, n_segments, seq_len)
@@ -308,6 +326,7 @@ class TestModulationIndexForward:
         """Test forward pass with different phase and amplitude frequency dimensions."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex()
         batch_size, n_channels, n_segments, seq_len = (1, 2, 3, 50)
         n_freqs_pha, n_freqs_amp = (4, 6)
@@ -321,10 +340,11 @@ class TestModulationIndexForward:
     def test_forward_with_fp16_any(self):
         """Test forward pass with half precision.
 
-            Note: Amplitude values must be positive for valid MI calculation.
-            """
+        Note: Amplitude values must be positive for valid MI calculation.
+        """
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex(fp16=True)
         pha = torch.randn(1, 1, 2, 1, 100)
         amp = torch.rand(1, 1, 2, 1, 100) + 0.5
@@ -337,10 +357,11 @@ class TestModulationIndexForward:
     def test_forward_with_fp16_any_v2(self):
         """Test forward pass with half precision.
 
-            Note: Amplitude values must be positive for valid MI calculation.
-            """
+        Note: Amplitude values must be positive for valid MI calculation.
+        """
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex(fp16=True)
         pha = torch.randn(1, 1, 2, 1, 100)
         amp = torch.rand(1, 1, 2, 1, 100) + 0.5
@@ -354,6 +375,7 @@ class TestModulationIndexForward:
         """Test forward pass returning amplitude probability distributions."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex(n_bins=20, amp_prob=True)
         pha = torch.randn(2, 2, 3, 2, 100)
         amp = torch.randn(2, 2, 3, 2, 100)
@@ -367,6 +389,7 @@ class TestModulationIndexForward:
         """Test forward pass returning amplitude probability distributions."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex(n_bins=20, amp_prob=True)
         pha = torch.randn(2, 2, 3, 2, 100)
         amp = torch.randn(2, 2, 3, 2, 100)
@@ -374,12 +397,13 @@ class TestModulationIndexForward:
         output = mi(pha, amp)
         # Assert
         pass
-        assert output.device.type == 'cpu'
+        assert output.device.type == "cpu"
 
     def test_forward_modulation_index_range_all(self):
         """Test modulation index output is in valid range [0, 1]."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex()
         pha = torch.randn(1, 1, 1, 1, 1000)
         amp = torch.rand(1, 1, 1, 1, 1000) + 0.5
@@ -393,6 +417,7 @@ class TestModulationIndexForward:
         """Test modulation index output is in valid range [0, 1]."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex()
         pha = torch.randn(1, 1, 1, 1, 1000)
         amp = torch.rand(1, 1, 1, 1, 1000) + 0.5
@@ -402,20 +427,24 @@ class TestModulationIndexForward:
         pass
         assert (output <= 1).all()
 
-    @pytest.mark.skipif(True, reason='ModulationIndex uses bool masks and non-differentiable binning, breaking gradient flow. This is by design - MI is typically used as a metric, not for gradient-based optimization.')
+    @pytest.mark.skipif(
+        True,
+        reason="ModulationIndex uses bool masks and non-differentiable binning, breaking gradient flow. This is by design - MI is typically used as a metric, not for gradient-based optimization.",
+    )
     def test_forward_gradient_flow_grad(self):
         """Test gradient flow through ModulationIndex layer.
 
-            Note: This test is skipped because the implementation uses:
-            1. F.one_hot which produces bool masks (non-differentiable)
-            2. torch.bucketize which is non-differentiable
-            3. .float().contiguous() which detaches from computational graph
+        Note: This test is skipped because the implementation uses:
+        1. F.one_hot which produces bool masks (non-differentiable)
+        2. torch.bucketize which is non-differentiable
+        3. .float().contiguous() which detaches from computational graph
 
-            This is expected behavior - ModulationIndex computes a metric based on
-            binned phase-amplitude distributions, which is inherently non-differentiable.
-            """
+        This is expected behavior - ModulationIndex computes a metric based on
+        binned phase-amplitude distributions, which is inherently non-differentiable.
+        """
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex()
         pha = torch.randn(1, 1, 2, 1, 100, requires_grad=True)
         amp = torch.rand(1, 1, 2, 1, 100, requires_grad=True) + 0.5
@@ -429,20 +458,24 @@ class TestModulationIndexForward:
         pass
         pass
 
-    @pytest.mark.skipif(True, reason='ModulationIndex uses bool masks and non-differentiable binning, breaking gradient flow. This is by design - MI is typically used as a metric, not for gradient-based optimization.')
+    @pytest.mark.skipif(
+        True,
+        reason="ModulationIndex uses bool masks and non-differentiable binning, breaking gradient flow. This is by design - MI is typically used as a metric, not for gradient-based optimization.",
+    )
     def test_forward_gradient_flow_grad_v2(self):
         """Test gradient flow through ModulationIndex layer.
 
-            Note: This test is skipped because the implementation uses:
-            1. F.one_hot which produces bool masks (non-differentiable)
-            2. torch.bucketize which is non-differentiable
-            3. .float().contiguous() which detaches from computational graph
+        Note: This test is skipped because the implementation uses:
+        1. F.one_hot which produces bool masks (non-differentiable)
+        2. torch.bucketize which is non-differentiable
+        3. .float().contiguous() which detaches from computational graph
 
-            This is expected behavior - ModulationIndex computes a metric based on
-            binned phase-amplitude distributions, which is inherently non-differentiable.
-            """
+        This is expected behavior - ModulationIndex computes a metric based on
+        binned phase-amplitude distributions, which is inherently non-differentiable.
+        """
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex()
         pha = torch.randn(1, 1, 2, 1, 100, requires_grad=True)
         amp = torch.rand(1, 1, 2, 1, 100, requires_grad=True) + 0.5
@@ -456,20 +489,24 @@ class TestModulationIndexForward:
         pass
         pass
 
-    @pytest.mark.skipif(True, reason='ModulationIndex uses bool masks and non-differentiable binning, breaking gradient flow. This is by design - MI is typically used as a metric, not for gradient-based optimization.')
+    @pytest.mark.skipif(
+        True,
+        reason="ModulationIndex uses bool masks and non-differentiable binning, breaking gradient flow. This is by design - MI is typically used as a metric, not for gradient-based optimization.",
+    )
     def test_forward_gradient_flow_any(self):
         """Test gradient flow through ModulationIndex layer.
 
-            Note: This test is skipped because the implementation uses:
-            1. F.one_hot which produces bool masks (non-differentiable)
-            2. torch.bucketize which is non-differentiable
-            3. .float().contiguous() which detaches from computational graph
+        Note: This test is skipped because the implementation uses:
+        1. F.one_hot which produces bool masks (non-differentiable)
+        2. torch.bucketize which is non-differentiable
+        3. .float().contiguous() which detaches from computational graph
 
-            This is expected behavior - ModulationIndex computes a metric based on
-            binned phase-amplitude distributions, which is inherently non-differentiable.
-            """
+        This is expected behavior - ModulationIndex computes a metric based on
+        binned phase-amplitude distributions, which is inherently non-differentiable.
+        """
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex()
         pha = torch.randn(1, 1, 2, 1, 100, requires_grad=True)
         amp = torch.rand(1, 1, 2, 1, 100, requires_grad=True) + 0.5
@@ -483,20 +520,24 @@ class TestModulationIndexForward:
         assert not torch.isnan(pha.grad).any()
         pass
 
-    @pytest.mark.skipif(True, reason='ModulationIndex uses bool masks and non-differentiable binning, breaking gradient flow. This is by design - MI is typically used as a metric, not for gradient-based optimization.')
+    @pytest.mark.skipif(
+        True,
+        reason="ModulationIndex uses bool masks and non-differentiable binning, breaking gradient flow. This is by design - MI is typically used as a metric, not for gradient-based optimization.",
+    )
     def test_forward_gradient_flow_any_v2(self):
         """Test gradient flow through ModulationIndex layer.
 
-            Note: This test is skipped because the implementation uses:
-            1. F.one_hot which produces bool masks (non-differentiable)
-            2. torch.bucketize which is non-differentiable
-            3. .float().contiguous() which detaches from computational graph
+        Note: This test is skipped because the implementation uses:
+        1. F.one_hot which produces bool masks (non-differentiable)
+        2. torch.bucketize which is non-differentiable
+        3. .float().contiguous() which detaches from computational graph
 
-            This is expected behavior - ModulationIndex computes a metric based on
-            binned phase-amplitude distributions, which is inherently non-differentiable.
-            """
+        This is expected behavior - ModulationIndex computes a metric based on
+        binned phase-amplitude distributions, which is inherently non-differentiable.
+        """
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex()
         pha = torch.randn(1, 1, 2, 1, 100, requires_grad=True)
         amp = torch.rand(1, 1, 2, 1, 100, requires_grad=True) + 0.5
@@ -518,6 +559,7 @@ class TestPhaseToMasks:
         """Test basic phase to mask conversion."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         n_bins = 10
         phase_bin_cutoffs = torch.linspace(-np.pi, np.pi, n_bins + 1)
         pha = torch.tensor([[[-np.pi, 0, np.pi]]])
@@ -532,6 +574,7 @@ class TestPhaseToMasks:
         """Test basic phase to mask conversion."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         n_bins = 10
         phase_bin_cutoffs = torch.linspace(-np.pi, np.pi, n_bins + 1)
         pha = torch.tensor([[[-np.pi, 0, np.pi]]])
@@ -546,6 +589,7 @@ class TestPhaseToMasks:
         """Test basic phase to mask conversion."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         n_bins = 10
         phase_bin_cutoffs = torch.linspace(-np.pi, np.pi, n_bins + 1)
         pha = torch.tensor([[[-np.pi, 0, np.pi]]])
@@ -560,6 +604,7 @@ class TestPhaseToMasks:
         """Test phase binning at bin edges."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         n_bins = 4
         phase_bin_cutoffs = torch.linspace(-np.pi, np.pi, n_bins + 1)
         pha = phase_bin_cutoffs[:-1].unsqueeze(0).unsqueeze(0)
@@ -573,6 +618,7 @@ class TestPhaseToMasks:
         """Test phase binning at bin edges."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         n_bins = 4
         phase_bin_cutoffs = torch.linspace(-np.pi, np.pi, n_bins + 1)
         pha = phase_bin_cutoffs[:-1].unsqueeze(0).unsqueeze(0)
@@ -586,6 +632,7 @@ class TestPhaseToMasks:
         """Test phase binning with out-of-range values."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         phase_bin_cutoffs = torch.linspace(-np.pi, np.pi, 10)
         pha = torch.tensor([[[-4.0, 4.0]]])
         # Act
@@ -597,6 +644,7 @@ class TestPhaseToMasks:
         """Test phase binning with large multidimensional input."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         phase_bin_cutoffs = torch.linspace(-np.pi, np.pi, 18 + 1)
         pha = torch.randn(4, 8, 10, 5, 1000)
         # Act
@@ -609,6 +657,7 @@ class TestPhaseToMasks:
         """Test phase binning with large multidimensional input."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         phase_bin_cutoffs = torch.linspace(-np.pi, np.pi, 18 + 1)
         pha = torch.randn(4, 8, 10, 5, 1000)
         # Act
@@ -625,9 +674,16 @@ class TestModulationIndexCalculation:
         """Test MI calculation with uniform amplitude distribution."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex(n_bins=10)
         seq_len = 10000
-        pha = torch.linspace(-np.pi, np.pi, seq_len).unsqueeze(0).unsqueeze(0).unsqueeze(0).unsqueeze(0)
+        pha = (
+            torch.linspace(-np.pi, np.pi, seq_len)
+            .unsqueeze(0)
+            .unsqueeze(0)
+            .unsqueeze(0)
+            .unsqueeze(0)
+        )
         amp = torch.ones_like(pha)
         # Act
         output = mi(pha, amp)
@@ -638,6 +694,7 @@ class TestModulationIndexCalculation:
         """Test MI calculation with concentrated amplitude distribution."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex(n_bins=10)
         pha = torch.zeros(1, 1, 1, 1, 1000)
         amp = torch.ones_like(pha) * 10
@@ -650,16 +707,19 @@ class TestModulationIndexCalculation:
         """Test NaN warning is raised appropriately."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex()
         pha = torch.randn(1, 1, 1, 1, 10)
         # Act
         amp = torch.zeros_like(pha)
         # Assert
         with warnings.catch_warnings(record=True) as w:
-            warnings.simplefilter('always')
+            warnings.simplefilter("always")
             output = mi(pha, amp)
             if torch.isnan(output).any():
-                assert any(('NaN values detected' in str(warning.message) for warning in w))
+                assert any(
+                    ("NaN values detected" in str(warning.message) for warning in w)
+                )
 
 
 class TestMultiChannelProcessing:
@@ -669,6 +729,7 @@ class TestMultiChannelProcessing:
         """Test that channels are processed independently."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex()
         batch_size, n_channels, n_freqs, n_segments, seq_len = (1, 3, 2, 1, 500)
         pha = torch.zeros(batch_size, n_channels, n_freqs, n_segments, seq_len)
@@ -684,6 +745,7 @@ class TestMultiChannelProcessing:
         """Test that channels are processed independently."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex()
         batch_size, n_channels, n_freqs, n_segments, seq_len = (1, 3, 2, 1, 500)
         pha = torch.zeros(batch_size, n_channels, n_freqs, n_segments, seq_len)
@@ -699,6 +761,7 @@ class TestMultiChannelProcessing:
         """Test that MI is averaged across segments."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex()
         pha_single = torch.randn(1, 1, 1, 1, 1000)
         amp_single = torch.rand(1, 1, 1, 1, 1000) + 0.5
@@ -718,10 +781,11 @@ class TestMemoryEfficiency:
     def test_large_batch_processing_check1(self):
         """Test processing large batches efficiently.
 
-            Note: Amplitude values must be positive for valid MI calculation.
-            """
+        Note: Amplitude values must be positive for valid MI calculation.
+        """
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex()
         batch_size = 32
         pha = torch.randn(batch_size, 4, 5, 2, 100)
@@ -735,10 +799,11 @@ class TestMemoryEfficiency:
     def test_large_batch_processing_any(self):
         """Test processing large batches efficiently.
 
-            Note: Amplitude values must be positive for valid MI calculation.
-            """
+        Note: Amplitude values must be positive for valid MI calculation.
+        """
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex()
         batch_size = 32
         pha = torch.randn(batch_size, 4, 5, 2, 100)
@@ -753,6 +818,7 @@ class TestMemoryEfficiency:
         """Test memory-efficient broadcasting in coupling computation."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex(n_bins=50)
         pha = torch.randn(2, 2, 10, 2, 500)
         amp = torch.randn(2, 2, 10, 2, 500)
@@ -769,19 +835,21 @@ class TestDeviceCompatibility:
         """Test computation on CPU."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex()
         pha = torch.randn(1, 1, 2, 1, 100)
         amp = torch.randn(1, 1, 2, 1, 100)
         # Act
         output = mi(pha, amp)
         # Assert
-        assert output.device.type == 'cpu'
+        assert output.device.type == "cpu"
 
-    @pytest.mark.skipif(not torch.cuda.is_available(), reason='CUDA not available')
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA not available")
     def test_cuda_computation_modulation_index_behaves_correctly_is_cuda(self):
         """Test computation on CUDA if available."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex().cuda()
         pha = torch.randn(2, 2, 3, 2, 200).cuda()
         amp = torch.randn(2, 2, 3, 2, 200).cuda()
@@ -791,11 +859,12 @@ class TestDeviceCompatibility:
         assert output.is_cuda
         pass
 
-    @pytest.mark.skipif(not torch.cuda.is_available(), reason='CUDA not available')
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA not available")
     def test_cuda_computation_modulation_index_behaves_correctly_device(self):
         """Test computation on CUDA if available."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex().cuda()
         pha = torch.randn(2, 2, 3, 2, 200).cuda()
         amp = torch.randn(2, 2, 3, 2, 200).cuda()
@@ -805,18 +874,19 @@ class TestDeviceCompatibility:
         pass
         assert output.device == pha.device
 
-    @pytest.mark.skipif(not torch.cuda.is_available(), reason='CUDA not available')
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA not available")
     def test_device_consistency_with_amp_prob(self):
         """Test device handling when returning amplitude probabilities."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex(amp_prob=True).cuda()
         pha = torch.randn(1, 1, 1, 1, 100).cuda()
         amp = torch.randn(1, 1, 1, 1, 100).cuda()
         # Act
         output = mi(pha, amp)
         # Assert
-        assert output.device.type == 'cpu'
+        assert output.device.type == "cpu"
 
 
 class TestNumericalStability:
@@ -826,6 +896,7 @@ class TestNumericalStability:
         """Test epsilon prevents division by zero."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex()
         pha = torch.randn(1, 1, 1, 1, 100)
         amp = torch.zeros_like(pha)
@@ -838,6 +909,7 @@ class TestNumericalStability:
         """Test logarithm computation stability."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex()
         pha = torch.randn(1, 1, 1, 1, 100)
         amp = torch.ones_like(pha) * 1e-10
@@ -851,6 +923,7 @@ class TestNumericalStability:
         """Test logarithm computation stability."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex()
         pha = torch.randn(1, 1, 1, 1, 100)
         amp = torch.ones_like(pha) * 1e-10
@@ -864,6 +937,7 @@ class TestNumericalStability:
         """Test handling of extreme input values."""
         # Arrange
         from scitex_nn import ModulationIndex
+
         mi = ModulationIndex()
         pha = torch.randn(1, 1, 2, 1, 100) * 10
         amp = torch.randn(1, 1, 2, 1, 100).abs() * 1000
@@ -882,7 +956,6 @@ class TestIntegration:
         from scitex_nn import ModulationIndex
 
         class MIWrapper(nn.Module):
-
             def __init__(self, n_bins=18):
                 super().__init__()
                 self.mi = ModulationIndex(n_bins=n_bins)
@@ -893,7 +966,10 @@ class TestIntegration:
                 pha = x_5d
                 amp = x_5d.abs()
                 return self.mi(pha, amp)
-        model = nn.Sequential(nn.Conv1d(1, 4, 3, padding=1), nn.ReLU(), MIWrapper(n_bins=10))
+
+        model = nn.Sequential(
+            nn.Conv1d(1, 4, 3, padding=1), nn.ReLU(), MIWrapper(n_bins=10)
+        )
         x = torch.randn(2, 1, 100)
         # Act
         output = model(x)
@@ -903,14 +979,15 @@ class TestIntegration:
     def test_model_save_load(self):
         """Test saving and loading a model with ModulationIndex.
 
-            Note: Amplitude values must be positive for valid MI calculation.
-            """
+        Note: Amplitude values must be positive for valid MI calculation.
+        """
         # Arrange
         from scitex_nn import ModulationIndex
+
         # Act
         mi = ModulationIndex(n_bins=24)
         # Assert
-        with tempfile.NamedTemporaryFile(suffix='.pth', delete=False) as f:
+        with tempfile.NamedTemporaryFile(suffix=".pth", delete=False) as f:
             torch.save(mi.state_dict(), f.name)
             mi_loaded = ModulationIndex(n_bins=24)
             mi_loaded.load_state_dict(torch.load(f.name, weights_only=True))

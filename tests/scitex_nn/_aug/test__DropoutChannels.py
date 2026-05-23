@@ -3,7 +3,6 @@ import pytest
 # Required for this module
 pytest.importorskip("torch")
 import warnings
-from unittest.mock import patch
 
 import numpy as np
 import torch
@@ -120,7 +119,10 @@ class TestDropoutChannels:
         # Assert
         assert torch.allclose(output, x)
 
-    @pytest.mark.skipif(True, reason='dropout=1.0 causes division by zero in scaling (1/(1-p)). Edge case not supported.')
+    @pytest.mark.skipif(
+        True,
+        reason="dropout=1.0 causes division by zero in scaling (1/(1-p)). Edge case not supported.",
+    )
     def test_dropout_rate_one(self):
         """Test layer with dropout rate of 1.0 (all channels dropped)."""
         # Arrange
@@ -133,12 +135,15 @@ class TestDropoutChannels:
         # Assert
         assert not torch.allclose(output, x)
 
-    @pytest.mark.skipif(True, reason='In-place operations in forward() prevent gradient flow on leaf tensors')
+    @pytest.mark.skipif(
+        True,
+        reason="In-place operations in forward() prevent gradient flow on leaf tensors",
+    )
     def test_gradient_flow_dropout_channels_behaves_correctly_grad(self):
         """Test that gradients flow through the layer.
 
-            Note: DropoutChannels uses in-place operations which break gradient flow.
-            """
+        Note: DropoutChannels uses in-place operations which break gradient flow.
+        """
         # Arrange
         layer = DropoutChannels(dropout=0.5)
         layer.train()
@@ -151,12 +156,15 @@ class TestDropoutChannels:
         assert x.grad is not None
         pass
 
-    @pytest.mark.skipif(True, reason='In-place operations in forward() prevent gradient flow on leaf tensors')
+    @pytest.mark.skipif(
+        True,
+        reason="In-place operations in forward() prevent gradient flow on leaf tensors",
+    )
     def test_gradient_flow_dropout_channels_behaves_correctly_all(self):
         """Test that gradients flow through the layer.
 
-            Note: DropoutChannels uses in-place operations which break gradient flow.
-            """
+        Note: DropoutChannels uses in-place operations which break gradient flow.
+        """
         # Arrange
         layer = DropoutChannels(dropout=0.5)
         layer.train()
@@ -179,7 +187,7 @@ class TestDropoutChannels:
         # Assert
         assert output.device == x.device
 
-    @pytest.mark.skipif(not torch.cuda.is_available(), reason='CUDA not available')
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA not available")
     def test_device_compatibility_cuda_device(self):
         """Test layer works on CUDA."""
         # Arrange
@@ -191,7 +199,7 @@ class TestDropoutChannels:
         assert output.device == x.device
         pass
 
-    @pytest.mark.skipif(not torch.cuda.is_available(), reason='CUDA not available')
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA not available")
     def test_device_compatibility_cuda_is_cuda(self):
         """Test layer works on CUDA."""
         # Arrange
@@ -220,8 +228,8 @@ class TestDropoutChannels:
     def test_different_results_without_seed(self):
         """Test different results without setting seed.
 
-            Note: DropoutChannels modifies input in-place, so we use clones.
-            """
+        Note: DropoutChannels modifies input in-place, so we use clones.
+        """
         # Arrange
         layer = DropoutChannels(dropout=0.5)
         layer.train()
@@ -248,8 +256,8 @@ class TestDropoutChannels:
     def test_partial_channel_dropout(self):
         """Test that only some channels are dropped, not all.
 
-            Note: DropoutChannels modifies input in-place, so we keep a clone.
-            """
+        Note: DropoutChannels modifies input in-place, so we keep a clone.
+        """
         # Arrange
         layer = DropoutChannels(dropout=0.5)
         layer.train()
@@ -268,7 +276,9 @@ class TestDropoutChannels:
     def test_integration_with_sequential_check1(self):
         """Test integration in nn.Sequential."""
         # Arrange
-        model = nn.Sequential(nn.Conv1d(10, 20, 3), DropoutChannels(dropout=0.5), nn.Conv1d(20, 10, 3))
+        model = nn.Sequential(
+            nn.Conv1d(10, 20, 3), DropoutChannels(dropout=0.5), nn.Conv1d(20, 10, 3)
+        )
         x = torch.randn(4, 10, 100)
         # Act
         output = model(x)
@@ -279,7 +289,9 @@ class TestDropoutChannels:
     def test_integration_with_sequential_check2(self):
         """Test integration in nn.Sequential."""
         # Arrange
-        model = nn.Sequential(nn.Conv1d(10, 20, 3), DropoutChannels(dropout=0.5), nn.Conv1d(20, 10, 3))
+        model = nn.Sequential(
+            nn.Conv1d(10, 20, 3), DropoutChannels(dropout=0.5), nn.Conv1d(20, 10, 3)
+        )
         x = torch.randn(4, 10, 100)
         # Act
         output = model(x)
@@ -397,8 +409,8 @@ class TestDropoutChannels:
     def test_dropout_affects_channel_statistics(self):
         """Test that dropout changes channel-wise statistics.
 
-            Note: DropoutChannels modifies input in-place, so we compute stats before calling forward.
-            """
+        Note: DropoutChannels modifies input in-place, so we compute stats before calling forward.
+        """
         # Arrange
         layer = DropoutChannels(dropout=0.5)
         layer.train()
@@ -417,7 +429,9 @@ class TestDropoutChannels:
         # Arrange
         # Act
         # Assert
-        with pytest.raises(ValueError, match='dropout probability has to be between 0 and 1'):
+        with pytest.raises(
+            ValueError, match="dropout probability has to be between 0 and 1"
+        ):
             DropoutChannels(dropout=1.5)
         pass
 
@@ -427,7 +441,9 @@ class TestDropoutChannels:
         # Act
         # Assert
         pass
-        with pytest.raises(ValueError, match='dropout probability has to be between 0 and 1'):
+        with pytest.raises(
+            ValueError, match="dropout probability has to be between 0 and 1"
+        ):
             DropoutChannels(dropout=-0.5)
 
 

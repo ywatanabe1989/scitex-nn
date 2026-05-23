@@ -2,7 +2,6 @@ import pytest
 
 # Required for this module
 pytest.importorskip("torch")
-from unittest.mock import patch
 
 import numpy as np
 import torch
@@ -25,7 +24,9 @@ class TestChannelGainChanger:
         assert layer.n_chs == 10
         pass
 
-    def test_basic_instantiation_channel_gain_changer_behaves_correctly_isinstance(self):
+    def test_basic_instantiation_channel_gain_changer_behaves_correctly_isinstance(
+        self,
+    ):
         """Test basic instantiation with required parameters."""
         # Arrange
         # Act
@@ -67,8 +68,8 @@ class TestChannelGainChanger:
     def test_train_mode_applies_gain_change_allclose(self):
         """Test that gain changes are applied in training mode.
 
-            Note: ChannelGainChanger uses in-place operations (x *= gains).
-            """
+        Note: ChannelGainChanger uses in-place operations (x *= gains).
+        """
         # Arrange
         layer = ChannelGainChanger(n_chs=10)
         layer.train()
@@ -86,8 +87,8 @@ class TestChannelGainChanger:
     def test_train_mode_applies_gain_change_allclose_v2(self):
         """Test that gain changes are applied in training mode.
 
-            Note: ChannelGainChanger uses in-place operations (x *= gains).
-            """
+        Note: ChannelGainChanger uses in-place operations (x *= gains).
+        """
         # Arrange
         layer = ChannelGainChanger(n_chs=10)
         layer.train()
@@ -100,14 +101,16 @@ class TestChannelGainChanger:
         pass
         for ch in range(10):
             channel_values = output[:, ch, :]
-            assert torch.allclose(channel_values, channel_values[0, 0].expand_as(channel_values))
+            assert torch.allclose(
+                channel_values, channel_values[0, 0].expand_as(channel_values)
+            )
 
     def test_gain_values_range_all(self):
         """Test that gain values are in expected range after softmax.
 
-            Note: ChannelGainChanger uses in-place operations, so we clone input.
-            Also, the implementation broadcasts same gains across batch dimension.
-            """
+        Note: ChannelGainChanger uses in-place operations, so we clone input.
+        Also, the implementation broadcasts same gains across batch dimension.
+        """
         # Arrange
         layer = ChannelGainChanger(n_chs=10)
         layer.train()
@@ -124,9 +127,9 @@ class TestChannelGainChanger:
     def test_gain_values_range_allclose(self):
         """Test that gain values are in expected range after softmax.
 
-            Note: ChannelGainChanger uses in-place operations, so we clone input.
-            Also, the implementation broadcasts same gains across batch dimension.
-            """
+        Note: ChannelGainChanger uses in-place operations, so we clone input.
+        Also, the implementation broadcasts same gains across batch dimension.
+        """
         # Arrange
         layer = ChannelGainChanger(n_chs=10)
         layer.train()
@@ -162,12 +165,15 @@ class TestChannelGainChanger:
             output = layer(x)
             assert output.shape == x.shape
 
-    @pytest.mark.skipif(True, reason='In-place operations in forward() prevent gradient flow on leaf tensors')
+    @pytest.mark.skipif(
+        True,
+        reason="In-place operations in forward() prevent gradient flow on leaf tensors",
+    )
     def test_gradient_flow_channel_gain_changer_behaves_correctly_grad(self):
         """Test that gradients flow through the layer.
 
-            Note: ChannelGainChanger uses in-place operations which break gradient flow.
-            """
+        Note: ChannelGainChanger uses in-place operations which break gradient flow.
+        """
         # Arrange
         layer = ChannelGainChanger(n_chs=10)
         layer.train()
@@ -180,12 +186,15 @@ class TestChannelGainChanger:
         assert x.grad is not None
         pass
 
-    @pytest.mark.skipif(True, reason='In-place operations in forward() prevent gradient flow on leaf tensors')
+    @pytest.mark.skipif(
+        True,
+        reason="In-place operations in forward() prevent gradient flow on leaf tensors",
+    )
     def test_gradient_flow_channel_gain_changer_behaves_correctly_all(self):
         """Test that gradients flow through the layer.
 
-            Note: ChannelGainChanger uses in-place operations which break gradient flow.
-            """
+        Note: ChannelGainChanger uses in-place operations which break gradient flow.
+        """
         # Arrange
         layer = ChannelGainChanger(n_chs=10)
         layer.train()
@@ -208,7 +217,7 @@ class TestChannelGainChanger:
         # Assert
         assert output.device == x.device
 
-    @pytest.mark.skipif(not torch.cuda.is_available(), reason='CUDA not available')
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA not available")
     def test_device_compatibility_cuda_device(self):
         """Test layer works on CUDA."""
         # Arrange
@@ -220,7 +229,7 @@ class TestChannelGainChanger:
         assert output.device == x.device
         pass
 
-    @pytest.mark.skipif(not torch.cuda.is_available(), reason='CUDA not available')
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA not available")
     def test_device_compatibility_cuda_is_cuda(self):
         """Test layer works on CUDA."""
         # Arrange
@@ -249,8 +258,8 @@ class TestChannelGainChanger:
     def test_different_results_without_seed(self):
         """Test different results without setting seed.
 
-            Note: ChannelGainChanger uses in-place operations, so we use clones.
-            """
+        Note: ChannelGainChanger uses in-place operations, so we use clones.
+        """
         # Arrange
         layer = ChannelGainChanger(n_chs=10)
         layer.train()
@@ -275,7 +284,9 @@ class TestChannelGainChanger:
         assert torch.all(gains > 0)
         pass
 
-    def test_softmax_normalization_channel_gain_changer_behaves_correctly_allclose(self):
+    def test_softmax_normalization_channel_gain_changer_behaves_correctly_allclose(
+        self,
+    ):
         """Test that channel gains are properly normalized via softmax."""
         # Arrange
         layer = ChannelGainChanger(n_chs=5)
@@ -289,26 +300,30 @@ class TestChannelGainChanger:
         pass
         assert torch.allclose(gains.sum(dim=1), torch.ones(2))
 
-    def test_gain_initialization_range(self):
-        """Test that initial random gains are in expected range [0.5, 1.5]."""
+    def test_forward_applies_softmax_of_rand_plus_half_formula(self):
+        """Test that the applied gain equals softmax(rand(n_chs) + 0.5)."""
         # Arrange
-        layer = ChannelGainChanger(n_chs=10)
-        # Act
+        n_chs = 10
+        layer = ChannelGainChanger(n_chs=n_chs)
         layer.train()
-        with patch('torch.rand') as mock_rand:
-            mock_rand.return_value = torch.zeros(10)
-            x = torch.ones(1, 10, 1)
-            layer(x)
+        torch.manual_seed(0)
+        expected_rand = torch.rand(n_chs)
+        expected_gains = F.softmax(
+            (expected_rand + 0.5).unsqueeze(0).unsqueeze(-1), dim=1
+        )
+        torch.manual_seed(0)
+        x = torch.ones(1, n_chs, 1)
+        # Act
+        out = layer(x)
         # Assert
-        assert layer is not None
-
-            # When torch.rand returns 0, the gains before softmax should be 0.5
-            # This tests that the formula is: rand() + 0.5
+        assert torch.allclose(out, expected_gains)
 
     def test_integration_with_sequential_check1(self):
         """Test integration in nn.Sequential."""
         # Arrange
-        model = nn.Sequential(nn.Conv1d(10, 20, 3), ChannelGainChanger(n_chs=20), nn.Conv1d(20, 10, 3))
+        model = nn.Sequential(
+            nn.Conv1d(10, 20, 3), ChannelGainChanger(n_chs=20), nn.Conv1d(20, 10, 3)
+        )
         x = torch.randn(4, 10, 100)
         # Act
         output = model(x)
@@ -319,7 +334,9 @@ class TestChannelGainChanger:
     def test_integration_with_sequential_check2(self):
         """Test integration in nn.Sequential."""
         # Arrange
-        model = nn.Sequential(nn.Conv1d(10, 20, 3), ChannelGainChanger(n_chs=20), nn.Conv1d(20, 10, 3))
+        model = nn.Sequential(
+            nn.Conv1d(10, 20, 3), ChannelGainChanger(n_chs=20), nn.Conv1d(20, 10, 3)
+        )
         x = torch.randn(4, 10, 100)
         # Act
         output = model(x)
@@ -510,7 +527,9 @@ class TestChannelGainChanger:
             gain_middle = output[0, ch, 50] / x[0, ch, 50] if x[0, ch, 50] != 0 else 0
             gain_end = output[0, ch, -1] / x[0, ch, -1] if x[0, ch, -1] != 0 else 0
             if x[0, ch, 0] != 0 and x[0, ch, 50] != 0:
-                assert torch.allclose(torch.tensor(gain_start), torch.tensor(gain_middle), atol=1e-05)
+                assert torch.allclose(
+                    torch.tensor(gain_start), torch.tensor(gain_middle), atol=1e-05
+                )
             if x[0, ch, 0] != 0 and x[0, ch, -1] != 0:
                 pass
 
@@ -531,7 +550,9 @@ class TestChannelGainChanger:
             if x[0, ch, 0] != 0 and x[0, ch, 50] != 0:
                 pass
             if x[0, ch, 0] != 0 and x[0, ch, -1] != 0:
-                assert torch.allclose(torch.tensor(gain_start), torch.tensor(gain_end), atol=1e-05)
+                assert torch.allclose(
+                    torch.tensor(gain_start), torch.tensor(gain_end), atol=1e-05
+                )
 
 
 if __name__ == "__main__":
