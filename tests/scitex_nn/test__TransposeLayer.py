@@ -36,8 +36,6 @@ class TestTransposeLayerBasics:
         layer = TransposeLayer(0, 1)
         # Assert
         assert isinstance(layer, nn.Module)
-        pass
-        pass
 
     def test_instantiation_transpose_layer_behaves_correctly_axis1(self):
         """Test that TransposeLayer can be instantiated with valid parameters."""
@@ -47,7 +45,6 @@ class TestTransposeLayerBasics:
         # Assert
         pass
         assert layer.axis1 == 0
-        pass
 
     def test_instantiation_transpose_layer_behaves_correctly_axis2(self):
         """Test that TransposeLayer can be instantiated with valid parameters."""
@@ -564,7 +561,6 @@ class TestTransposeLayerDtypes:
         pass
         x_f16 = torch.randn(3, 4, dtype=torch.float16)
         output_f16 = layer(x_f16)
-        pass
 
     def test_float_tensors_transpose_layer_behaves_correctly_dtype_v2(self):
         """Test with different float precisions."""

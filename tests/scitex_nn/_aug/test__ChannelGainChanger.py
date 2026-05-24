@@ -22,7 +22,6 @@ class TestChannelGainChanger:
         layer = ChannelGainChanger(n_chs=10)
         # Assert
         assert layer.n_chs == 10
-        pass
 
     def test_basic_instantiation_channel_gain_changer_behaves_correctly_isinstance(
         self,
@@ -382,7 +381,6 @@ class TestChannelGainChanger:
         pass
         x = torch.randn(4, 10, 100) * 1e-06
         output = layer(x)
-        pass
         pass
 
     def test_numerical_stability_channel_gain_changer_behaves_correctly_any_v2(self):

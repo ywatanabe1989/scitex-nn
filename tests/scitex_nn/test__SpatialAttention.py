@@ -26,8 +26,6 @@ class TestSpatialAttentionArchitecture:
         module = SpatialAttention(n_chs_in=n_chs)
         # Assert
         assert isinstance(module, nn.Module)
-        pass
-        pass
 
     def test_basic_instantiation_spatial_attention_behaves_correctly_hasattr(self):
         """Test basic module instantiation."""
@@ -38,7 +36,6 @@ class TestSpatialAttentionArchitecture:
         # Assert
         pass
         assert hasattr(module, 'aap')
-        pass
 
     def test_basic_instantiation_spatial_attention_behaves_correctly_hasattr_v2(self):
         """Test basic module instantiation."""
@@ -92,7 +89,6 @@ class TestSpatialAttentionArchitecture:
         # Assert
         pass
         assert module.conv11.in_channels == n_chs
-        pass
         pass
 
     def test_conv1d_initialization_spatial_attention_behaves_correctly_out_channels(self):
@@ -402,7 +398,6 @@ class TestSpatialAttentionNumerical:
         x_large = torch.randn(2, 64, 100) * 1000.0
         output_large = module(x_large)
         pass
-        pass
 
     def test_numerical_stability_spatial_attention_behaves_correctly_any_v2(self):
         """Test numerical stability with extreme inputs."""
@@ -416,7 +411,6 @@ class TestSpatialAttentionNumerical:
         assert not torch.isinf(output_small).any()
         x_large = torch.randn(2, 64, 100) * 1000.0
         output_large = module(x_large)
-        pass
         pass
 
     def test_numerical_stability_spatial_attention_behaves_correctly_any_v3(self):

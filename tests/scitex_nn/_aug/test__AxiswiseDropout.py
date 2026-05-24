@@ -35,8 +35,6 @@ class TestAxiswiseDropoutBasics:
         layer = AxiswiseDropout()
         # Assert
         assert isinstance(layer, nn.Module)
-        pass
-        pass
 
     def test_instantiation_default_axiswise_dropout_behaves_correctly_dropout_prob(self):
         """Test AxiswiseDropout instantiation with default parameters."""
@@ -46,7 +44,6 @@ class TestAxiswiseDropoutBasics:
         # Assert
         pass
         assert layer.dropout_prob == 0.5
-        pass
 
     def test_instantiation_default_axiswise_dropout_behaves_correctly_dim(self):
         """Test AxiswiseDropout instantiation with default parameters."""
@@ -550,7 +547,6 @@ class TestAxiswiseDropoutEdgeCases:
         pass
         x_f16 = torch.randn(2, 3, 4, dtype=torch.float16)
         output_f16 = layer(x_f16)
-        pass
 
     def test_different_dtypes_axiswise_dropout_behaves_correctly_dtype_v2(self):
         """Test with different data types."""

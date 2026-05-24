@@ -48,11 +48,6 @@ class TestSpectrogram:
         layer = Spectrogram(sampling_rate=sampling_rate)
         # Assert
         assert layer.sampling_rate == sampling_rate
-        pass
-        pass
-        pass
-        pass
-        pass
 
     def test_initialization_default_params_n_fft(self, sampling_rate):
         """Test initialization with default parameters."""
@@ -62,7 +57,6 @@ class TestSpectrogram:
         # Assert
         pass
         assert layer.n_fft == 256
-        pass
         pass
         pass
         pass

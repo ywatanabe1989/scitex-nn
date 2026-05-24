@@ -39,9 +39,6 @@ class TestMNet1000Architecture:
         model = MNet1000(MNet_config)
         # Assert
         assert isinstance(model, nn.Module)
-        pass
-        pass
-        pass
 
     def test_basic_instantiation_mnet_1000_behaves_correctly_hasattr(self):
         """Test basic model instantiation with default config."""
@@ -51,7 +48,6 @@ class TestMNet1000Architecture:
         # Assert
         pass
         assert hasattr(model, 'config')
-        pass
         pass
 
     def test_basic_instantiation_mnet_1000_behaves_correctly_hasattr_v2(self):
@@ -128,7 +124,6 @@ class TestMNet1000Architecture:
         # Assert
         pass
         assert conv_layers[0].kernel_size == (270, 4)
-        pass
         pass
         pass
 

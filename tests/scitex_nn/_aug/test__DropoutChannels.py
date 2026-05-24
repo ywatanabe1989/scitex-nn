@@ -22,7 +22,6 @@ class TestDropoutChannels:
         layer = DropoutChannels()
         # Assert
         assert layer.dropout.p == 0.5
-        pass
 
     def test_basic_instantiation_dropout_channels_behaves_correctly_isinstance(self):
         """Test basic instantiation with default parameters."""
@@ -333,7 +332,6 @@ class TestDropoutChannels:
         pass
         x = torch.randn(4, 10, 100) * 1e-06
         output = layer(x)
-        pass
         pass
 
     def test_numerical_stability_dropout_channels_behaves_correctly_any_v2(self):

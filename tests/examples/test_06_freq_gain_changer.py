@@ -23,7 +23,6 @@ def test_06_freq_gain_changer_exists(tmp_path: Path) -> None:
     target = tmp_path / NOTEBOOK.name
     shutil.copy(NOTEBOOK, target)
     r = subprocess.run(['jupyter', 'nbconvert', '--to', 'notebook', '--execute', '--output', target.name, str(target)], cwd=tmp_path, capture_output=True, text=True, timeout=300)
-    pass
 
 @pytest.mark.skipif(shutil.which('jupyter') is None, reason='jupyter not installed')
 def test_06_freq_gain_changer_returncode(tmp_path: Path) -> None:

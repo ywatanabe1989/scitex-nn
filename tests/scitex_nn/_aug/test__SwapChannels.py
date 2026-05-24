@@ -22,7 +22,6 @@ class TestSwapChannels:
         layer = SwapChannels()
         # Assert
         assert layer.dropout.p == 0.5
-        pass
 
     def test_basic_instantiation_swap_channels_behaves_correctly_isinstance(self):
         """Test basic instantiation with default parameters."""
@@ -312,7 +311,6 @@ class TestSwapChannels:
         pass
         x = torch.randn(4, 10, 100) * 1e-06
         output = layer(x)
-        pass
         pass
 
     def test_numerical_stability_swap_channels_behaves_correctly_any_v2(self):

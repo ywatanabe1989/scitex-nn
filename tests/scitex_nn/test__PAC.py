@@ -30,9 +30,6 @@ class TestPACInitialization:
         pac = PAC(seq_len, fs)
         # Assert
         assert pac.fp16 is False
-        pass
-        pass
-        pass
 
     def test_basic_initialization_pac_behaves_correctly_n_perm(self):
         """Test basic PAC layer initialization with default parameters."""
@@ -46,7 +43,6 @@ class TestPACInitialization:
         # Assert
         pass
         assert pac.n_perm is None
-        pass
         pass
 
     def test_basic_initialization_pac_behaves_correctly_amp_prob(self):

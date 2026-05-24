@@ -49,9 +49,6 @@ class TestWavelet:
         layer = Wavelet(samp_rate=sample_rate)
         # Assert
         assert layer.out_scale == "log"
-        pass
-        pass
-        pass
 
     def test_initialization_default_params_kernel(self, sample_rate):
         """Test initialization with default parameters."""
@@ -61,7 +58,6 @@ class TestWavelet:
         # Assert
         pass
         assert layer.kernel is not None
-        pass
         pass
 
     def test_initialization_default_params_freqs(self, sample_rate):
@@ -133,7 +129,6 @@ class TestWavelet:
         pass
         pass
         pass
-        pass
 
     def test_morlet_generation_linear_scale_isinstance_v2(self, sample_rate):
         """Test Morlet wavelet generation with linear frequency scale."""
@@ -146,7 +141,6 @@ class TestWavelet:
         pass
         assert isinstance(freqs, np.ndarray)
         nyquist = sample_rate / 2
-        pass
         pass
         pass
         pass
@@ -163,7 +157,6 @@ class TestWavelet:
         pass
         nyquist = sample_rate / 2
         assert freqs[0] > 0
-        pass
         pass
         pass
 

@@ -71,17 +71,6 @@ class TestResNetBasicBlock:
         block = scitex_nn.ResNetBasicBlock(32, 64)
         # Assert
         assert hasattr(block, "conv7")
-        pass
-        pass
-        pass
-        pass
-        pass
-        pass
-        pass
-        pass
-        pass
-        pass
-        pass
 
     def test_basic_block_layers_structure_hasattr_v2(self):
         """Test that ResNetBasicBlock has all required layers."""
@@ -100,7 +89,6 @@ class TestResNetBasicBlock:
         pass
         pass
         pass
-        pass
 
     def test_basic_block_layers_structure_hasattr_v3(self):
         """Test that ResNetBasicBlock has all required layers."""
@@ -108,10 +96,7 @@ class TestResNetBasicBlock:
         # Act
         block = scitex_nn.ResNetBasicBlock(32, 64)
         # Assert
-        pass
-        pass
         assert hasattr(block, "conv3")
-        pass
         pass
         pass
         pass
@@ -127,14 +112,7 @@ class TestResNetBasicBlock:
         # Act
         block = scitex_nn.ResNetBasicBlock(32, 64)
         # Assert
-        pass
-        pass
-        pass
         assert hasattr(block, "expansion_conv")
-        pass
-        pass
-        pass
-        pass
         pass
         pass
         pass
@@ -149,14 +127,7 @@ class TestResNetBasicBlock:
         pass
         pass
         pass
-        pass
         assert hasattr(block, "bn7")
-        pass
-        pass
-        pass
-        pass
-        pass
-        pass
         pass
 
     def test_basic_block_layers_structure_hasattr_v6(self):
@@ -175,8 +146,6 @@ class TestResNetBasicBlock:
         pass
         pass
         pass
-        pass
-        pass
 
     def test_basic_block_layers_structure_hasattr_v7(self):
         """Test that ResNetBasicBlock has all required layers."""
@@ -184,9 +153,6 @@ class TestResNetBasicBlock:
         # Act
         block = scitex_nn.ResNetBasicBlock(32, 64)
         # Assert
-        pass
-        pass
-        pass
         pass
         pass
         pass
@@ -204,12 +170,6 @@ class TestResNetBasicBlock:
         block = scitex_nn.ResNetBasicBlock(32, 64)
         # Assert
         pass
-        pass
-        pass
-        pass
-        pass
-        pass
-        pass
         assert hasattr(block, "bn")
         pass
         pass
@@ -224,16 +184,7 @@ class TestResNetBasicBlock:
         # Assert
         pass
         pass
-        pass
-        pass
-        pass
-        pass
-        pass
-        pass
         assert hasattr(block, "activation7")
-        pass
-        pass
-        pass
 
     def test_basic_block_layers_structure_hasattr_v10(self):
         """Test that ResNetBasicBlock has all required layers."""
@@ -252,7 +203,6 @@ class TestResNetBasicBlock:
         pass
         assert hasattr(block, "activation5")
         pass
-        pass
 
     def test_basic_block_layers_structure_hasattr_v11(self):
         """Test that ResNetBasicBlock has all required layers."""
@@ -260,10 +210,6 @@ class TestResNetBasicBlock:
         # Act
         block = scitex_nn.ResNetBasicBlock(32, 64)
         # Assert
-        pass
-        pass
-        pass
-        pass
         pass
         pass
         pass
@@ -279,14 +225,6 @@ class TestResNetBasicBlock:
         # Act
         block = scitex_nn.ResNetBasicBlock(32, 64)
         # Assert
-        pass
-        pass
-        pass
-        pass
-        pass
-        pass
-        pass
-        pass
         pass
         pass
         pass
@@ -322,11 +260,6 @@ class TestResNetBasicBlock:
         # Assert
         assert isinstance(conv, nn.Conv1d)
         pass
-        pass
-        pass
-        pass
-        pass
-        pass
 
     def test_basic_block_conv_k_static_method_in_channels(self):
         """Test the static conv_k method for creating convolution layers."""
@@ -348,13 +281,7 @@ class TestResNetBasicBlock:
         # Act
         conv = scitex_nn.ResNetBasicBlock.conv_k(32, 64, k=3, s=1, p=1)
         # Assert
-        pass
-        pass
         assert conv.out_channels == 64
-        pass
-        pass
-        pass
-        pass
 
     def test_basic_block_conv_k_static_method_kernel_size(self):
         """Test the static conv_k method for creating convolution layers."""
@@ -394,9 +321,7 @@ class TestResNetBasicBlock:
         pass
         pass
         pass
-        pass
         assert conv.padding == (1,)
-        pass
 
     def test_basic_block_conv_k_static_method_bias(self):
         """Test the static conv_k method for creating convolution layers."""
@@ -404,7 +329,6 @@ class TestResNetBasicBlock:
         # Act
         conv = scitex_nn.ResNetBasicBlock.conv_k(32, 64, k=3, s=1, p=1)
         # Assert
-        pass
         pass
         pass
         pass
@@ -458,7 +382,6 @@ class TestResNetBasicBlock:
         # Act
         block = scitex_nn.ResNetBasicBlock(32, 64)
         # Assert
-        pass
         assert isinstance(block.expansion_conv, nn.Conv1d)
         pass
         pass
@@ -473,7 +396,6 @@ class TestResNetBasicBlock:
         block = scitex_nn.ResNetBasicBlock(32, 64)
         # Assert
         pass
-        pass
         assert block.expansion_conv.in_channels == 32
         pass
         x = torch.randn(4, 32, 128)
@@ -487,8 +409,6 @@ class TestResNetBasicBlock:
         block = scitex_nn.ResNetBasicBlock(32, 64)
         # Assert
         pass
-        pass
-        pass
         assert block.expansion_conv.out_channels == 64
         x = torch.randn(4, 32, 128)
         output = block(x)
@@ -500,7 +420,6 @@ class TestResNetBasicBlock:
         # Act
         block = scitex_nn.ResNetBasicBlock(32, 64)
         # Assert
-        pass
         pass
         pass
         pass
@@ -527,8 +446,6 @@ class TestResNetBasicBlock:
         # Assert
         pass
         assert block.conv5.kernel_size == (5,)
-        pass
-        pass
 
     def test_basic_block_kernel_sizes_kernel_size_v3(self):
         """Test different kernel sizes in the block."""
@@ -547,7 +464,6 @@ class TestResNetBasicBlock:
         # Act
         block = scitex_nn.ResNetBasicBlock(32, 64)
         # Assert
-        pass
         pass
         pass
         assert block.expansion_conv.kernel_size == (1,)
@@ -575,7 +491,6 @@ class TestResNetBasicBlock:
         loss.backward()
         # Assert
         assert x.grad is not None
-        pass
         pass
         pass
 
@@ -621,7 +536,6 @@ class TestResNetBasicBlock:
         # Assert
         pass
         pass
-        pass
         assert not torch.isinf(x.grad).any()
 
 
@@ -635,7 +549,6 @@ class TestResNet1D:
         model = scitex_nn.ResNet1D()
         # Assert
         assert isinstance(model, nn.Module)
-        pass
 
     def test_resnet1d_instantiation_default_hasattr(self):
         """Test ResNet1D instantiation with default parameters."""
@@ -691,8 +604,6 @@ class TestResNet1D:
         pass
         for i in range(1, n_blks):
             block = model.res_conv_blk_layers[i]
-            pass
-            pass
 
     def test_resnet1d_blocks_structure_isinstance_v2(self):
         """Test the structure of residual blocks in ResNet1D."""
@@ -710,7 +621,6 @@ class TestResNet1D:
         pass
         for i in range(1, n_blks):
             block = model.res_conv_blk_layers[i]
-            pass
             pass
 
     def test_resnet1d_blocks_structure_in_chs(self):
@@ -760,7 +670,6 @@ class TestResNet1D:
         model = scitex_nn.ResNet1D(n_chs=n_chs, n_blks=n_blks)
         # Assert
         pass
-        pass
         first_block = model.res_conv_blk_layers[0]
         pass
         pass
@@ -778,8 +687,6 @@ class TestResNet1D:
         # Act
         model = scitex_nn.ResNet1D(n_chs=n_chs, n_blks=n_blks)
         # Assert
-        pass
-        pass
         first_block = model.res_conv_blk_layers[0]
         pass
         pass
@@ -958,7 +865,6 @@ class TestResNet1D:
             )
             assert total_params > 10000
             pass
-            pass
 
     def test_resnet1d_parameter_count_total_params_v2(self):
         """Test parameter count for different configurations."""
@@ -972,7 +878,6 @@ class TestResNet1D:
             trainable_params = sum(
                 (p.numel() for p in model.parameters() if p.requires_grad)
             )
-            pass
             assert total_params < 100000000
             pass
 
@@ -989,7 +894,6 @@ class TestResNet1D:
                 (p.numel() for p in model.parameters() if p.requires_grad)
             )
             pass
-            pass
             assert trainable_params == total_params
 
     def test_resnet1d_eval_train_modes_training(self):
@@ -1003,7 +907,6 @@ class TestResNet1D:
         assert model.training
         output_train = model(x)
         model.eval()
-        pass
         output_eval = model(x)
         pass
 

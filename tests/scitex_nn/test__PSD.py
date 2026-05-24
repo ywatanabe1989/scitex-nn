@@ -26,8 +26,6 @@ class TestPSD:
         psd = PSD(sample_rate)
         # Assert
         assert psd.sample_rate == sample_rate
-        pass
-        pass
 
     def test_initialization_basic_psd_behaves_correctly_dim(self):
         """Test basic PSD layer initialization."""
@@ -38,7 +36,6 @@ class TestPSD:
         # Assert
         pass
         assert psd.dim == -1
-        pass
 
     def test_initialization_basic_psd_behaves_correctly_prob(self):
         """Test basic PSD layer initialization."""
@@ -111,7 +108,6 @@ class TestPSD:
         # Assert
         pass
         assert freqs.shape == (seq_len // 2 + 1,)
-        pass
         pass
 
     def test_forward_real_signal_1d_check3(self):

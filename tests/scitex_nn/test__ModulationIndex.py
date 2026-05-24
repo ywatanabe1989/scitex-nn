@@ -29,9 +29,6 @@ class TestModulationIndexInitialization:
         mi = ModulationIndex()
         # Assert
         assert mi.n_bins == 18
-        pass
-        pass
-        pass
 
     def test_basic_initialization_modulation_index_behaves_correctly_fp16(self):
         """Test basic ModulationIndex initialization with default parameters."""
@@ -43,7 +40,6 @@ class TestModulationIndexInitialization:
         # Assert
         pass
         assert mi.fp16 is False
-        pass
         pass
 
     def test_basic_initialization_modulation_index_behaves_correctly_amp_prob(self):
@@ -210,7 +206,6 @@ class TestModulationIndexInitialization:
         # Assert
         pass
         assert centers[0] < 0
-        pass
         pass
         pass
 

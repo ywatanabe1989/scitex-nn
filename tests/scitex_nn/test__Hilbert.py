@@ -26,11 +26,6 @@ class TestHilbert:
         hilbert = Hilbert(seq_len)
         # Assert
         assert hilbert.n == seq_len
-        pass
-        pass
-        pass
-        pass
-        pass
 
     def test_initialization_basic_hilbert_behaves_correctly_dim(self):
         """Test basic Hilbert layer initialization."""
@@ -41,7 +36,6 @@ class TestHilbert:
         # Assert
         pass
         assert hilbert.dim == -1
-        pass
         pass
         pass
         pass
