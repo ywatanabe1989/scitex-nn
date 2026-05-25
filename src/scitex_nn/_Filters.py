@@ -30,7 +30,6 @@ Implements various neural network filter layers:
 import sys
 from abc import abstractmethod
 
-import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -499,7 +498,7 @@ if __name__ == "__main__":
     for ax in axes.ravel():
         ax.legend(loc="upper left")
 
-    scitex.io.save(fig, "traces.png")
+    scitex.io.save(fig, "./traces.png")
     # plt.show()
 
     # Close

@@ -2,8 +2,6 @@ import pytest
 
 # Required for this module
 pytest.importorskip("torch")
-import random
-
 import numpy as np
 import torch
 import torch.nn as nn
@@ -69,7 +67,7 @@ class TestSwapChannels:
         layer.train()
         x = torch.randn(4, 10, 100)
         torch.manual_seed(42)
-        random.seed(42)
+        np.random.seed(42)
         # Act
         output = layer(x)
         channels_same = 0
@@ -132,7 +130,7 @@ class TestSwapChannels:
         for i in range(10):
             x[:, i, :] = i
         torch.manual_seed(42)
-        random.seed(42)
+        np.random.seed(42)
         # Act
         output = layer(x)
         channels_same = 0
@@ -211,10 +209,10 @@ class TestSwapChannels:
         layer.train()
         x = torch.randn(4, 10, 100)
         torch.manual_seed(42)
-        random.seed(42)
+        np.random.seed(42)
         output1 = layer(x)
         torch.manual_seed(42)
-        random.seed(42)
+        np.random.seed(42)
         # Act
         output2 = layer(x)
         # Assert
@@ -229,7 +227,7 @@ class TestSwapChannels:
         for i in range(10):
             x[:, i, :] = i
         torch.manual_seed(42)
-        random.seed(42)
+        np.random.seed(42)
         output = layer(x)
         original_values = set(range(10))
         # Act
@@ -441,7 +439,7 @@ class TestSwapChannels:
         n_channels = 10
         x = torch.arange(n_channels).float().view(1, n_channels, 1).expand(1, -1, 10)
         torch.manual_seed(42)
-        random.seed(42)
+        np.random.seed(42)
         # Act
         output = layer(x)
         permutation = []
@@ -460,7 +458,7 @@ class TestSwapChannels:
         n_channels = 10
         x = torch.arange(n_channels).float().view(1, n_channels, 1).expand(1, -1, 10)
         torch.manual_seed(42)
-        random.seed(42)
+        np.random.seed(42)
         # Act
         output = layer(x)
         permutation = []
