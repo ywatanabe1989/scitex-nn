@@ -153,22 +153,24 @@ to a `(batch, channels, samples)` tensor:
 ```
 scitex_nn/
 ├── _Filters.py            # FIR-init bandpass / lowpass / highpass / bandstop
-├── _GaussianFilter.py     # Gaussian smoothing (kernel = 6·sigma)
+│                          #   (includes GaussianFilter)
 ├── _Hilbert.py            # analytic-signal extraction (FFT-based)
 ├── _PSD.py                # power spectral density
 ├── _Spectrogram.py        # STFT magnitude per channel
 ├── _Wavelet.py            # Morlet CWT
 ├── _ModulationIndex.py    # Tort 2010 KL-MI
 ├── _PAC.py                # phase-amplitude coupling pipeline
-├── _AxiswiseDropout.py    # axis-wise dropout (channel / time / feature)
-├── _DropoutChannels.py    # whole-channel dropout
-├── _ChannelGainChanger.py # softmax-weighted per-channel gain
-├── _FreqGainChanger.py    # softmax-weighted per-band gain (julius)
-├── _SwapChannels.py       # random channel permutation
 ├── _SpatialAttention.py   # 1×1 conv channel attention
+├── _TransposeLayer.py     # configurable transpose (channels × samples)
 ├── _ResNet1D.py           # 1D ResNet backbone
 ├── _MNet_1000.py          # 4-stage Conv2d EEG/MEG classifier
 ├── _BNet.py / _BNet_Res.py# B-shaped multi-modality wrapper
+├── _aug/                  # augmentation / regularisation
+│   ├── _AxiswiseDropout.py    # axis-wise dropout (channel / time / feature)
+│   ├── _DropoutChannels.py    # whole-channel dropout
+│   ├── _ChannelGainChanger.py # softmax-weighted per-channel gain
+│   ├── _FreqGainChanger.py    # softmax-weighted per-band gain (julius)
+│   └── _SwapChannels.py       # random channel permutation
 └── _vendor_dsp_utils/     # vendored helpers (no scitex-dsp dep)
 ```
 

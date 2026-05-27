@@ -1,8 +1,10 @@
 scitex-nn
 =============
 
-Small linear-algebra helpers (distance, geometric median, cosine, nannorm)
-extracted from the SciTeX ecosystem as a standalone package.
+PyTorch neural-network building blocks for signal processing — differentiable
+filters (BandPassFilter, Hilbert, Wavelet), spectral features (PAC, PSD,
+Spectrogram, ModulationIndex), augmentation (AxiswiseDropout,
+ChannelGainChanger), and reference architectures (BNet, ResNet1D, MNet1000).
 
 .. toctree::
    :maxdepth: 2
