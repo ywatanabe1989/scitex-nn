@@ -13,7 +13,7 @@ import pytest
 
 # Required for this module
 pytest.importorskip("torch")
-# Wavelet imports `from scitex_gen._to_even import to_even` at module top,
+# Wavelet imports `from scitex_gen import to_even` at module top,
 # so it needs the real scitex_gen package (no mocks — the source uses the
 # standalone scitex_gen, not the umbrella scitex.gen).
 pytest.importorskip("scitex_gen")
@@ -23,7 +23,7 @@ import tempfile
 import numpy as np
 import torch
 import torch.nn as nn
-from scitex_gen._to_even import to_even
+from scitex_gen import to_even
 
 from scitex_nn import Wavelet
 

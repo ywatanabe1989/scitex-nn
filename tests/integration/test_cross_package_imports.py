@@ -23,8 +23,8 @@ CROSS_PACKAGE_IMPORTS = [
     "scitex",
     "scitex_decorators",
     "scitex_gen",
-    "scitex_gen._to_even",
-    "scitex_gen._to_odd",
+    "scitex_gen._numeric._to_even",
+    "scitex_gen._numeric._to_odd",
 ]
 # ===== END AUTO-GENERATED =====
 
