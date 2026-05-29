@@ -1,0 +1,672 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>scitex_nn._Filters &mdash; scitex-nn 0.1.12 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=297ad043"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            scitex-nn
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/scitex_nn.html">scitex_nn</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">scitex-nn</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">scitex_nn._Filters</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for scitex_nn._Filters</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Timestamp: &quot;2025-05-28 17:05:26 (ywatanabe)&quot;</span>
+<span class="c1"># File: /ssh:sp:/home/ywatanabe/proj/scitex_repo/src/scitex/nn/_Filters.py</span>
+<span class="c1"># ----------------------------------------</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="n">__FILE__</span> <span class="o">=</span> <span class="s2">&quot;./src/scitex/nn/_Filters.py&quot;</span>
+<span class="n">__DIR__</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__FILE__</span><span class="p">)</span>
+<span class="c1"># ----------------------------------------</span>
+
+<span class="c1"># Time-stamp: &quot;2024-11-26 22:23:40 (ywatanabe)&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">THIS_FILE</span> <span class="o">=</span> <span class="s2">&quot;/home/ywatanabe/proj/scitex_repo/src/scitex/nn/_Filters.py&quot;</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Implements various neural network filter layers:</span>
+<span class="sd">    - BaseFilter1D: Abstract base class for 1D filters</span>
+<span class="sd">    - BandPassFilter: Implements bandpass filtering</span>
+<span class="sd">    - BandStopFilter: Implements bandstop filtering</span>
+<span class="sd">    - LowPassFilter: Implements lowpass filtering</span>
+<span class="sd">    - HighPassFilter: Implements highpass filtering</span>
+<span class="sd">    - GaussianFilter: Implements Gaussian smoothing</span>
+<span class="sd">    - DifferentiableBandPassFilter: Implements learnable bandpass filtering</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Imports</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">abstractmethod</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scitex_gen</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_even</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">._vendor_dsp_utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">build_bandpass_filters</span><span class="p">,</span>
+    <span class="n">design_filter</span><span class="p">,</span>
+    <span class="n">ensure_3d</span><span class="p">,</span>
+    <span class="n">ensure_even_len</span><span class="p">,</span>
+    <span class="n">init_bandpass_filters</span><span class="p">,</span>
+    <span class="n">zero_pad</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="BaseFilter1D">
+<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.BaseFilter1D">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseFilter1D</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp16</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fp16</span> <span class="o">=</span> <span class="n">fp16</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">in_place</span> <span class="o">=</span> <span class="n">in_place</span>
+        <span class="c1"># self.kernels = None</span>
+
+<div class="viewcode-block" id="BaseFilter1D.init_kernels">
+<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.BaseFilter1D.init_kernels">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init_kernels</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Abstract method to initialize filter kernels.</span>
+<span class="sd">        Must be implemented by subclasses.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="BaseFilter1D.forward">
+<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.BaseFilter1D.forward">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edge_len</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the filter to input signal x with shape: (batch_size, n_chs, seq_len)&quot;&quot;&quot;</span>
+
+        <span class="c1"># Shape check</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fp16</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">half</span><span class="p">()</span>
+
+        <span class="c1"># Capture caller&#39;s ndim so we can squeeze leading pad-dims off the</span>
+        <span class="c1"># 4D output (batch, n_chs, n_kernels, seq_len) when input was lower-dim.</span>
+        <span class="n">original_ndim</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">ndim</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;ndim&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">ensure_3d</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">batch_size</span><span class="p">,</span> <span class="n">n_chs</span><span class="p">,</span> <span class="n">seq_len</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="c1"># Kernel Check</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Filter kernels has not been initialized.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Filtering</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">flip_extend</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernel_size</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_conv</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span><span class="n">seq_len</span><span class="p">]</span>
+
+        <span class="k">assert</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span>
+            <span class="n">batch_size</span><span class="p">,</span>
+            <span class="n">n_chs</span><span class="p">,</span>
+            <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="p">),</span>
+            <span class="n">seq_len</span><span class="p">,</span>
+        <span class="p">),</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;The shape of the filtered signal (</span><span class="si">{</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">) does not match the expected shape: (</span><span class="si">{</span><span class="n">batch_size</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">n_chs</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">seq_len</span><span class="si">}</span><span class="s2">).&quot;</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Edge remove</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_edges</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">edge_len</span><span class="p">)</span>
+
+        <span class="c1"># If caller passed a lower-dim signal (e.g. 1D (T,)), squeeze the</span>
+        <span class="c1"># leading pad-dims and the n_kernels dim (when it equals 1) so the</span>
+        <span class="c1"># output ndim matches the input. This restores the conventional</span>
+        <span class="c1"># contract: filter(1D) -&gt; 1D, filter(2D) -&gt; 2D, etc., while</span>
+        <span class="c1"># preserving the 4D output for callers that already passed 3D+.</span>
+        <span class="k">if</span> <span class="n">original_ndim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">original_ndim</span> <span class="o">&lt;</span> <span class="mi">4</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># 4D shape is (batch=1, n_chs=1, n_kernels=1, seq_len) when</span>
+            <span class="c1"># input was 1D; squeeze to match original_ndim.</span>
+            <span class="k">while</span> <span class="n">x</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="n">original_ndim</span> <span class="ow">and</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">t</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">x</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_edges</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">edge_len</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">t</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">kernel_size</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">ks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># if not ks % 2 == 0:</span>
+        <span class="c1">#     raise ValueError(&quot;Kernel size should be an even number.&quot;)</span>
+        <span class="k">return</span> <span class="n">ks</span>
+
+<div class="viewcode-block" id="BaseFilter1D.flip_extend">
+<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.BaseFilter1D.flip_extend">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">flip_extend</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">extension_length</span><span class="p">):</span>
+        <span class="n">first_segment</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:</span><span class="n">extension_length</span><span class="p">]</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">last_segment</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="p">:,</span> <span class="o">-</span><span class="n">extension_length</span><span class="p">:]</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">first_segment</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">last_segment</span><span class="p">],</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BaseFilter1D.batch_conv">
+<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.BaseFilter1D.batch_conv">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">batch_conv</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">kernels</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s2">&quot;same&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        x: (batch_size, n_chs, seq_len)</span>
+<span class="sd">        kernels: (n_kernels, seq_len_filt)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">x</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">3</span>
+        <span class="k">assert</span> <span class="n">kernels</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span>
+        <span class="n">batch_size</span><span class="p">,</span> <span class="n">n_chs</span><span class="p">,</span> <span class="n">n_time</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">kernels</span> <span class="o">=</span> <span class="n">kernels</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># add the channel dimension</span>
+        <span class="n">n_kernels</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">kernels</span><span class="p">)</span>
+        <span class="n">filted</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">conv1d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">kernels</span><span class="o">.</span><span class="n">type_as</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="n">padding</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">filted</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">n_chs</span><span class="p">,</span> <span class="n">n_kernels</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BaseFilter1D.remove_edges">
+<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.BaseFilter1D.remove_edges">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">remove_edges</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">edge_len</span><span class="p">):</span>
+        <span class="n">edge_len</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">//</span> <span class="mi">8</span> <span class="k">if</span> <span class="n">edge_len</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span> <span class="k">else</span> <span class="n">edge_len</span>
+
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">edge_len</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">edge_len</span><span class="p">:</span><span class="o">-</span><span class="n">edge_len</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">x</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="BandPassFilter">
+<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.BandPassFilter">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BandPassFilter</span><span class="p">(</span><span class="n">BaseFilter1D</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bands</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">,</span> <span class="n">fp16</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">fp16</span><span class="o">=</span><span class="n">fp16</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fp16</span> <span class="o">=</span> <span class="n">fp16</span>
+
+        <span class="c1"># Ensures bands shape</span>
+        <span class="k">assert</span> <span class="n">bands</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span>
+
+        <span class="c1"># Check bands definitions</span>
+        <span class="n">nyq</span> <span class="o">=</span> <span class="n">fs</span> <span class="o">/</span> <span class="mf">2.0</span>
+        <span class="c1"># Convert bands to tensor if it&#39;s a numpy array</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bands</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="n">bands</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">bands</span><span class="p">)</span>
+        <span class="n">bands</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">bands</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">nyq</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ll</span><span class="p">,</span> <span class="n">hh</span> <span class="ow">in</span> <span class="n">bands</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">ll</span>
+            <span class="k">assert</span> <span class="n">ll</span> <span class="o">&lt;</span> <span class="n">hh</span>
+            <span class="k">assert</span> <span class="n">hh</span> <span class="o">&lt;</span> <span class="n">nyq</span>
+
+        <span class="c1"># Prepare kernels</span>
+        <span class="n">kernels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_kernels</span><span class="p">(</span><span class="n">seq_len</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">bands</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">fp16</span><span class="p">:</span>
+            <span class="n">kernels</span> <span class="o">=</span> <span class="n">kernels</span><span class="o">.</span><span class="n">half</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span>
+            <span class="s2">&quot;kernels&quot;</span><span class="p">,</span>
+            <span class="n">kernels</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="BandPassFilter.init_kernels">
+<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.BandPassFilter.init_kernels">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init_kernels</span><span class="p">(</span><span class="n">seq_len</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">bands</span><span class="p">):</span>
+        <span class="c1"># Convert seq_len and fs to numpy arrays for design_filter (expects numpy_fn)</span>
+        <span class="n">seq_len_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">seq_len</span><span class="p">])</span>
+        <span class="n">fs_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">fs</span><span class="p">])</span>
+        <span class="n">filters</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">design_filter</span><span class="p">(</span>
+                <span class="n">seq_len_array</span><span class="p">,</span>
+                <span class="n">fs_array</span><span class="p">,</span>
+                <span class="n">low_hz</span><span class="o">=</span><span class="n">ll</span><span class="p">,</span>
+                <span class="n">high_hz</span><span class="o">=</span><span class="n">hh</span><span class="p">,</span>
+                <span class="n">is_bandstop</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">ll</span><span class="p">,</span> <span class="n">hh</span> <span class="ow">in</span> <span class="n">bands</span>
+        <span class="p">]</span>
+
+        <span class="c1"># Convert filters list to tensors for zero_pad</span>
+        <span class="n">filters_tensors</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="k">else</span> <span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">filters</span>
+        <span class="p">]</span>
+
+        <span class="n">kernels</span> <span class="o">=</span> <span class="n">zero_pad</span><span class="p">(</span><span class="n">filters_tensors</span><span class="p">)</span>
+        <span class="n">kernels</span> <span class="o">=</span> <span class="n">ensure_even_len</span><span class="p">(</span><span class="n">kernels</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kernels</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+            <span class="n">kernels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">kernels</span><span class="p">)</span>
+        <span class="n">kernels</span> <span class="o">=</span> <span class="n">kernels</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+        <span class="c1"># kernels = kernels.clone().detach().requires_grad_(True)</span>
+        <span class="k">return</span> <span class="n">kernels</span></div>
+</div>
+
+
+
+<span class="c1"># /home/ywatanabe/proj/scitex/src/scitex/nn/_Filters.py:155: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).</span>
+<span class="c1">#   kernels = torch.tensor(kernels).clone().detach()</span>
+
+
+<div class="viewcode-block" id="BandStopFilter">
+<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.BandStopFilter">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BandStopFilter</span><span class="p">(</span><span class="n">BaseFilter1D</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bands</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="c1"># Ensures bands shape</span>
+        <span class="k">assert</span> <span class="n">bands</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span>
+
+        <span class="c1"># Check bands definitions</span>
+        <span class="n">nyq</span> <span class="o">=</span> <span class="n">fs</span> <span class="o">/</span> <span class="mf">2.0</span>
+        <span class="n">bands</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">bands</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">nyq</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ll</span><span class="p">,</span> <span class="n">hh</span> <span class="ow">in</span> <span class="n">bands</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">ll</span>
+            <span class="k">assert</span> <span class="n">ll</span> <span class="o">&lt;</span> <span class="n">hh</span>
+            <span class="k">assert</span> <span class="n">hh</span> <span class="o">&lt;</span> <span class="n">nyq</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;kernels&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_kernels</span><span class="p">(</span><span class="n">seq_len</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">bands</span><span class="p">))</span>
+
+<div class="viewcode-block" id="BandStopFilter.init_kernels">
+<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.BandStopFilter.init_kernels">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init_kernels</span><span class="p">(</span><span class="n">seq_len</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">bands</span><span class="p">):</span>
+        <span class="c1"># Convert to numpy arrays for design_filter</span>
+        <span class="n">seq_len_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">seq_len</span><span class="p">])</span>
+        <span class="n">fs_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">fs</span><span class="p">])</span>
+        <span class="n">filters</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">design_filter</span><span class="p">(</span>
+                <span class="n">seq_len_array</span><span class="p">,</span> <span class="n">fs_array</span><span class="p">,</span> <span class="n">low_hz</span><span class="o">=</span><span class="n">ll</span><span class="p">,</span> <span class="n">high_hz</span><span class="o">=</span><span class="n">hh</span><span class="p">,</span> <span class="n">is_bandstop</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">ll</span><span class="p">,</span> <span class="n">hh</span> <span class="ow">in</span> <span class="n">bands</span>
+        <span class="p">]</span>
+        <span class="c1"># Convert filters list to tensors for zero_pad</span>
+        <span class="n">filters_tensors</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="k">else</span> <span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">filters</span>
+        <span class="p">]</span>
+        <span class="n">kernels</span> <span class="o">=</span> <span class="n">zero_pad</span><span class="p">(</span><span class="n">filters_tensors</span><span class="p">)</span>
+        <span class="n">kernels</span> <span class="o">=</span> <span class="n">ensure_even_len</span><span class="p">(</span><span class="n">kernels</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kernels</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+            <span class="n">kernels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">kernels</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">kernels</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="LowPassFilter">
+<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.LowPassFilter">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">LowPassFilter</span><span class="p">(</span><span class="n">BaseFilter1D</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cutoffs_hz</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="c1"># Coerce scalar / list / tuple to a 1D ndarray</span>
+        <span class="n">cutoffs_hz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cutoffs_hz</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="n">cutoffs_hz</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span>
+
+        <span class="c1"># Check bands definitions</span>
+        <span class="n">nyq</span> <span class="o">=</span> <span class="n">fs</span> <span class="o">/</span> <span class="mf">2.0</span>
+        <span class="n">bands</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">cutoffs_hz</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">nyq</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">cc</span> <span class="ow">in</span> <span class="n">cutoffs_hz</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">cc</span>
+            <span class="k">assert</span> <span class="n">cc</span> <span class="o">&lt;</span> <span class="n">nyq</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;kernels&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_kernels</span><span class="p">(</span><span class="n">seq_len</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">cutoffs_hz</span><span class="p">))</span>
+
+<div class="viewcode-block" id="LowPassFilter.init_kernels">
+<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.LowPassFilter.init_kernels">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init_kernels</span><span class="p">(</span><span class="n">seq_len</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">cutoffs_hz</span><span class="p">):</span>
+        <span class="c1"># Convert to numpy arrays for design_filter</span>
+        <span class="n">seq_len_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">seq_len</span><span class="p">])</span>
+        <span class="n">fs_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">fs</span><span class="p">])</span>
+        <span class="n">filters</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">design_filter</span><span class="p">(</span>
+                <span class="n">seq_len_array</span><span class="p">,</span> <span class="n">fs_array</span><span class="p">,</span> <span class="n">low_hz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">high_hz</span><span class="o">=</span><span class="n">cc</span><span class="p">,</span> <span class="n">is_bandstop</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">cc</span> <span class="ow">in</span> <span class="n">cutoffs_hz</span>
+        <span class="p">]</span>
+        <span class="c1"># Convert filters list to tensors for zero_pad</span>
+        <span class="n">filters_tensors</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="k">else</span> <span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">filters</span>
+        <span class="p">]</span>
+        <span class="n">kernels</span> <span class="o">=</span> <span class="n">zero_pad</span><span class="p">(</span><span class="n">filters_tensors</span><span class="p">)</span>
+        <span class="n">kernels</span> <span class="o">=</span> <span class="n">ensure_even_len</span><span class="p">(</span><span class="n">kernels</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kernels</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+            <span class="n">kernels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">kernels</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">kernels</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="HighPassFilter">
+<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.HighPassFilter">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">HighPassFilter</span><span class="p">(</span><span class="n">BaseFilter1D</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cutoffs_hz</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="c1"># Coerce scalar / list / tuple to a 1D ndarray</span>
+        <span class="n">cutoffs_hz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cutoffs_hz</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="n">cutoffs_hz</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span>
+
+        <span class="c1"># Check bands definitions</span>
+        <span class="n">nyq</span> <span class="o">=</span> <span class="n">fs</span> <span class="o">/</span> <span class="mf">2.0</span>
+        <span class="n">bands</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">cutoffs_hz</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">nyq</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">cc</span> <span class="ow">in</span> <span class="n">cutoffs_hz</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">cc</span>
+            <span class="k">assert</span> <span class="n">cc</span> <span class="o">&lt;</span> <span class="n">nyq</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;kernels&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_kernels</span><span class="p">(</span><span class="n">seq_len</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">cutoffs_hz</span><span class="p">))</span>
+
+<div class="viewcode-block" id="HighPassFilter.init_kernels">
+<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.HighPassFilter.init_kernels">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init_kernels</span><span class="p">(</span><span class="n">seq_len</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">cutoffs_hz</span><span class="p">):</span>
+        <span class="c1"># Convert to numpy arrays for design_filter</span>
+        <span class="n">seq_len_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">seq_len</span><span class="p">])</span>
+        <span class="n">fs_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">fs</span><span class="p">])</span>
+        <span class="n">filters</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">design_filter</span><span class="p">(</span>
+                <span class="n">seq_len_array</span><span class="p">,</span> <span class="n">fs_array</span><span class="p">,</span> <span class="n">low_hz</span><span class="o">=</span><span class="n">cc</span><span class="p">,</span> <span class="n">high_hz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_bandstop</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">cc</span> <span class="ow">in</span> <span class="n">cutoffs_hz</span>
+        <span class="p">]</span>
+        <span class="c1"># Convert filters list to tensors for zero_pad</span>
+        <span class="n">filters_tensors</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="k">else</span> <span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">filters</span>
+        <span class="p">]</span>
+        <span class="n">kernels</span> <span class="o">=</span> <span class="n">zero_pad</span><span class="p">(</span><span class="n">filters_tensors</span><span class="p">)</span>
+        <span class="n">kernels</span> <span class="o">=</span> <span class="n">ensure_even_len</span><span class="p">(</span><span class="n">kernels</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kernels</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+            <span class="n">kernels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">kernels</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">kernels</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="GaussianFilter">
+<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.GaussianFilter">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GaussianFilter</span><span class="p">(</span><span class="n">BaseFilter1D</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span> <span class="o">=</span> <span class="n">to_even</span><span class="p">(</span><span class="n">sigma</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;kernels&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_kernels</span><span class="p">(</span><span class="n">sigma</span><span class="p">))</span>
+
+<div class="viewcode-block" id="GaussianFilter.init_kernels">
+<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.GaussianFilter.init_kernels">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init_kernels</span><span class="p">(</span><span class="n">sigma</span><span class="p">):</span>
+        <span class="n">kernel_size</span> <span class="o">=</span> <span class="n">sigma</span> <span class="o">*</span> <span class="mi">6</span>  <span class="c1"># +/- 3SD</span>
+        <span class="n">kernel_range</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">)</span> <span class="o">-</span> <span class="n">kernel_size</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="n">kernel</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">kernel_range</span> <span class="o">/</span> <span class="n">sigma</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">kernel</span> <span class="o">/=</span> <span class="n">kernel</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">kernels</span> <span class="o">=</span> <span class="n">kernel</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># n_filters = 1</span>
+        <span class="n">kernels</span> <span class="o">=</span> <span class="n">ensure_even_len</span><span class="p">(</span><span class="n">kernels</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">kernels</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="DifferentiableBandPassFilter">
+<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.DifferentiableBandPassFilter">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DifferentiableBandPassFilter</span><span class="p">(</span><span class="n">BaseFilter1D</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">sig_len</span><span class="p">,</span>
+        <span class="n">fs</span><span class="p">,</span>
+        <span class="n">pha_low_hz</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">pha_high_hz</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+        <span class="n">pha_n_bands</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+        <span class="n">amp_low_hz</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span>
+        <span class="n">amp_high_hz</span><span class="o">=</span><span class="mi">160</span><span class="p">,</span>
+        <span class="n">amp_n_bands</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+        <span class="n">cycle</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">fp16</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">fp16</span><span class="o">=</span><span class="n">fp16</span><span class="p">)</span>
+
+        <span class="c1"># Attributes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pha_low_hz</span> <span class="o">=</span> <span class="n">pha_low_hz</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pha_high_hz</span> <span class="o">=</span> <span class="n">pha_high_hz</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">amp_low_hz</span> <span class="o">=</span> <span class="n">amp_low_hz</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">amp_high_hz</span> <span class="o">=</span> <span class="n">amp_high_hz</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sig_len</span> <span class="o">=</span> <span class="n">sig_len</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fs</span> <span class="o">=</span> <span class="n">fs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cycle</span> <span class="o">=</span> <span class="n">cycle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fp16</span> <span class="o">=</span> <span class="n">fp16</span>
+
+        <span class="c1"># Check bands definitions</span>
+        <span class="n">nyq</span> <span class="o">=</span> <span class="n">fs</span> <span class="o">/</span> <span class="mf">2.0</span>
+        <span class="n">pha_high_hz</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">pha_high_hz</span><span class="p">)</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">nyq</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">pha_low_hz</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">pha_low_hz</span><span class="p">)</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">pha_high_hz</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">amp_high_hz</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">amp_high_hz</span><span class="p">)</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">nyq</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">amp_low_hz</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">amp_low_hz</span><span class="p">)</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">amp_high_hz</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="n">pha_low_hz</span> <span class="o">&lt;</span> <span class="n">pha_high_hz</span> <span class="o">&lt;</span> <span class="n">nyq</span>
+        <span class="k">assert</span> <span class="n">amp_low_hz</span> <span class="o">&lt;</span> <span class="n">amp_high_hz</span> <span class="o">&lt;</span> <span class="n">nyq</span>
+
+        <span class="c1"># Prepare kernels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_kernels</span> <span class="o">=</span> <span class="n">init_bandpass_filters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">build_bandpass_filters</span> <span class="o">=</span> <span class="n">build_bandpass_filters</span>
+        <span class="n">kernels</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pha_mids</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">amp_mids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_kernels</span><span class="p">(</span>
+            <span class="n">sig_len</span><span class="o">=</span><span class="n">sig_len</span><span class="p">,</span>
+            <span class="n">fs</span><span class="o">=</span><span class="n">fs</span><span class="p">,</span>
+            <span class="n">pha_low_hz</span><span class="o">=</span><span class="n">pha_low_hz</span><span class="p">,</span>
+            <span class="n">pha_high_hz</span><span class="o">=</span><span class="n">pha_high_hz</span><span class="p">,</span>
+            <span class="n">pha_n_bands</span><span class="o">=</span><span class="n">pha_n_bands</span><span class="p">,</span>
+            <span class="n">amp_low_hz</span><span class="o">=</span><span class="n">amp_low_hz</span><span class="p">,</span>
+            <span class="n">amp_high_hz</span><span class="o">=</span><span class="n">amp_high_hz</span><span class="p">,</span>
+            <span class="n">amp_n_bands</span><span class="o">=</span><span class="n">amp_n_bands</span><span class="p">,</span>
+            <span class="n">cycle</span><span class="o">=</span><span class="n">cycle</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span>
+            <span class="s2">&quot;kernels&quot;</span><span class="p">,</span>
+            <span class="n">kernels</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># self.register_buffer(&quot;pha_mids&quot;, pha_mids)</span>
+        <span class="c1"># self.register_buffer(&quot;amp_mids&quot;, amp_mids)</span>
+        <span class="c1"># self.pha_mids = nn.Parameter(pha_mids.detach())</span>
+        <span class="c1"># self.amp_mids = nn.Parameter(amp_mids.detach())</span>
+
+        <span class="k">if</span> <span class="n">fp16</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">half</span><span class="p">()</span>
+            <span class="c1"># self.pha_mids = self.pha_mids.half()</span>
+            <span class="c1"># self.amp_mids = self.amp_mids.half()</span>
+
+<div class="viewcode-block" id="DifferentiableBandPassFilter.forward">
+<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.DifferentiableBandPassFilter.forward">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edge_len</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="c1"># Constrains the parameter spaces</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pha_mids</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pha_low_hz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pha_high_hz</span><span class="p">)</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">amp_mids</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">amp_low_hz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">amp_high_hz</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_bandpass_filters</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sig_len</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pha_mids</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">amp_mids</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cycle</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">edge_len</span><span class="o">=</span><span class="n">edge_len</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">scitex</span>
+
+    <span class="c1"># Start</span>
+    <span class="n">CONFIG</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="n">plt</span><span class="p">,</span> <span class="n">CC</span> <span class="o">=</span> <span class="n">scitex</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">start</span><span class="p">(</span>
+        <span class="n">sys</span><span class="p">,</span> <span class="n">plt</span><span class="p">,</span> <span class="n">fig_scale</span><span class="o">=</span><span class="mi">5</span>
+    <span class="p">)</span>
+
+    <span class="n">xx</span><span class="p">,</span> <span class="n">tt</span><span class="p">,</span> <span class="n">fs</span> <span class="o">=</span> <span class="n">scitex</span><span class="o">.</span><span class="n">dsp</span><span class="o">.</span><span class="n">demo_sig</span><span class="p">(</span><span class="n">sig_type</span><span class="o">=</span><span class="s2">&quot;chirp&quot;</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
+    <span class="n">xx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">xx</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+    <span class="c1"># bands = np.array([[2, 3], [3, 4]])</span>
+    <span class="c1"># BandPassFilter(bands, fs, xx.shape)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">DifferentiableBandPassFilter</span><span class="p">(</span><span class="n">xx</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">fs</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+
+    <span class="n">scitex</span><span class="o">.</span><span class="n">ai</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">check_params</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+    <span class="c1"># {&#39;pha_mids&#39;: (torch.Size([30]), &#39;Learnable&#39;),</span>
+    <span class="c1">#  &#39;amp_mids&#39;: (torch.Size([50]), &#39;Learnable&#39;)}</span>
+
+    <span class="n">xf</span> <span class="o">=</span> <span class="n">m</span><span class="p">(</span><span class="n">xx</span><span class="p">)</span>  <span class="c1"># (8, 19, 80, 2048)</span>
+
+    <span class="n">xf</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>  <span class="c1"># OK, differentiable</span>
+
+    <span class="n">m</span><span class="o">.</span><span class="n">pha_mids</span>
+    <span class="c1"># Parameter containing:</span>
+    <span class="c1"># tensor([ 2.0000,  2.6207,  3.2414,  3.8621,  4.4828,  5.1034,  5.7241,  6.3448,</span>
+    <span class="c1">#          6.9655,  7.5862,  8.2069,  8.8276,  9.4483, 10.0690, 10.6897, 11.3103,</span>
+    <span class="c1">#         11.9310, 12.5517, 13.1724, 13.7931, 14.4138, 15.0345, 15.6552, 16.2759,</span>
+    <span class="c1">#         16.8966, 17.5172, 18.1379, 18.7586, 19.3793, 20.0000],</span>
+    <span class="c1">#        requires_grad=True)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">amp_mids</span>
+    <span class="c1"># Parameter containing:</span>
+    <span class="c1"># tensor([ 80.0000,  81.6327,  83.2653,  84.8980,  86.5306,  88.1633,  89.7959,</span>
+    <span class="c1">#          91.4286,  93.0612,  94.6939,  96.3265,  97.9592,  99.5918, 101.2245,</span>
+    <span class="c1">#         102.8571, 104.4898, 106.1225, 107.7551, 109.3878, 111.0204, 112.6531,</span>
+    <span class="c1">#         114.2857, 115.9184, 117.5510, 119.1837, 120.8163, 122.4490, 124.0816,</span>
+    <span class="c1">#         125.7143, 127.3469, 128.9796, 130.6122, 132.2449, 133.8775, 135.5102,</span>
+    <span class="c1">#         137.1429, 138.7755, 140.4082, 142.0408, 143.6735, 145.3061, 146.9388,</span>
+    <span class="c1">#         148.5714, 150.2041, 151.8367, 153.4694, 155.1020, 156.7347, 158.3673,</span>
+    <span class="c1">#         160.0000], requires_grad=True)</span>
+
+    <span class="c1"># PSD</span>
+    <span class="n">bands</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">m</span><span class="o">.</span><span class="n">pha_mids</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">amp_mids</span><span class="p">])</span>
+
+    <span class="c1"># Plots PSD</span>
+    <span class="c1"># matplotlib.use(&quot;TkAgg&quot;)</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">scitex</span><span class="o">.</span><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">bands</span><span class="p">),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">psd</span><span class="p">,</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">scitex</span><span class="o">.</span><span class="n">dsp</span><span class="o">.</span><span class="n">psd</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>  <span class="c1"># Orig</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span> <span class="n">xx</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;orig&quot;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">ff</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+        <span class="n">psd</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;orig&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i_filt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bands</span><span class="p">)):</span>
+        <span class="n">mid_hz</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bands</span><span class="p">[</span><span class="n">i_filt</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+        <span class="n">psd_f</span><span class="p">,</span> <span class="n">ff_f</span> <span class="o">=</span> <span class="n">scitex</span><span class="o">.</span><span class="n">dsp</span><span class="o">.</span><span class="n">psd</span><span class="p">(</span><span class="n">xf</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">i_filt</span><span class="p">,</span> <span class="p">:],</span> <span class="n">fs</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">i_filt</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">tt</span><span class="p">,</span>
+            <span class="n">xf</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">i_filt</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;filted at </span><span class="si">{</span><span class="n">mid_hz</span><span class="si">}</span><span class="s2"> Hz&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">i_filt</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">ff_f</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+            <span class="n">psd_f</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;filted at </span><span class="si">{</span><span class="n">mid_hz</span><span class="si">}</span><span class="s2"> Hz&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="o">.</span><span class="n">ravel</span><span class="p">():</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper left&quot;</span><span class="p">)</span>
+
+    <span class="n">scitex</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s2">&quot;./traces.png&quot;</span><span class="p">)</span>
+    <span class="c1"># plt.show()</span>
+
+    <span class="c1"># Close</span>
+    <span class="n">scitex</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">CONFIG</span><span class="p">)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">/home/ywatanabe/proj/entrance/scitex/dsp/nn/_Filters.py</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># EOF</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Yusuke Watanabe.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

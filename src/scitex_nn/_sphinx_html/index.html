@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>scitex-nn &mdash; scitex-nn 0.1.0 documentation</title>
+  <title>scitex-nn &mdash; scitex-nn 0.1.12 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/documentation_options.js?v=297ad043"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -48,6 +48,9 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 </ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/scitex_nn.html">scitex_nn</a></li>
+</ul>
 
         </div>
       </div>
@@ -80,13 +83,52 @@ extracted from the SciTeX ecosystem as a standalone package.</p>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.AxiswiseDropout"><code class="docutils literal notranslate"><span class="pre">AxiswiseDropout</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.BHead_v1"><code class="docutils literal notranslate"><span class="pre">BHead_v1</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.BHead_Res"><code class="docutils literal notranslate"><span class="pre">BHead_Res</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.BNet_v1"><code class="docutils literal notranslate"><span class="pre">BNet_v1</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.BNet_Res"><code class="docutils literal notranslate"><span class="pre">BNet_Res</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.BandPassFilter"><code class="docutils literal notranslate"><span class="pre">BandPassFilter</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.BandStopFilter"><code class="docutils literal notranslate"><span class="pre">BandStopFilter</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.BaseFilter1D"><code class="docutils literal notranslate"><span class="pre">BaseFilter1D</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.ChannelGainChanger"><code class="docutils literal notranslate"><span class="pre">ChannelGainChanger</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.DifferentiableBandPassFilter"><code class="docutils literal notranslate"><span class="pre">DifferentiableBandPassFilter</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.DropoutChannels"><code class="docutils literal notranslate"><span class="pre">DropoutChannels</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.FreqGainChanger"><code class="docutils literal notranslate"><span class="pre">FreqGainChanger</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.GaussianFilter"><code class="docutils literal notranslate"><span class="pre">GaussianFilter</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.HighPassFilter"><code class="docutils literal notranslate"><span class="pre">HighPassFilter</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.Hilbert"><code class="docutils literal notranslate"><span class="pre">Hilbert</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.LowPassFilter"><code class="docutils literal notranslate"><span class="pre">LowPassFilter</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.MNet1000"><code class="docutils literal notranslate"><span class="pre">MNet1000</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.MNet_1000"><code class="docutils literal notranslate"><span class="pre">MNet_1000</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.ModulationIndex"><code class="docutils literal notranslate"><span class="pre">ModulationIndex</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.PAC"><code class="docutils literal notranslate"><span class="pre">PAC</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.PSD"><code class="docutils literal notranslate"><span class="pre">PSD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.ResNet1D"><code class="docutils literal notranslate"><span class="pre">ResNet1D</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.ResNetBasicBlock"><code class="docutils literal notranslate"><span class="pre">ResNetBasicBlock</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.ReshapeLayer"><code class="docutils literal notranslate"><span class="pre">ReshapeLayer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.SpatialAttention"><code class="docutils literal notranslate"><span class="pre">SpatialAttention</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.Spectrogram"><code class="docutils literal notranslate"><span class="pre">Spectrogram</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.SwapChannels"><code class="docutils literal notranslate"><span class="pre">SwapChannels</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.SwapLayer"><code class="docutils literal notranslate"><span class="pre">SwapLayer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.TransposeLayer"><code class="docutils literal notranslate"><span class="pre">TransposeLayer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.Wavelet"><code class="docutils literal notranslate"><span class="pre">Wavelet</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.my_softmax"><code class="docutils literal notranslate"><span class="pre">my_softmax()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.normalize"><code class="docutils literal notranslate"><span class="pre">normalize()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.spectrograms"><code class="docutils literal notranslate"><span class="pre">spectrograms()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scitex_nn.unbias"><code class="docutils literal notranslate"><span class="pre">unbias()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </div>
 <section id="api-reference">
 <h2>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/scitex_nn.html#module-scitex_nn" title="scitex_nn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scitex_nn</span></code></a></p></td>
+<td><p>Scitex nn module.</p></td>
+</tr>
 </tbody>
 </table>
 </section>
