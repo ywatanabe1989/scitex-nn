@@ -12,7 +12,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from scitex_gen._to_even import to_even
+from scitex_gen import to_even
 
 
 class Wavelet(nn.Module):

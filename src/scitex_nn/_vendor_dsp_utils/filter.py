@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.signal import firwin, freqz
 from scitex_decorators import numpy_fn
-from scitex_gen._to_even import to_even
+from scitex_gen import to_even
 
 
 @numpy_fn
