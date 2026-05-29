@@ -31,15 +31,30 @@ autodoc_default_options = {
     "member-order": "bysource",
     "undoc-members": False,
     "private-members": False,
+    "imported-members": False,
     "exclude-members": "__weakref__,__init__,__dict__,__module__",
 }
 
-# Heavy/optional deps mocked so RTD can build without installing them.
-# scitex-* peer packages are not yet on PyPI, so RTD's `pip install .` cannot
-# resolve them — mock them at autodoc time.
-autodoc_mock_imports = []  # peer deps installable from PyPI now
+# Heavy/optional deps mocked so the docs build without importing the real
+# (slow / GPU) libraries. ``scitex_nn`` lazily imports torch on first attribute
+# access (PEP 562); mocking it keeps autodoc cheap and deterministic.
+autodoc_mock_imports = [
+    "torch",
+    "torchvision",
+    "torchaudio",
+    "numpy",
+    "scipy",
+    "matplotlib",
+    "pandas",
+    "einops",
+]
 
-autosummary_generate = True
+# Public symbols are re-exported into the ``scitex_nn`` package namespace and
+# documented once there via ``automodule`` in ``api.rst``. We therefore do not
+# autosummary-recurse into the private ``_*`` implementation submodules, which
+# would document every class a second time and trigger duplicate-object
+# warnings (fatal under ``sphinx-build -W``).
+autosummary_generate = False
 
 napoleon_google_docstring = True
 napoleon_numpy_docstring = True
