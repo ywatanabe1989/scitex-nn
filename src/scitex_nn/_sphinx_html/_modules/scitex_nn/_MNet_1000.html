@@ -46,9 +46,6 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
 </ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../api/scitex_nn.html">scitex_nn</a></li>
-</ul>
 
         </div>
       </div>
@@ -99,7 +96,7 @@
 
 
 <div class="viewcode-block" id="MNet1000">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.MNet1000">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.MNet1000">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">MNet1000</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -180,7 +177,7 @@
         <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span> <span class="o">/</span> <span class="n">x</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MNet1000.forward">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.MNet1000.forward">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.MNet1000.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="c1"># # time-wise normalization</span>
         <span class="c1"># x = self._znorm_along_the_last_dim(x)</span>
@@ -197,7 +194,7 @@
 
 
 <div class="viewcode-block" id="MNet1000.forward_bb">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.MNet1000.forward_bb">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.MNet1000.forward_bb">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward_bb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="c1"># time-wise normalization</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_znorm_along_the_last_dim</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -209,7 +206,7 @@
 
 
 <div class="viewcode-block" id="SwapLayer">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.SwapLayer">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.SwapLayer">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SwapLayer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -217,7 +214,7 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
 <div class="viewcode-block" id="SwapLayer.forward">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.SwapLayer.forward">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.SwapLayer.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span></div>
 </div>
@@ -225,7 +222,7 @@
 
 
 <div class="viewcode-block" id="ReshapeLayer">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.ReshapeLayer">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.ReshapeLayer">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ReshapeLayer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -233,7 +230,7 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
 <div class="viewcode-block" id="ReshapeLayer.forward">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.ReshapeLayer.forward">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.ReshapeLayer.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span></div>
 </div>

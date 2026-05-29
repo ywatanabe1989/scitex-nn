@@ -46,9 +46,6 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
 </ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../api/scitex_nn.html">scitex_nn</a></li>
-</ul>
 
         </div>
       </div>
@@ -84,7 +81,7 @@
 
 
 <div class="viewcode-block" id="Hilbert">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.Hilbert">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.Hilbert">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Hilbert</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Differentiable Hilbert transform → analytic signal.</span>
 
@@ -126,7 +123,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;h_mask&quot;</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Hilbert.hilbert_transform">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.Hilbert.hilbert_transform">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.Hilbert.hilbert_transform">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">hilbert_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="n">orig_dtype</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">dtype</span>
         <span class="c1"># FFT does not support float16/bfloat16/int dtypes; promote those</span>
@@ -147,7 +144,7 @@
 
 
 <div class="viewcode-block" id="Hilbert.forward">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.Hilbert.forward">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.Hilbert.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fp16</span><span class="p">:</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">half</span><span class="p">()</span>

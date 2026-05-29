@@ -46,9 +46,6 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../api.html">API</a></li>
 </ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/scitex_nn.html">scitex_nn</a></li>
-</ul>
 
         </div>
       </div>
@@ -91,14 +88,14 @@
 
 
 <div class="viewcode-block" id="DropoutChannels">
-<a class="viewcode-back" href="../../../api/scitex_nn.html#scitex_nn.DropoutChannels">[docs]</a>
+<a class="viewcode-back" href="../../../api.html#scitex_nn.DropoutChannels">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DropoutChannels</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dropout</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">dropout</span><span class="p">)</span>
 
 <div class="viewcode-block" id="DropoutChannels.forward">
-<a class="viewcode-back" href="../../../api/scitex_nn.html#scitex_nn.DropoutChannels.forward">[docs]</a>
+<a class="viewcode-back" href="../../../api.html#scitex_nn.DropoutChannels.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;x: [batch_size, n_chs, seq_len]&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="p">:</span>

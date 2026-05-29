@@ -22,7 +22,6 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="scitex_nn" href="api/scitex_nn.html" />
     <link rel="prev" title="scitex-nn" href="index.html" /> 
 </head>
 
@@ -175,11 +174,14 @@
 <li class="toctree-l2"><a class="reference internal" href="#scitex_nn.normalize"><code class="docutils literal notranslate"><span class="pre">normalize()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#scitex_nn.spectrograms"><code class="docutils literal notranslate"><span class="pre">spectrograms()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#scitex_nn.unbias"><code class="docutils literal notranslate"><span class="pre">unbias()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#filters">Filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#spectral-transforms">Spectral Transforms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#phase-amplitude-coupling">Phase-Amplitude Coupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#layers-attention">Layers &amp; Attention</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#architectures">Architectures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#functional-utilities">Functional Utilities</a></li>
 </ul>
 </li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="api/scitex_nn.html">scitex_nn</a></li>
 </ul>
 
         </div>
@@ -209,10 +211,16 @@
   <section id="module-scitex_nn">
 <span id="api"></span><h1>API<a class="headerlink" href="#module-scitex_nn" title="Link to this heading"></a></h1>
 <p>Scitex nn module.</p>
+<p>Top-level imports are PEP 562 lazy — <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">scitex_nn</span></code> is cheap and does
+NOT pull in <code class="docutils literal notranslate"><span class="pre">torch</span></code>. Public symbols (layers, filters, transforms) load on
+first attribute access, at which point <code class="docutils literal notranslate"><span class="pre">torch</span></code> is imported. This mirrors
+<code class="docutils literal notranslate"><span class="pre">scitex_io</span></code>’s lazy-loading pattern (<code class="docutils literal notranslate"><span class="pre">_LAZY_ATTRS</span></code> + <code class="docutils literal notranslate"><span class="pre">__getattr__</span></code> +
+<code class="docutils literal notranslate"><span class="pre">__dir__</span></code>).</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="scitex_nn.AxiswiseDropout">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">AxiswiseDropout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dropout_prob</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_aug/_AxiswiseDropout.html#AxiswiseDropout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.AxiswiseDropout" title="Link to this definition"></a></dt>
-<dd><dl class="py method">
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
 <dt class="sig sig-object py" id="scitex_nn.AxiswiseDropout.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_aug/_AxiswiseDropout.html#AxiswiseDropout.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.AxiswiseDropout.forward" title="Link to this definition"></a></dt>
 <dd><p>Define the computation performed at every call.</p>
@@ -255,7 +263,8 @@ registered hooks while the latter silently ignores them.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="scitex_nn.BandPassFilter">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">BandPassFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bands</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_len</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp16</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#BandPassFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.BandPassFilter" title="Link to this definition"></a></dt>
-<dd><dl class="py method">
+<dd><p>Bases: <a class="reference internal" href="#scitex_nn.BaseFilter1D" title="scitex_nn._Filters.BaseFilter1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseFilter1D</span></code></a></p>
+<dl class="py method">
 <dt class="sig sig-object py" id="scitex_nn.BandPassFilter.init_kernels">
 <span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">init_kernels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq_len</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bands</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#BandPassFilter.init_kernels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.BandPassFilter.init_kernels" title="Link to this definition"></a></dt>
 <dd><p>Abstract method to initialize filter kernels.
@@ -267,7 +276,8 @@ Must be implemented by subclasses.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="scitex_nn.BandStopFilter">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">BandStopFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bands</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_len</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#BandStopFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.BandStopFilter" title="Link to this definition"></a></dt>
-<dd><dl class="py method">
+<dd><p>Bases: <a class="reference internal" href="#scitex_nn.BaseFilter1D" title="scitex_nn._Filters.BaseFilter1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseFilter1D</span></code></a></p>
+<dl class="py method">
 <dt class="sig sig-object py" id="scitex_nn.BandStopFilter.init_kernels">
 <span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">init_kernels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq_len</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bands</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#BandStopFilter.init_kernels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.BandStopFilter.init_kernels" title="Link to this definition"></a></dt>
 <dd><p>Abstract method to initialize filter kernels.
@@ -279,7 +289,8 @@ Must be implemented by subclasses.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="scitex_nn.BaseFilter1D">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">BaseFilter1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp16</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#BaseFilter1D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.BaseFilter1D" title="Link to this definition"></a></dt>
-<dd><dl class="py method">
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
 <dt class="sig sig-object py" id="scitex_nn.BaseFilter1D.init_kernels">
 <span class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">init_kernels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#BaseFilter1D.init_kernels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.BaseFilter1D.init_kernels" title="Link to this definition"></a></dt>
 <dd><p>Abstract method to initialize filter kernels.
@@ -319,7 +330,8 @@ kernels: (n_kernels, seq_len_filt)</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="scitex_nn.ChannelGainChanger">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">ChannelGainChanger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_chs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_aug/_ChannelGainChanger.html#ChannelGainChanger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.ChannelGainChanger" title="Link to this definition"></a></dt>
-<dd><dl class="py method">
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
 <dt class="sig sig-object py" id="scitex_nn.ChannelGainChanger.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_aug/_ChannelGainChanger.html#ChannelGainChanger.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.ChannelGainChanger.forward" title="Link to this definition"></a></dt>
 <dd><p>x: [batch_size, n_chs, seq_len]</p>
@@ -330,7 +342,8 @@ kernels: (n_kernels, seq_len_filt)</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="scitex_nn.DifferentiableBandPassFilter">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">DifferentiableBandPassFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig_len</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pha_low_hz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pha_high_hz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pha_n_bands</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp_low_hz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">80</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp_high_hz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">160</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp_n_bands</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp16</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#DifferentiableBandPassFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.DifferentiableBandPassFilter" title="Link to this definition"></a></dt>
-<dd><dl class="py method">
+<dd><p>Bases: <a class="reference internal" href="#scitex_nn.BaseFilter1D" title="scitex_nn._Filters.BaseFilter1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseFilter1D</span></code></a></p>
+<dl class="py method">
 <dt class="sig sig-object py" id="scitex_nn.DifferentiableBandPassFilter.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#DifferentiableBandPassFilter.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.DifferentiableBandPassFilter.forward" title="Link to this definition"></a></dt>
 <dd><p>Apply the filter to input signal x with shape: (batch_size, n_chs, seq_len)</p>
@@ -341,7 +354,8 @@ kernels: (n_kernels, seq_len_filt)</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="scitex_nn.DropoutChannels">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">DropoutChannels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dropout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_aug/_DropoutChannels.html#DropoutChannels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.DropoutChannels" title="Link to this definition"></a></dt>
-<dd><dl class="py method">
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
 <dt class="sig sig-object py" id="scitex_nn.DropoutChannels.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_aug/_DropoutChannels.html#DropoutChannels.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.DropoutChannels.forward" title="Link to this definition"></a></dt>
 <dd><p>x: [batch_size, n_chs, seq_len]</p>
@@ -352,7 +366,8 @@ kernels: (n_kernels, seq_len_filt)</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="scitex_nn.FreqGainChanger">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">FreqGainChanger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_bands</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samp_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_aug/_FreqGainChanger.html#FreqGainChanger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.FreqGainChanger" title="Link to this definition"></a></dt>
-<dd><dl class="py method">
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
 <dt class="sig sig-object py" id="scitex_nn.FreqGainChanger.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_aug/_FreqGainChanger.html#FreqGainChanger.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.FreqGainChanger.forward" title="Link to this definition"></a></dt>
 <dd><p>x: [batch_size, n_chs, seq_len]</p>
@@ -363,7 +378,8 @@ kernels: (n_kernels, seq_len_filt)</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="scitex_nn.GaussianFilter">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">GaussianFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#GaussianFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.GaussianFilter" title="Link to this definition"></a></dt>
-<dd><dl class="py method">
+<dd><p>Bases: <a class="reference internal" href="#scitex_nn.BaseFilter1D" title="scitex_nn._Filters.BaseFilter1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseFilter1D</span></code></a></p>
+<dl class="py method">
 <dt class="sig sig-object py" id="scitex_nn.GaussianFilter.init_kernels">
 <span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">init_kernels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#GaussianFilter.init_kernels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.GaussianFilter.init_kernels" title="Link to this definition"></a></dt>
 <dd><p>Abstract method to initialize filter kernels.
@@ -375,7 +391,8 @@ Must be implemented by subclasses.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="scitex_nn.HighPassFilter">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">HighPassFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cutoffs_hz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_len</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#HighPassFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.HighPassFilter" title="Link to this definition"></a></dt>
-<dd><dl class="py method">
+<dd><p>Bases: <a class="reference internal" href="#scitex_nn.BaseFilter1D" title="scitex_nn._Filters.BaseFilter1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseFilter1D</span></code></a></p>
+<dl class="py method">
 <dt class="sig sig-object py" id="scitex_nn.HighPassFilter.init_kernels">
 <span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">init_kernels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq_len</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoffs_hz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#HighPassFilter.init_kernels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.HighPassFilter.init_kernels" title="Link to this definition"></a></dt>
 <dd><p>Abstract method to initialize filter kernels.
@@ -387,7 +404,8 @@ Must be implemented by subclasses.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="scitex_nn.Hilbert">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">Hilbert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq_len</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp16</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Hilbert.html#Hilbert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.Hilbert" title="Link to this definition"></a></dt>
-<dd><p>Differentiable Hilbert transform → analytic signal.</p>
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<p>Differentiable Hilbert transform → analytic signal.</p>
 <p>Matches <code class="docutils literal notranslate"><span class="pre">scipy.signal.hilbert</span></code> to float-precision. The analytic-
 signal mask is a constant tensor (1 at DC + Nyquist, 2 at positive
 frequencies, 0 at negative frequencies); multiplying by it is fully
@@ -427,7 +445,8 @@ registered hooks while the latter silently ignores them.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="scitex_nn.LowPassFilter">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">LowPassFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cutoffs_hz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_len</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#LowPassFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.LowPassFilter" title="Link to this definition"></a></dt>
-<dd><dl class="py method">
+<dd><p>Bases: <a class="reference internal" href="#scitex_nn.BaseFilter1D" title="scitex_nn._Filters.BaseFilter1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseFilter1D</span></code></a></p>
+<dl class="py method">
 <dt class="sig sig-object py" id="scitex_nn.LowPassFilter.init_kernels">
 <span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">init_kernels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq_len</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoffs_hz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#LowPassFilter.init_kernels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.LowPassFilter.init_kernels" title="Link to this definition"></a></dt>
 <dd><p>Abstract method to initialize filter kernels.
@@ -439,7 +458,8 @@ Must be implemented by subclasses.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="scitex_nn.MNet1000">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">MNet1000</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_MNet_1000.html#MNet1000"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.MNet1000" title="Link to this definition"></a></dt>
-<dd><dl class="py method">
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
 <dt class="sig sig-object py" id="scitex_nn.MNet1000.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_MNet_1000.html#MNet1000.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.MNet1000.forward" title="Link to this definition"></a></dt>
 <dd><p>Define the computation performed at every call.</p>
@@ -463,13 +483,14 @@ registered hooks while the latter silently ignores them.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="scitex_nn.MNet_1000">
 <span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">MNet_1000</span></span><a class="headerlink" href="#scitex_nn.MNet_1000" title="Link to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="api/scitex_nn.html#scitex_nn.MNet1000" title="scitex_nn._MNet_1000.MNet1000"><code class="xref py py-class docutils literal notranslate"><span class="pre">MNet1000</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="#scitex_nn.MNet1000" title="scitex_nn._MNet_1000.MNet1000"><code class="xref py py-class docutils literal notranslate"><span class="pre">MNet1000</span></code></a></p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="scitex_nn.ModulationIndex">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">ModulationIndex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_bins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">18</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp16</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp_prob</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_ModulationIndex.html#ModulationIndex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.ModulationIndex" title="Link to this definition"></a></dt>
-<dd><dl class="py property">
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py property">
 <dt class="sig sig-object py" id="scitex_nn.ModulationIndex.pha_bin_centers">
 <span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">pha_bin_centers</span></span><a class="headerlink" href="#scitex_nn.ModulationIndex.pha_bin_centers" title="Link to this definition"></a></dt>
 <dd></dd></dl>
@@ -478,20 +499,22 @@ registered hooks while the latter silently ignores them.</p>
 <dt class="sig sig-object py" id="scitex_nn.ModulationIndex.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-09</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_ModulationIndex.html#ModulationIndex.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.ModulationIndex.forward" title="Link to this definition"></a></dt>
 <dd><p>Compute the Modulation Index based on phase (pha) and amplitude (amp) tensors.</p>
-<p>Parameters:
-- pha (torch.Tensor): Tensor of phase values with shape</p>
-<blockquote>
-<div><p>(batch_size, n_channels, n_freqs_pha, n_segments, sequence_length).</p>
-</div></blockquote>
-<ul class="simple">
-<li><dl class="simple">
-<dt>amp (torch.Tensor): Tensor of amplitude values with a similar shape as pha.</dt><dd><p>(batch_size, n_channels, n_freqs_amp, n_segments, sequence_length).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pha</strong> (<a class="reference external" href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.12)"><em>torch.Tensor</em></a>) – Tensor of phase values with shape
+(batch_size, n_channels, n_freqs_pha, n_segments, sequence_length).</p></li>
+<li><p><strong>amp</strong> (<a class="reference external" href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.12)"><em>torch.Tensor</em></a>) – Tensor of amplitude values with a similar shape as pha
+(batch_size, n_channels, n_freqs_amp, n_segments, sequence_length).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>MI</strong> – The Modulation Index for each batch and channel.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.12)">torch.Tensor</a></p>
 </dd>
 </dl>
-</li>
-</ul>
-<p>Returns:
-- MI (torch.Tensor): The Modulation Index for each batch and channel.</p>
 </dd></dl>
 
 </dd></dl>
@@ -499,7 +522,8 @@ registered hooks while the latter silently ignores them.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="scitex_nn.PAC">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">PAC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq_len</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pha_start_hz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pha_end_hz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pha_n_bands</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp_start_hz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp_end_hz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">160</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp_n_bands</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_perm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trainable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp16</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp_prob</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_PAC.html#PAC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.PAC" title="Link to this definition"></a></dt>
-<dd><dl class="py method">
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
 <dt class="sig sig-object py" id="scitex_nn.PAC.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_PAC.html#PAC.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.PAC.forward" title="Link to this definition"></a></dt>
 <dd><p>x.shape: (batch_size, n_chs, seq_len) or (batch_size, n_chs, n_segments, seq_len)</p>
@@ -535,7 +559,8 @@ registered hooks while the latter silently ignores them.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="scitex_nn.PSD">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">PSD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prob</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_PSD.html#PSD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.PSD" title="Link to this definition"></a></dt>
-<dd><dl class="py method">
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
 <dt class="sig sig-object py" id="scitex_nn.PSD.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_PSD.html#PSD.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.PSD.forward" title="Link to this definition"></a></dt>
 <dd><p>Define the computation performed at every call.</p>
@@ -554,7 +579,8 @@ registered hooks while the latter silently ignores them.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="scitex_nn.ResNet1D">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">ResNet1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_chs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">19</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_blks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_ResNet1D.html#ResNet1D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.ResNet1D" title="Link to this definition"></a></dt>
-<dd><p>A representative convolutional neural network for signal classification tasks.</p>
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<p>A representative convolutional neural network for signal classification tasks.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="scitex_nn.ResNet1D.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_ResNet1D.html#ResNet1D.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.ResNet1D.forward" title="Link to this definition"></a></dt>
@@ -574,7 +600,8 @@ registered hooks while the latter silently ignores them.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="scitex_nn.ResNetBasicBlock">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">ResNetBasicBlock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_chs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_chs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_ResNet1D.html#ResNetBasicBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.ResNetBasicBlock" title="Link to this definition"></a></dt>
-<dd><p>The basic block of the ResNet1D model</p>
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<p>The basic block of the ResNet1D model</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="scitex_nn.ResNetBasicBlock.conv_k">
 <span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">conv_k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_chs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_chs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_ResNet1D.html#ResNetBasicBlock.conv_k"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.ResNetBasicBlock.conv_k" title="Link to this definition"></a></dt>
@@ -600,7 +627,8 @@ registered hooks while the latter silently ignores them.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="scitex_nn.ReshapeLayer">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">ReshapeLayer</span></span><a class="reference internal" href="_modules/scitex_nn/_MNet_1000.html#ReshapeLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.ReshapeLayer" title="Link to this definition"></a></dt>
-<dd><dl class="py method">
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
 <dt class="sig sig-object py" id="scitex_nn.ReshapeLayer.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_MNet_1000.html#ReshapeLayer.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.ReshapeLayer.forward" title="Link to this definition"></a></dt>
 <dd><p>Define the computation performed at every call.</p>
@@ -619,7 +647,8 @@ registered hooks while the latter silently ignores them.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="scitex_nn.SpatialAttention">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">SpatialAttention</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_chs_in</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_SpatialAttention.html#SpatialAttention"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.SpatialAttention" title="Link to this definition"></a></dt>
-<dd><dl class="py method">
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
 <dt class="sig sig-object py" id="scitex_nn.SpatialAttention.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_SpatialAttention.html#SpatialAttention.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.SpatialAttention.forward" title="Link to this definition"></a></dt>
 <dd><p>x: [batch_size, n_chs, seq_len]</p>
@@ -630,7 +659,8 @@ registered hooks while the latter silently ignores them.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="scitex_nn.Spectrogram">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">Spectrogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_fft</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">256</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">win_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hann'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Spectrogram.html#Spectrogram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.Spectrogram" title="Link to this definition"></a></dt>
-<dd><dl class="py method">
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
 <dt class="sig sig-object py" id="scitex_nn.Spectrogram.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Spectrogram.html#Spectrogram.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.Spectrogram.forward" title="Link to this definition"></a></dt>
 <dd><p>Computes the spectrogram for each channel in the input signal.</p>
@@ -645,7 +675,8 @@ registered hooks while the latter silently ignores them.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="scitex_nn.SwapChannels">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">SwapChannels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dropout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_aug/_SwapChannels.html#SwapChannels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.SwapChannels" title="Link to this definition"></a></dt>
-<dd><dl class="py method">
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
 <dt class="sig sig-object py" id="scitex_nn.SwapChannels.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_aug/_SwapChannels.html#SwapChannels.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.SwapChannels.forward" title="Link to this definition"></a></dt>
 <dd><p>x: [batch_size, n_chs, seq_len]</p>
@@ -656,7 +687,8 @@ registered hooks while the latter silently ignores them.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="scitex_nn.SwapLayer">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">SwapLayer</span></span><a class="reference internal" href="_modules/scitex_nn/_MNet_1000.html#SwapLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.SwapLayer" title="Link to this definition"></a></dt>
-<dd><dl class="py method">
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
 <dt class="sig sig-object py" id="scitex_nn.SwapLayer.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_MNet_1000.html#SwapLayer.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.SwapLayer.forward" title="Link to this definition"></a></dt>
 <dd><p>Define the computation performed at every call.</p>
@@ -675,7 +707,8 @@ registered hooks while the latter silently ignores them.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="scitex_nn.TransposeLayer">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">TransposeLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_TransposeLayer.html#TransposeLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.TransposeLayer" title="Link to this definition"></a></dt>
-<dd><dl class="py method">
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
 <dt class="sig sig-object py" id="scitex_nn.TransposeLayer.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_TransposeLayer.html#TransposeLayer.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.TransposeLayer.forward" title="Link to this definition"></a></dt>
 <dd><p>Define the computation performed at every call.</p>
@@ -694,7 +727,8 @@ registered hooks while the latter silently ignores them.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="scitex_nn.Wavelet">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">Wavelet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">samp_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'log'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Wavelet.html#Wavelet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.Wavelet" title="Link to this definition"></a></dt>
-<dd><dl class="py method">
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
 <dt class="sig sig-object py" id="scitex_nn.Wavelet.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Wavelet.html#Wavelet.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.Wavelet.forward" title="Link to this definition"></a></dt>
 <dd><p>Apply the 2D filter (n_filts, kernel_size) to input signal x with shape: (batch_size, n_chs, seq_len)</p>
@@ -748,6 +782,590 @@ registered hooks while the latter silently ignores them.</p>
 <span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">unbias</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'min'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cuda</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Spectrogram.html#unbias"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scitex_nn.unbias" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
+<section id="filters">
+<h2>Filters<a class="headerlink" href="#filters" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">BaseFilter1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp16</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#BaseFilter1D"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">init_kernels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#BaseFilter1D.init_kernels"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Abstract method to initialize filter kernels.
+Must be implemented by subclasses.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#BaseFilter1D.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Apply the filter to input signal x with shape: (batch_size, n_chs, seq_len)</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">kernel_size</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">flip_extend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension_length</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#BaseFilter1D.flip_extend"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">batch_conv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'same'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#BaseFilter1D.batch_conv"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>x: (batch_size, n_chs, seq_len)
+kernels: (n_kernels, seq_len_filt)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">remove_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_len</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#BaseFilter1D.remove_edges"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">BandPassFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bands</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_len</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp16</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#BandPassFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#scitex_nn.BaseFilter1D" title="scitex_nn._Filters.BaseFilter1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseFilter1D</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">init_kernels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq_len</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bands</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#BandPassFilter.init_kernels"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Abstract method to initialize filter kernels.
+Must be implemented by subclasses.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">BandStopFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bands</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_len</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#BandStopFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#scitex_nn.BaseFilter1D" title="scitex_nn._Filters.BaseFilter1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseFilter1D</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">init_kernels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq_len</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bands</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#BandStopFilter.init_kernels"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Abstract method to initialize filter kernels.
+Must be implemented by subclasses.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">DifferentiableBandPassFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig_len</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pha_low_hz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pha_high_hz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pha_n_bands</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp_low_hz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">80</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp_high_hz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">160</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp_n_bands</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp16</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#DifferentiableBandPassFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#scitex_nn.BaseFilter1D" title="scitex_nn._Filters.BaseFilter1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseFilter1D</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#DifferentiableBandPassFilter.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Apply the filter to input signal x with shape: (batch_size, n_chs, seq_len)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">HighPassFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cutoffs_hz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_len</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#HighPassFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#scitex_nn.BaseFilter1D" title="scitex_nn._Filters.BaseFilter1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseFilter1D</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">init_kernels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq_len</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoffs_hz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#HighPassFilter.init_kernels"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Abstract method to initialize filter kernels.
+Must be implemented by subclasses.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">LowPassFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cutoffs_hz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_len</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#LowPassFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#scitex_nn.BaseFilter1D" title="scitex_nn._Filters.BaseFilter1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseFilter1D</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">init_kernels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq_len</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoffs_hz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#LowPassFilter.init_kernels"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Abstract method to initialize filter kernels.
+Must be implemented by subclasses.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">GaussianFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#GaussianFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#scitex_nn.BaseFilter1D" title="scitex_nn._Filters.BaseFilter1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseFilter1D</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">init_kernels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Filters.html#GaussianFilter.init_kernels"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Abstract method to initialize filter kernels.
+Must be implemented by subclasses.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="spectral-transforms">
+<h2>Spectral Transforms<a class="headerlink" href="#spectral-transforms" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">Wavelet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">samp_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'log'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Wavelet.html#Wavelet"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Wavelet.html#Wavelet.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Apply the 2D filter (n_filts, kernel_size) to input signal x with shape: (batch_size, n_chs, seq_len)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">init_kernel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">samp_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'log'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Wavelet.html#Wavelet.init_kernel"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">gen_morlet_to_nyquist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">samp_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Wavelet.html#Wavelet.gen_morlet_to_nyquist"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Generates Morlet wavelets for exponentially increasing frequency bands up to the Nyquist frequency.</p>
+<p>Parameters:
+- samp_rate (int): The sampling rate of the signal, in Hertz.
+- kernel_size (int): The size of the kernel, in number of samples.</p>
+<p>Returns:
+- np.ndarray: A 2D array of complex values representing the Morlet wavelets for each frequency band.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">kernel_size</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">radius</span></span></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">Hilbert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq_len</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp16</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Hilbert.html#Hilbert"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<p>Differentiable Hilbert transform → analytic signal.</p>
+<p>Matches <code class="docutils literal notranslate"><span class="pre">scipy.signal.hilbert</span></code> to float-precision. The analytic-
+signal mask is a constant tensor (1 at DC + Nyquist, 2 at positive
+frequencies, 0 at negative frequencies); multiplying by it is fully
+differentiable, so gradients flow through <code class="docutils literal notranslate"><span class="pre">fft</span> <span class="pre">→</span> <span class="pre">mul</span> <span class="pre">→</span> <span class="pre">ifft</span> <span class="pre">→</span>
+<span class="pre">abs/atan2</span></code> cleanly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>seq_len</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Length of the signal along the transform axis.</p></li>
+<li><p><strong>dim</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Axis along which the Hilbert transform is applied. Default <code class="docutils literal notranslate"><span class="pre">-1</span></code>.</p></li>
+<li><p><strong>fp16</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – Cast input to half precision (output is cast back to float32).</p></li>
+<li><p><strong>in_place</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – If False, the input is cloned before processing.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">hilbert_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Hilbert.html#Hilbert.hilbert_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Hilbert.html#Hilbert.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Define the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">PSD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prob</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_PSD.html#PSD"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_PSD.html#PSD.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Define the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">Spectrogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_fft</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">256</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">win_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hann'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Spectrogram.html#Spectrogram"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Spectrogram.html#Spectrogram.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Computes the spectrogram for each channel in the input signal.</p>
+<p>Parameters:
+- signal (torch.Tensor): Input signal of shape (batch_size, n_chs, seq_len).</p>
+<p>Returns:
+- spectrograms (torch.Tensor): The computed spectrograms for each channel.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="phase-amplitude-coupling">
+<h2>Phase-Amplitude Coupling<a class="headerlink" href="#phase-amplitude-coupling" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">PAC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq_len</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pha_start_hz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pha_end_hz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pha_n_bands</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp_start_hz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp_end_hz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">160</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp_n_bands</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_perm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trainable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp16</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp_prob</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_PAC.html#PAC"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_PAC.html#PAC.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>x.shape: (batch_size, n_chs, seq_len) or (batch_size, n_chs, n_segments, seq_len)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">to_z_using_surrogate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observed</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_PAC.html#PAC.to_z_using_surrogate"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">generate_surrogates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_PAC.html#PAC.generate_surrogates"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">init_bandpass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq_len</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pha_start_hz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pha_end_hz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pha_n_bands</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp_start_hz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp_end_hz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">160</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp_n_bands</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trainable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp16</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_PAC.html#PAC.init_bandpass"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">calc_bands_pha</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_hz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_hz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_bands</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_PAC.html#PAC.calc_bands_pha"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">calc_bands_amp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_hz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_hz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">160</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_bands</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_PAC.html#PAC.calc_bands_amp"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">ModulationIndex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_bins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">18</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp16</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp_prob</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_ModulationIndex.html#ModulationIndex"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py property">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">pha_bin_centers</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-09</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_ModulationIndex.html#ModulationIndex.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Compute the Modulation Index based on phase (pha) and amplitude (amp) tensors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pha</strong> (<a class="reference external" href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.12)"><em>torch.Tensor</em></a>) – Tensor of phase values with shape
+(batch_size, n_channels, n_freqs_pha, n_segments, sequence_length).</p></li>
+<li><p><strong>amp</strong> (<a class="reference external" href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.12)"><em>torch.Tensor</em></a>) – Tensor of amplitude values with a similar shape as pha
+(batch_size, n_channels, n_freqs_amp, n_segments, sequence_length).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>MI</strong> – The Modulation Index for each batch and channel.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.12)">torch.Tensor</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="layers-attention">
+<h2>Layers &amp; Attention<a class="headerlink" href="#layers-attention" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">SpatialAttention</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_chs_in</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_SpatialAttention.html#SpatialAttention"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_SpatialAttention.html#SpatialAttention.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>x: [batch_size, n_chs, seq_len]</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">AxiswiseDropout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dropout_prob</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_aug/_AxiswiseDropout.html#AxiswiseDropout"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_aug/_AxiswiseDropout.html#AxiswiseDropout.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Define the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">DropoutChannels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dropout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_aug/_DropoutChannels.html#DropoutChannels"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_aug/_DropoutChannels.html#DropoutChannels.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>x: [batch_size, n_chs, seq_len]</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">ChannelGainChanger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_chs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_aug/_ChannelGainChanger.html#ChannelGainChanger"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_aug/_ChannelGainChanger.html#ChannelGainChanger.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>x: [batch_size, n_chs, seq_len]</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">FreqGainChanger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_bands</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samp_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_aug/_FreqGainChanger.html#FreqGainChanger"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_aug/_FreqGainChanger.html#FreqGainChanger.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>x: [batch_size, n_chs, seq_len]</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">SwapChannels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dropout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_aug/_SwapChannels.html#SwapChannels"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_aug/_SwapChannels.html#SwapChannels.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>x: [batch_size, n_chs, seq_len]</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">SwapLayer</span></span><a class="reference internal" href="_modules/scitex_nn/_MNet_1000.html#SwapLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_MNet_1000.html#SwapLayer.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Define the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">ReshapeLayer</span></span><a class="reference internal" href="_modules/scitex_nn/_MNet_1000.html#ReshapeLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_MNet_1000.html#ReshapeLayer.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Define the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">TransposeLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_TransposeLayer.html#TransposeLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_TransposeLayer.html#TransposeLayer.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Define the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="architectures">
+<h2>Architectures<a class="headerlink" href="#architectures" title="Link to this heading"></a></h2>
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">BNet_v1</span></span></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">BNet</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">BNet_Res</span></span></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">BNet</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">BHead_v1</span></span></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">BHead</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">BHead_Res</span></span></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">BHead</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">MNet_1000</span></span></dt>
+<dd><p>alias of <a class="reference internal" href="#scitex_nn.MNet1000" title="scitex_nn._MNet_1000.MNet1000"><code class="xref py py-class docutils literal notranslate"><span class="pre">MNet1000</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">MNet1000</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_MNet_1000.html#MNet1000"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_MNet_1000.html#MNet1000.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Define the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward_bb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_MNet_1000.html#MNet1000.forward_bb"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">ResNet1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_chs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">19</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_blks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_ResNet1D.html#ResNet1D"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<p>A representative convolutional neural network for signal classification tasks.</p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_ResNet1D.html#ResNet1D.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Define the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">ResNetBasicBlock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_chs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_chs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_ResNet1D.html#ResNetBasicBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<p>The basic block of the ResNet1D model</p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">conv_k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_chs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_chs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_ResNet1D.html#ResNetBasicBlock.conv_k"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Build size k kernel’s convolution layer with padding</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_ResNet1D.html#ResNetBasicBlock.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Define the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="functional-utilities">
+<h2>Functional Utilities<a class="headerlink" href="#functional-utilities" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">my_softmax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Spectrogram.html#my_softmax"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">normalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cuda</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Spectrogram.html#normalize"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">spectrograms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.125</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cuda</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Spectrogram.html#spectrograms"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">scitex_nn.</span></span><span class="sig-name descname"><span class="pre">unbias</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'min'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cuda</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scitex_nn/_Spectrogram.html#unbias"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd></dd></dl>
+
+</section>
 </section>
 
 
@@ -755,7 +1373,6 @@ registered hooks while the latter silently ignores them.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="scitex-nn" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="api/scitex_nn.html" class="btn btn-neutral float-right" title="scitex_nn" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

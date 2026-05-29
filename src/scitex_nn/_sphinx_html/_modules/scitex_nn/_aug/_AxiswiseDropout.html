@@ -46,9 +46,6 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../api.html">API</a></li>
 </ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/scitex_nn.html">scitex_nn</a></li>
-</ul>
 
         </div>
       </div>
@@ -85,7 +82,7 @@
 
 
 <div class="viewcode-block" id="AxiswiseDropout">
-<a class="viewcode-back" href="../../../api/scitex_nn.html#scitex_nn.AxiswiseDropout">[docs]</a>
+<a class="viewcode-back" href="../../../api.html#scitex_nn.AxiswiseDropout">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">AxiswiseDropout</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dropout_prob</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">AxiswiseDropout</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -93,7 +90,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="n">dim</span>
 
 <div class="viewcode-block" id="AxiswiseDropout.forward">
-<a class="viewcode-back" href="../../../api/scitex_nn.html#scitex_nn.AxiswiseDropout.forward">[docs]</a>
+<a class="viewcode-back" href="../../../api.html#scitex_nn.AxiswiseDropout.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="p">:</span>
             <span class="n">sizes</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">())]</span>
