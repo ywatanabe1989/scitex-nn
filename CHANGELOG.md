@@ -7,6 +7,12 @@ versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.1.13]
+
+- fix(deps): repoint scitex_gen imports to the public API (`from scitex_gen import to_even/to_odd`) after scitex-gen's `_numeric` reorg; the old private `scitex_gen._to_even`/`._to_odd` paths broke against scitex-gen 0.1.10
+- deps: raise `scitex-gen` floor to `>=0.1.10` (where `_numeric` + public exports landed)
+- test(gate): drop stale `scitex_gen._numeric._*` cross-package gate entries (PS-140)
+
 ## [0.1.12]
 
 - de-mock: replace all mocks with real collaborators in all test suites
