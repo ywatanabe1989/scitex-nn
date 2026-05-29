@@ -48,14 +48,19 @@ class ModulationIndex(nn.Module):
         """
         Compute the Modulation Index based on phase (pha) and amplitude (amp) tensors.
 
-        Parameters:
-        - pha (torch.Tensor): Tensor of phase values with shape
-                              (batch_size, n_channels, n_freqs_pha, n_segments, sequence_length).
-        - amp (torch.Tensor): Tensor of amplitude values with a similar shape as pha.
-                              (batch_size, n_channels, n_freqs_amp, n_segments, sequence_length).
+        Parameters
+        ----------
+        pha : torch.Tensor
+            Tensor of phase values with shape
+            (batch_size, n_channels, n_freqs_pha, n_segments, sequence_length).
+        amp : torch.Tensor
+            Tensor of amplitude values with a similar shape as pha
+            (batch_size, n_channels, n_freqs_amp, n_segments, sequence_length).
 
-        Returns:
-        - MI (torch.Tensor): The Modulation Index for each batch and channel.
+        Returns
+        -------
+        MI : torch.Tensor
+            The Modulation Index for each batch and channel.
         """
         # Coerce numpy arrays to torch tensors for callers that pass plain ndarrays
         if not isinstance(pha, torch.Tensor):
