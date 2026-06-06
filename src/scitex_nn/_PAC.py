@@ -69,8 +69,8 @@ class PAC(nn.Module):
             amp_prob=amp_prob,
         )
 
-        # Data Handlers
-        from scitex_gen import DimHandler as _DimHandler
+        # Data Handlers (DimHandler now lives in scitex_nn itself)
+        from ._DimHandler import DimHandler as _DimHandler
 
         self.dh_pha = _DimHandler()
         self.dh_amp = _DimHandler()
