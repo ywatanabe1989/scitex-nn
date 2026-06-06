@@ -7,6 +7,12 @@ versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.2.0]
+
+- feat: port `DimHandler` from `scitex_gen._introspect._DimHandler` (Phase B
+  of the scitex-gen full retirement wave). New public symbol exposed via
+  the existing PEP 562 lazy loader. `scitex_gen` keeps no shim.
+
 ## [0.1.13]
 
 - fix(deps): repoint scitex_gen imports to the public API (`from scitex_gen import to_even/to_odd`) after scitex-gen's `_numeric` reorg; the old private `scitex_gen._to_even`/`._to_odd` paths broke against scitex-gen 0.1.10
