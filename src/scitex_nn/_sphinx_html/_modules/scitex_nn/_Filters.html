@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>scitex_nn._Filters &mdash; scitex-nn 0.1.11 documentation</title>
+  <title>scitex_nn._Filters &mdash; scitex-nn 0.1.14 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -13,7 +13,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=1e825a29"></script>
+      <script src="../../_static/documentation_options.js?v=468bc497"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -45,9 +45,6 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../api/scitex_nn.html">scitex_nn</a></li>
 </ul>
 
         </div>
@@ -107,11 +104,10 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">abstractmethod</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">scitex_gen._to_even</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_even</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scitex_gen</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_even</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">._vendor_dsp_utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">build_bandpass_filters</span><span class="p">,</span>
@@ -124,7 +120,7 @@
 
 
 <div class="viewcode-block" id="BaseFilter1D">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.BaseFilter1D">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.BaseFilter1D">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BaseFilter1D</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp16</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -133,7 +129,7 @@
         <span class="c1"># self.kernels = None</span>
 
 <div class="viewcode-block" id="BaseFilter1D.init_kernels">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.BaseFilter1D.init_kernels">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.BaseFilter1D.init_kernels">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">init_kernels</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -146,7 +142,7 @@
 
 
 <div class="viewcode-block" id="BaseFilter1D.forward">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.BaseFilter1D.forward">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.BaseFilter1D.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edge_len</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the filter to input signal x with shape: (batch_size, n_chs, seq_len)&quot;&quot;&quot;</span>
 
@@ -210,7 +206,7 @@
         <span class="k">return</span> <span class="n">ks</span>
 
 <div class="viewcode-block" id="BaseFilter1D.flip_extend">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.BaseFilter1D.flip_extend">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.BaseFilter1D.flip_extend">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">flip_extend</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">extension_length</span><span class="p">):</span>
         <span class="n">first_segment</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:</span><span class="n">extension_length</span><span class="p">]</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
@@ -219,7 +215,7 @@
 
 
 <div class="viewcode-block" id="BaseFilter1D.batch_conv">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.BaseFilter1D.batch_conv">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.BaseFilter1D.batch_conv">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">batch_conv</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">kernels</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s2">&quot;same&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -237,7 +233,7 @@
 
 
 <div class="viewcode-block" id="BaseFilter1D.remove_edges">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.BaseFilter1D.remove_edges">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.BaseFilter1D.remove_edges">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">remove_edges</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">edge_len</span><span class="p">):</span>
         <span class="n">edge_len</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">//</span> <span class="mi">8</span> <span class="k">if</span> <span class="n">edge_len</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span> <span class="k">else</span> <span class="n">edge_len</span>
@@ -251,7 +247,7 @@
 
 
 <div class="viewcode-block" id="BandPassFilter">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.BandPassFilter">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.BandPassFilter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BandPassFilter</span><span class="p">(</span><span class="n">BaseFilter1D</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bands</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">,</span> <span class="n">fp16</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">fp16</span><span class="o">=</span><span class="n">fp16</span><span class="p">)</span>
@@ -282,7 +278,7 @@
         <span class="p">)</span>
 
 <div class="viewcode-block" id="BandPassFilter.init_kernels">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.BandPassFilter.init_kernels">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.BandPassFilter.init_kernels">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">init_kernels</span><span class="p">(</span><span class="n">seq_len</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">bands</span><span class="p">):</span>
         <span class="c1"># Convert seq_len and fs to numpy arrays for design_filter (expects numpy_fn)</span>
@@ -320,7 +316,7 @@
 
 
 <div class="viewcode-block" id="BandStopFilter">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.BandStopFilter">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.BandStopFilter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BandStopFilter</span><span class="p">(</span><span class="n">BaseFilter1D</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bands</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -339,7 +335,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;kernels&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_kernels</span><span class="p">(</span><span class="n">seq_len</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">bands</span><span class="p">))</span>
 
 <div class="viewcode-block" id="BandStopFilter.init_kernels">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.BandStopFilter.init_kernels">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.BandStopFilter.init_kernels">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">init_kernels</span><span class="p">(</span><span class="n">seq_len</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">bands</span><span class="p">):</span>
         <span class="c1"># Convert to numpy arrays for design_filter</span>
@@ -365,7 +361,7 @@
 
 
 <div class="viewcode-block" id="LowPassFilter">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.LowPassFilter">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.LowPassFilter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">LowPassFilter</span><span class="p">(</span><span class="n">BaseFilter1D</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cutoffs_hz</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -384,7 +380,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;kernels&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_kernels</span><span class="p">(</span><span class="n">seq_len</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">cutoffs_hz</span><span class="p">))</span>
 
 <div class="viewcode-block" id="LowPassFilter.init_kernels">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.LowPassFilter.init_kernels">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.LowPassFilter.init_kernels">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">init_kernels</span><span class="p">(</span><span class="n">seq_len</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">cutoffs_hz</span><span class="p">):</span>
         <span class="c1"># Convert to numpy arrays for design_filter</span>
@@ -410,7 +406,7 @@
 
 
 <div class="viewcode-block" id="HighPassFilter">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.HighPassFilter">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.HighPassFilter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">HighPassFilter</span><span class="p">(</span><span class="n">BaseFilter1D</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cutoffs_hz</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -429,7 +425,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;kernels&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_kernels</span><span class="p">(</span><span class="n">seq_len</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">cutoffs_hz</span><span class="p">))</span>
 
 <div class="viewcode-block" id="HighPassFilter.init_kernels">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.HighPassFilter.init_kernels">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.HighPassFilter.init_kernels">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">init_kernels</span><span class="p">(</span><span class="n">seq_len</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">cutoffs_hz</span><span class="p">):</span>
         <span class="c1"># Convert to numpy arrays for design_filter</span>
@@ -455,7 +451,7 @@
 
 
 <div class="viewcode-block" id="GaussianFilter">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.GaussianFilter">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.GaussianFilter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GaussianFilter</span><span class="p">(</span><span class="n">BaseFilter1D</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -463,7 +459,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;kernels&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_kernels</span><span class="p">(</span><span class="n">sigma</span><span class="p">))</span>
 
 <div class="viewcode-block" id="GaussianFilter.init_kernels">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.GaussianFilter.init_kernels">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.GaussianFilter.init_kernels">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">init_kernels</span><span class="p">(</span><span class="n">sigma</span><span class="p">):</span>
         <span class="n">kernel_size</span> <span class="o">=</span> <span class="n">sigma</span> <span class="o">*</span> <span class="mi">6</span>  <span class="c1"># +/- 3SD</span>
@@ -478,7 +474,7 @@
 
 
 <div class="viewcode-block" id="DifferentiableBandPassFilter">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.DifferentiableBandPassFilter">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.DifferentiableBandPassFilter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DifferentiableBandPassFilter</span><span class="p">(</span><span class="n">BaseFilter1D</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -545,7 +541,7 @@
             <span class="c1"># self.amp_mids = self.amp_mids.half()</span>
 
 <div class="viewcode-block" id="DifferentiableBandPassFilter.forward">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.DifferentiableBandPassFilter.forward">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.DifferentiableBandPassFilter.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edge_len</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="c1"># Constrains the parameter spaces</span>
         <span class="n">torch</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pha_mids</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pha_low_hz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pha_high_hz</span><span class="p">)</span>
@@ -630,7 +626,7 @@
     <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="o">.</span><span class="n">ravel</span><span class="p">():</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper left&quot;</span><span class="p">)</span>
 
-    <span class="n">scitex</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s2">&quot;traces.png&quot;</span><span class="p">)</span>
+    <span class="n">scitex</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s2">&quot;./traces.png&quot;</span><span class="p">)</span>
     <span class="c1"># plt.show()</span>
 
     <span class="c1"># Close</span>

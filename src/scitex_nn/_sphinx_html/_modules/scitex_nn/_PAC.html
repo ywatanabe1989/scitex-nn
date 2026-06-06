@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>scitex_nn._PAC &mdash; scitex-nn 0.1.11 documentation</title>
+  <title>scitex_nn._PAC &mdash; scitex-nn 0.1.14 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -13,7 +13,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=1e825a29"></script>
+      <script src="../../_static/documentation_options.js?v=468bc497"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -45,9 +45,6 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../api/scitex_nn.html">scitex_nn</a></li>
 </ul>
 
         </div>
@@ -94,7 +91,7 @@
 
 <span class="c1"># Functions</span>
 <div class="viewcode-block" id="PAC">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.PAC">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.PAC">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PAC</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -155,7 +152,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">dh_amp</span> <span class="o">=</span> <span class="n">_DimHandler</span><span class="p">()</span>
 
 <div class="viewcode-block" id="PAC.forward">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.PAC.forward">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.PAC.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;x.shape: (batch_size, n_chs, seq_len) or (batch_size, n_chs, n_segments, seq_len)&quot;&quot;&quot;</span>
 
@@ -205,7 +202,7 @@
 
 
 <div class="viewcode-block" id="PAC.to_z_using_surrogate">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.PAC.to_z_using_surrogate">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.PAC.to_z_using_surrogate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_z_using_surrogate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pha</span><span class="p">,</span> <span class="n">amp</span><span class="p">,</span> <span class="n">observed</span><span class="p">):</span>
         <span class="n">surrogates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_surrogates</span><span class="p">(</span><span class="n">pha</span><span class="p">,</span> <span class="n">amp</span><span class="p">)</span>
         <span class="n">mm</span> <span class="o">=</span> <span class="n">surrogates</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">observed</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
@@ -236,7 +233,7 @@
         <span class="c1"># return pac</span>
 
 <div class="viewcode-block" id="PAC.generate_surrogates">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.PAC.generate_surrogates">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.PAC.generate_surrogates">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">generate_surrogates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pha</span><span class="p">,</span> <span class="n">amp</span><span class="p">,</span> <span class="n">bs</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="c1"># Shape of pha: [batch_size, n_chs, n_freqs_pha, n_segments, sequence_length]</span>
         <span class="n">batch_size</span><span class="p">,</span> <span class="n">n_chs</span><span class="p">,</span> <span class="n">n_freqs_pha</span><span class="p">,</span> <span class="n">n_segments</span><span class="p">,</span> <span class="n">seq_len</span> <span class="o">=</span> <span class="n">pha</span><span class="o">.</span><span class="n">shape</span>
@@ -290,7 +287,7 @@
 
 
 <div class="viewcode-block" id="PAC.init_bandpass">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.PAC.init_bandpass">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.PAC.init_bandpass">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">init_bandpass</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">seq_len</span><span class="p">,</span>
@@ -349,7 +346,7 @@
 
 
 <div class="viewcode-block" id="PAC.calc_bands_pha">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.PAC.calc_bands_pha">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.PAC.calc_bands_pha">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">calc_bands_pha</span><span class="p">(</span><span class="n">start_hz</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">end_hz</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">n_bands</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
         <span class="n">start_hz</span> <span class="o">=</span> <span class="n">start_hz</span> <span class="k">if</span> <span class="n">start_hz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">2</span>
@@ -365,7 +362,7 @@
 
 
 <div class="viewcode-block" id="PAC.calc_bands_amp">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.PAC.calc_bands_amp">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.PAC.calc_bands_amp">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">calc_bands_amp</span><span class="p">(</span><span class="n">start_hz</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">end_hz</span><span class="o">=</span><span class="mi">160</span><span class="p">,</span> <span class="n">n_bands</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
         <span class="n">start_hz</span> <span class="o">=</span> <span class="n">start_hz</span> <span class="k">if</span> <span class="n">start_hz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">30</span>

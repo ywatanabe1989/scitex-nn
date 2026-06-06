@@ -1,6 +1,0 @@
-﻿scitex\_nn
-==========
-
-.. automodule:: scitex_nn
-
-   

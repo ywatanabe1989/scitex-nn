@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>scitex_nn._Hilbert &mdash; scitex-nn 0.1.11 documentation</title>
+  <title>scitex_nn._Hilbert &mdash; scitex-nn 0.1.14 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -13,7 +13,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=1e825a29"></script>
+      <script src="../../_static/documentation_options.js?v=468bc497"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -45,9 +45,6 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../api/scitex_nn.html">scitex_nn</a></li>
 </ul>
 
         </div>
@@ -84,7 +81,7 @@
 
 
 <div class="viewcode-block" id="Hilbert">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.Hilbert">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.Hilbert">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Hilbert</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Differentiable Hilbert transform → analytic signal.</span>
 
@@ -126,7 +123,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;h_mask&quot;</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Hilbert.hilbert_transform">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.Hilbert.hilbert_transform">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.Hilbert.hilbert_transform">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">hilbert_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="n">orig_dtype</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">dtype</span>
         <span class="c1"># FFT does not support float16/bfloat16/int dtypes; promote those</span>
@@ -147,7 +144,7 @@
 
 
 <div class="viewcode-block" id="Hilbert.forward">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.Hilbert.forward">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.Hilbert.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fp16</span><span class="p">:</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">half</span><span class="p">()</span>

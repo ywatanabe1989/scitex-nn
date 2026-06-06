@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>scitex_nn._MNet_1000 &mdash; scitex-nn 0.1.11 documentation</title>
+  <title>scitex_nn._MNet_1000 &mdash; scitex-nn 0.1.14 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -13,7 +13,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=1e825a29"></script>
+      <script src="../../_static/documentation_options.js?v=468bc497"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -45,9 +45,6 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../api/scitex_nn.html">scitex_nn</a></li>
 </ul>
 
         </div>
@@ -99,7 +96,7 @@
 
 
 <div class="viewcode-block" id="MNet1000">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.MNet1000">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.MNet1000">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">MNet1000</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -180,7 +177,7 @@
         <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span> <span class="o">/</span> <span class="n">x</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MNet1000.forward">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.MNet1000.forward">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.MNet1000.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="c1"># # time-wise normalization</span>
         <span class="c1"># x = self._znorm_along_the_last_dim(x)</span>
@@ -197,7 +194,7 @@
 
 
 <div class="viewcode-block" id="MNet1000.forward_bb">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.MNet1000.forward_bb">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.MNet1000.forward_bb">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward_bb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="c1"># time-wise normalization</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_znorm_along_the_last_dim</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -209,7 +206,7 @@
 
 
 <div class="viewcode-block" id="SwapLayer">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.SwapLayer">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.SwapLayer">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SwapLayer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -217,7 +214,7 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
 <div class="viewcode-block" id="SwapLayer.forward">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.SwapLayer.forward">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.SwapLayer.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span></div>
 </div>
@@ -225,7 +222,7 @@
 
 
 <div class="viewcode-block" id="ReshapeLayer">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.ReshapeLayer">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.ReshapeLayer">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ReshapeLayer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -233,7 +230,7 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
 <div class="viewcode-block" id="ReshapeLayer.forward">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.ReshapeLayer.forward">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.ReshapeLayer.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span></div>
 </div>

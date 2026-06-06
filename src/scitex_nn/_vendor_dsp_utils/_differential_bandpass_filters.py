@@ -20,8 +20,8 @@ except ImportError:
     nn = None
 
 from scitex_decorators import torch_fn
-from scitex_gen._to_even import to_even
-from scitex_gen._to_odd import to_odd
+from scitex_gen import to_even
+from scitex_gen import to_odd
 
 try:
     from torchaudio.prototype.functional import sinc_impulse_response

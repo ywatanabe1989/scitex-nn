@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>scitex_nn._ModulationIndex &mdash; scitex-nn 0.1.11 documentation</title>
+  <title>scitex_nn._ModulationIndex &mdash; scitex-nn 0.1.14 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -13,7 +13,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=1e825a29"></script>
+      <script src="../../_static/documentation_options.js?v=468bc497"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -45,9 +45,6 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../api/scitex_nn.html">scitex_nn</a></li>
 </ul>
 
         </div>
@@ -100,7 +97,7 @@
 
 <span class="c1"># Functions</span>
 <div class="viewcode-block" id="ModulationIndex">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.ModulationIndex">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.ModulationIndex">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ModulationIndex</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_bins</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">fp16</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">amp_prob</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">ModulationIndex</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -124,19 +121,24 @@
         <span class="p">)</span>
 
 <div class="viewcode-block" id="ModulationIndex.forward">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.ModulationIndex.forward">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.ModulationIndex.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pha</span><span class="p">,</span> <span class="n">amp</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1e-9</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute the Modulation Index based on phase (pha) and amplitude (amp) tensors.</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">        - pha (torch.Tensor): Tensor of phase values with shape</span>
-<span class="sd">                              (batch_size, n_channels, n_freqs_pha, n_segments, sequence_length).</span>
-<span class="sd">        - amp (torch.Tensor): Tensor of amplitude values with a similar shape as pha.</span>
-<span class="sd">                              (batch_size, n_channels, n_freqs_amp, n_segments, sequence_length).</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pha : torch.Tensor</span>
+<span class="sd">            Tensor of phase values with shape</span>
+<span class="sd">            (batch_size, n_channels, n_freqs_pha, n_segments, sequence_length).</span>
+<span class="sd">        amp : torch.Tensor</span>
+<span class="sd">            Tensor of amplitude values with a similar shape as pha</span>
+<span class="sd">            (batch_size, n_channels, n_freqs_amp, n_segments, sequence_length).</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">        - MI (torch.Tensor): The Modulation Index for each batch and channel.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        MI : torch.Tensor</span>
+<span class="sd">            The Modulation Index for each batch and channel.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Coerce numpy arrays to torch tensors for callers that pass plain ndarrays</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pha</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>

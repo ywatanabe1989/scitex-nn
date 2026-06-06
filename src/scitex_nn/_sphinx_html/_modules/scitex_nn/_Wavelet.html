@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>scitex_nn._Wavelet &mdash; scitex-nn 0.1.11 documentation</title>
+  <title>scitex_nn._Wavelet &mdash; scitex-nn 0.1.14 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -13,7 +13,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=1e825a29"></script>
+      <script src="../../_static/documentation_options.js?v=468bc497"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -45,9 +45,6 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../api/scitex_nn.html">scitex_nn</a></li>
 </ul>
 
         </div>
@@ -89,11 +86,11 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">scitex_gen._to_even</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_even</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scitex_gen</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_even</span>
 
 
 <div class="viewcode-block" id="Wavelet">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.Wavelet">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.Wavelet">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Wavelet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">samp_rate</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">freq_scale</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="n">out_scale</span><span class="o">=</span><span class="s2">&quot;log&quot;</span>
@@ -105,7 +102,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">out_scale</span> <span class="o">=</span> <span class="n">out_scale</span>
 
 <div class="viewcode-block" id="Wavelet.forward">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.Wavelet.forward">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.Wavelet.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the 2D filter (n_filts, kernel_size) to input signal x with shape: (batch_size, n_chs, seq_len)&quot;&quot;&quot;</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">._vendor_dsp_utils._ensure_3d</span><span class="w"> </span><span class="kn">import</span> <span class="n">ensure_3d</span> <span class="k">as</span> <span class="n">_ensure_3d</span>
@@ -166,7 +163,7 @@
 
 
 <div class="viewcode-block" id="Wavelet.init_kernel">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.Wavelet.init_kernel">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.Wavelet.init_kernel">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">init_kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">samp_rate</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">freq_scale</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">):</span>
         <span class="n">device</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dummy</span><span class="o">.</span><span class="n">device</span>
         <span class="n">morlets</span><span class="p">,</span> <span class="n">freqs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gen_morlet_to_nyquist</span><span class="p">(</span>
@@ -177,7 +174,7 @@
 
 
 <div class="viewcode-block" id="Wavelet.gen_morlet_to_nyquist">
-<a class="viewcode-back" href="../../api/scitex_nn.html#scitex_nn.Wavelet.gen_morlet_to_nyquist">[docs]</a>
+<a class="viewcode-back" href="../../api.html#scitex_nn.Wavelet.gen_morlet_to_nyquist">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">gen_morlet_to_nyquist</span><span class="p">(</span><span class="n">samp_rate</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">freq_scale</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
