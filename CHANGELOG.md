@@ -12,6 +12,10 @@ versions follow [Semantic Versioning](https://semver.org/).
 - feat: port `DimHandler` from `scitex_gen._introspect._DimHandler` (Phase B
   of the scitex-gen full retirement wave). New public symbol exposed via
   the existing PEP 562 lazy loader. `scitex_gen` keeps no shim.
+- refactor: `_PAC.py` now imports `DimHandler` from the in-repo
+  `._DimHandler` instead of `scitex_gen`. After PR #22 (to_even/to_odd
+  migration) also lands, `scitex_gen` will no longer be imported
+  anywhere in this repo and the runtime dep can be dropped in a follow-up.
 
 ## [0.1.13]
 
