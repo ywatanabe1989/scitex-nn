@@ -49,6 +49,7 @@ _LAZY_ATTRS: dict[str, str] = {
     "HighPassFilter": "._Filters",
     "LowPassFilter": "._Filters",
     # Transforms / signal layers
+    "DimHandler": "._DimHandler",
     "Hilbert": "._Hilbert",
     "ModulationIndex": "._ModulationIndex",
     "PAC": "._PAC",
@@ -135,6 +136,7 @@ __all__ = [
     "BaseFilter1D",
     "ChannelGainChanger",
     "DifferentiableBandPassFilter",
+    "DimHandler",
     "DropoutChannels",
     "FreqGainChanger",
     "GaussianFilter",
