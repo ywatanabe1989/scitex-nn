@@ -23,6 +23,7 @@ CROSS_PACKAGE_IMPORTS = [
     "scitex",
     "scitex_decorators",
     "scitex_gen",
+    "scitex_math",
 ]
 # ===== END AUTO-GENERATED =====
 

@@ -30,6 +30,7 @@ dependencies = [
     "scitex-decorators>=0.1.1",
     "scitex-config>=0.3.0",
     "scitex-gen>=0.1.10",
+    "scitex-math>=0.1.0",
 ]
 
 [project.optional-dependencies]
