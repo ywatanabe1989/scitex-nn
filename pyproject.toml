@@ -30,6 +30,11 @@ dependencies = [
     "scitex-decorators>=0.1.1",
     "scitex-config>=0.3.0",
     "scitex-gen>=0.1.10",
+    # scitex-math owns to_even / to_odd since their standalonization out
+    # of scitex_gen. Imported at module-load by _Filters, _Wavelet, and
+    # _vendor_dsp_utils/* — without this pin bare `pip install scitex-nn`
+    # followed by `import scitex_nn._Wavelet` raises ImportError.
+    "scitex-math>=0.1.0",
 ]
 
 [project.optional-dependencies]
