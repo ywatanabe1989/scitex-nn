@@ -33,7 +33,7 @@ from abc import abstractmethod
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from scitex_gen import to_even
+from scitex_math import to_even
 
 from ._vendor_dsp_utils import (
     build_bandpass_filters,
