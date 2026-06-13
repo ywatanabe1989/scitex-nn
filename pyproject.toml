@@ -25,7 +25,11 @@ dependencies = [
     "torchaudio",
     "torchsummary",
     "julius",
-    "scipy",
+    # `scipy` dropped from core in 2026-06-13 hard-dep-overreach sweep.
+    # `rg "^(import|from)\s+scipy\b" src/` finds zero imports across
+    # the 26 scitex_nn source files. CI-as-gate (a2a 582a39fb) catches
+    # any lazy / re-export path that needs scipy at import time. See
+    # scitex-dev a2a directive da6bcfb8.
     "xarray",
     "scitex-decorators>=0.1.1",
     "scitex-config>=0.3.0",
